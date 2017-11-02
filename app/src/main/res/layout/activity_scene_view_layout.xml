@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="dk.blackdarkness.g17.cphindustries.SceneViewActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -24,13 +25,25 @@
     <include layout="@layout/content_main_menu" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/createScene"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/lockSceneView"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
-    </RelativeLayout>
+        android:layout_marginRight="16dp"
+        android:visibility="gone"
+        app:backgroundTint="@color/colorPrimarySmoke"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/lockSceneView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/colorPrimarySmoke"
+        app:srcCompat="@android:drawable/ic_lock_lock" />
+
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
