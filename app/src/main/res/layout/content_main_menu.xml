@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="dk.blackdarkness.g17.cphindustries.MainMenu"
-    tools:showIn="@layout/activity_main_menu">
+    tools:context="dk.blackdarkness.g17.cphindustries.SceneViewActivity"
+    tools:showIn="@layout/activity_scene_view_layout">
 
     <TextView
         android:layout_width="wrap_content"

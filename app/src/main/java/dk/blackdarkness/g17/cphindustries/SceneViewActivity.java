@@ -1,32 +1,42 @@
 package dk.blackdarkness.g17.cphindustries;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
-public class MainMenu extends AppCompatActivity {
+public class SceneViewActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String TAG = "SceneViewActivity";
+
+    private FloatingActionButton fab;
+    private Button test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
+        setContentView(R.layout.activity_scene_view_layout);
+
+        test = (Button) findViewById(R.id.test);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        initLayout();
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
 //        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    }
+
+    public void initLayout() {
+        fab.setOnClickListener(this);
+        test.setOnClickListener(this);
+        test.setText("Go to shot activity");
+
     }
 
     @Override
@@ -49,5 +59,18 @@ public class MainMenu extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.fab:
+                Log.d(TAG, "onClick: Fab button.");
+                break;
+            case R.id.test:
+                Intent shotView = new Intent(this, ShotViewActivity.class);
+                Log.d(TAG, "onClick: Testbutton. Attempting to start shotview activity.");
+                startActivity(shotView);
+        }
     }
 }
