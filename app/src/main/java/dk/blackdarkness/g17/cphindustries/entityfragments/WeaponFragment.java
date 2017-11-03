@@ -1,4 +1,4 @@
-package dk.blackdarkness.g17.cphindustries;
+package dk.blackdarkness.g17.cphindustries.entityfragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponFragment;
+
 /**
  * Created by Thoma on 11/02/2017.
  */
@@ -18,7 +21,7 @@ public class WeaponFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "WeaponFragment";
     private Button edit;
-    private Fragment weaponEditFragment;
+    private Fragment editWeaponFragment;
     private TextView dummy;
 
     @Nullable
@@ -26,7 +29,7 @@ public class WeaponFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weapon_layout, container, false);
         edit = view.findViewById(R.id.editWeapon);
-        dummy = view.findViewById(R.id.dummyText);
+        dummy = view.findViewById(R.id.weaponDummy);
         initDisplay();
         return view;
     }
@@ -43,9 +46,9 @@ public class WeaponFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.editWeapon:
                 Log.d(TAG, "onClick: Trying to open edit weapon fragment.");
-                weaponEditFragment = new WeaponEditFragment();
+                editWeaponFragment = new EditWeaponFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, weaponEditFragment).addToBackStack(null).commit();
+                        .replace(R.id.fragment_container, editWeaponFragment).addToBackStack(null).commit();
         }
     }
 

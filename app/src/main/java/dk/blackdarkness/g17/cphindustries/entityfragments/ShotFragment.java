@@ -1,4 +1,4 @@
-package dk.blackdarkness.g17.cphindustries;
+package dk.blackdarkness.g17.cphindustries.entityfragments;
 
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -7,11 +7,11 @@ import android.view.View;
  * Created by Thoma on 11/02/2017.
  */
 
-public class EditShotFragment extends Fragment implements View.OnClickListener {
+public class ShotFragment extends Fragment implements View.OnClickListener {
+
 
     @Override
     public void onClick(View view) {
 
     }
-
 }

@@ -4,16 +4,16 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/editShotDummy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
-
-    <Button
-        android:id="@+id/submitShotEdit"
+        android:id="@+id/createWeaponDummy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_below="@+id/editShotDummy"/>
+        android:layout_above="@+id/submitWeaponCreate"/>
+
+    <Button
+        android:id="@+id/submitWeaponCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>

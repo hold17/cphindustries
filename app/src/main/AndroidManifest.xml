@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/CPHIndustriesTheme">
         <activity
-            android:name=".SceneViewActivity"
+            android:name=".activities.SceneViewActivity"
             android:label="@string/sceneview"
             android:theme="@style/CPHIndustriesTheme">
             <intent-filter>
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ShotViewActivity"
+        <activity android:name=".activities.ShotViewActivity"
             android:label="@string/shotview"
             android:theme="@style/CPHIndustriesTheme">
 

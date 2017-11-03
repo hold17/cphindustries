@@ -1,4 +1,4 @@
-package dk.blackdarkness.g17.cphindustries;
+package dk.blackdarkness.g17.cphindustries.viewfragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,10 +7,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
+import dk.blackdarkness.g17.cphindustries.createfragments.CreateShotFragment;
+import dk.blackdarkness.g17.cphindustries.editfragments.EditShotFragment;
 
 /**
  * Created by Thoma on 11/02/2017.
@@ -19,17 +23,18 @@ import android.widget.Button;
 public class ShotViewFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "ShotViewFragment";
-    private Fragment weaponViewFragment;
+    private Fragment weaponViewFragment, createShotFragment, editShotFragment;
     private FloatingActionButton add, lock;
-    private Button test;
+    private Button open, edit;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shot_view_layout, container, false);
-        test = view.findViewById(R.id.test2);
+        open = view.findViewById(R.id.openShot);
         lock = view.findViewById(R.id.lockShotView);
         add = view.findViewById(R.id.createShot);
+        edit = view.findViewById(R.id.editShot);
         initLayout();
         return view;
     }
@@ -38,22 +43,37 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener {
         lock.setOnClickListener(this);
         add.setOnClickListener(this);
         getActivity().setTitle("Shots");
-        test.setOnClickListener(this);
-        test.setText("Go to weapons view fragment.");
+        open.setOnClickListener(this);
+        open.setText("Shot #1");
+        edit.setOnClickListener(this);
+        edit.setText("Edit shot");
         checkInitLock();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.test2:
+            case R.id.openShot:
                 Log.d(TAG, "onClick: Trying to open weaponview fragment.");
                 weaponViewFragment = new WeaponViewFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, weaponViewFragment).addToBackStack(null).commit();
                 break;
             case R.id.createShot:
-                Log.d(TAG, "onClick: CreateWeapon has been clicked.");
+                Log.d(TAG, "onClick: CreateShot has been clicked.");
+                createShotFragment = new CreateShotFragment();
+                createShotFragment = new CreateShotFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, createShotFragment)
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case R.id.editShot:
+                editShotFragment = new EditShotFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, editShotFragment)
+                        .addToBackStack(null)
+                        .commit();
                 break;
             case R.id.lockShotView:
                 checkLock();

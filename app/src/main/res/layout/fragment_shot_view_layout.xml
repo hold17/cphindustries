@@ -6,10 +6,17 @@
     android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/test2"
+            android:id="@+id/openShot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="16dp"/>
+        <Button
+            android:id="@+id/editShot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/openShot"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/createShot"
