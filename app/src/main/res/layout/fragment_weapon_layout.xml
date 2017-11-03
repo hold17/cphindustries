@@ -11,104 +11,42 @@
 
 
     <LinearLayout
-        android:id="@+id/fr_weapon_details_linearLayout_fire_mode"
-        android:layout_width="248dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="450dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <ImageButton
-            android:id="@+id/fr_weapon_details_ibtn1_single"
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/buttonshape_left"
-            app:srcCompat="@drawable/single"
-            tools:layout_editor_absoluteX="6dp"
-            tools:layout_editor_absoluteY="76dp" />
-
-        <ImageButton
-            android:id="@+id/fr_weapon_details_ibtn_burst"
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/buttonshape_center"
-            app:srcCompat="@drawable/burst1"
-            tools:layout_editor_absoluteX="136dp"
-            tools:layout_editor_absoluteY="191dp" />
-
-        <Button
-            android:id="@+id/fr_weapon_details_btn_auto"
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/buttonshape_center"
-            android:text="AUTO"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="75dp"
-            tools:layout_editor_absoluteY="455dp" />
-
-        <Button
-            android:id="@+id/fr_weapon_details_btn_safe"
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/buttonshape_right"
-            android:text="SAFE"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="167dp"
-            tools:layout_editor_absoluteY="320dp" />
-    </LinearLayout>
-
-
-    <LinearLayout
         android:id="@+id/fr_weapon_details_linearLayout_oxgen"
         android:layout_width="50dp"
-        android:layout_height="80dp"
+        android:layout_height="88dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="150dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginEnd="8dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/fr_weapon_details_linearLayout_fire_mode"
+        app:layout_constraintEnd_toStartOf="@+id/fr_weapon_details_linearLayout_propane"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95">
 
         <ImageView
             android:id="@+id/fr_weapon_details_ivOxgen_icon"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/gaslevel3x"
+            android:layout_height="48dp"
+            android:contentDescription="@string/oxygen_level_icon"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_gas"
             tools:layout_editor_absoluteX="167dp"
             tools:layout_editor_absoluteY="262dp" />
 
         <TextView
             android:id="@+id/fr_weapon_details_tvOxgen_description"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Oxgen"
+            android:text="@string/oxygen"
             android:textAlignment="center"
             android:textSize="12sp" />
 
         <TextView
             android:id="@+id/fr_weapon_details_tvOxgen_level"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="100%"
             android:textAlignment="center"
@@ -117,41 +55,87 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/fr_weapon_details_linearLayout_battery"
+        android:id="@+id/fr_weapon_details_linearLayout_propane"
         android:layout_width="50dp"
-        android:layout_height="80dp"
+        android:layout_height="88dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginStart="8dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/fr_weapon_details_linearLayout_fire_mode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95">
+
+        <ImageView
+            android:id="@+id/fr_weapon_details_ivPropane_icon"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:contentDescription="@string/propane_level_icon"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_gas"
+            tools:layout_editor_absoluteX="120dp"
+            tools:layout_editor_absoluteY="262dp" />
+
+        <TextView
+            android:id="@+id/fr_weapon_details_tvPropane_description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/propane"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/fr_weapon_details_tvPropane_level"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="14%"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fr_weapon_details_linearLayout_battery"
+        android:layout_width="50dp"
+        android:layout_height="88dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/fr_weapon_details_linearLayout_fire_mode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toEndOf="@+id/fr_weapon_details_linearLayout_propane"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95">
 
         <ImageView
             android:id="@+id/fr_weapon_details_ivBattery_icon"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/batterylevel3x"
+            android:layout_height="48dp"
+            android:contentDescription="@string/battery_level_icon"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_battery"
             tools:layout_editor_absoluteX="211dp"
             tools:layout_editor_absoluteY="262dp" />
 
         <TextView
             android:id="@+id/fr_weapon_details_tvBattery_description"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="Battery"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/battery"
             android:textAlignment="center"
             android:textSize="12sp" />
 
         <TextView
             android:id="@+id/fr_weapon_details_tvBattery_level"
             android:layout_width="match_parent"
-            android:layout_height="29dp"
-            android:layout_marginTop="4dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:text="97%"
             android:textAlignment="center"
             android:textSize="12sp" />
@@ -159,45 +143,96 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/fr_weapon_details_linearLayout_propane"
-        android:layout_width="50dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="300dp"
-        android:orientation="vertical"
+        android:id="@+id/fr_weapon_details_linearLayout_fire_mode"
+        android:layout_width="248dp"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95">
 
-        <ImageView
-            android:id="@+id/fr_weapon_details_ivPropane_icon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/gaslevel3x"
-            tools:layout_editor_absoluteX="120dp"
-            tools:layout_editor_absoluteY="262dp" />
 
-        <TextView
-            android:id="@+id/fr_weapon_details_tvPropane_description"
+        <ImageButton
+            android:id="@+id/fr_weapon_details_ibtn_single"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="Propane"
-            android:textAlignment="center"
-            android:textSize="12sp" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/buttonshape_left"
+            android:contentDescription="@string/single_fire_button"
+            app:srcCompat="@drawable/ic_single" />
 
-        <TextView
-            android:id="@+id/fr_weapon_details_tvPropane_level"
+        <ImageButton
+            android:id="@+id/fr_weapon_details_ibtn_burst"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="14%"
-            android:textAlignment="center"
-            android:textSize="12sp" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/buttonshape_center"
+            android:contentDescription="@string/burst_fire_button"
+            app:srcCompat="@drawable/ic_burst" />
+
+        <Button
+            android:id="@+id/fr_weapon_details_btn_full-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/buttonshape_center"
+            android:text="@string/auto" />
+
+        <Button
+            android:id="@+id/fr_weapon_details_btn_safe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/buttonshape_right"
+            android:text="@string/safe" />
+
+
     </LinearLayout>
+
+
+    <!--<LinearLayout
+        android:layout_width="248dp"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="68dp"
+        tools:layout_editor_absoluteY="445dp">
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/buttonshape_left"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_single" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/buttonshape_center"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_burst" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/buttonshape_center"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/buttonshape_right"
+            android:text="Button" />
+    </LinearLayout>-->
 
 
 </android.support.constraint.ConstraintLayout>
