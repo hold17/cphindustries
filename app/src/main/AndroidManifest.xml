@@ -5,8 +5,8 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:logo="@drawable/ic_ci_logo_small_trans"
         android:label="@string/app_name"
+        android:logo="@drawable/ic_ci_logo_small_trans"
         android:roundIcon="@drawable/ic_ci_logo_small_trans"
         android:supportsRtl="true"
         android:theme="@style/CPHIndustriesTheme">
@@ -20,13 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ShotViewActivity"
+        <activity
+            android:name=".ShotViewActivity"
             android:label="@string/shotview"
-            android:theme="@style/CPHIndustriesTheme">
-
-        </activity>
-
+            android:theme="@style/CPHIndustriesTheme"></activity>
     </application>
 
 </manifest>
