@@ -9,11 +9,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"/>
 
-    <Button
-        android:id="@+id/submitSceneEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/editSceneDummy"/>
+    <include layout="@layout/fab_buttons_layout"></include>
 
 </RelativeLayout>

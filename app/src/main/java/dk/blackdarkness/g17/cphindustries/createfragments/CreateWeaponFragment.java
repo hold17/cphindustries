@@ -3,6 +3,7 @@ package dk.blackdarkness.g17.cphindustries.createfragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +30,12 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
         dummy = view.findViewById(R.id.createWeaponDummy);
         submitCreate = view.findViewById(R.id.submitWeaponCreate);
         initLayout();
+        Log.d(TAG, "onCreateView: Returning");
         return view;
     }
 
     public void initLayout() {
-        getActivity().setTitle("Create Weapon");
+        getActivity().setTitle("Edit Weapon");
         dummy.setText("<Create form here>");
         submitCreate.setOnClickListener(this);
         submitCreate.setText("Submit");

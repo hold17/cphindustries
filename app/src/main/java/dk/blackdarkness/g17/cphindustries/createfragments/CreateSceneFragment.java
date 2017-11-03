@@ -3,6 +3,7 @@ package dk.blackdarkness.g17.cphindustries.createfragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +31,12 @@ public class CreateSceneFragment extends Fragment implements View.OnClickListene
         dummy = view.findViewById(R.id.createSceneDummy);
         submitCreate = view.findViewById(R.id.submitSceneCreate);
         initLayout();
+        Log.d(TAG, "onCreateView: Returning.");
         return view;
     }
 
     public void initLayout() {
-        getActivity().setTitle("Create Scene");
+        getActivity().setTitle("Edit Scene");
         dummy.setText("<Create form here>");
         submitCreate.setOnClickListener(this);
         submitCreate.setText("Submit");
@@ -48,8 +50,5 @@ public class CreateSceneFragment extends Fragment implements View.OnClickListene
             case R.id.submitSceneCreate:
                 getActivity().onBackPressed();
         }
-
     }
-
-
 }

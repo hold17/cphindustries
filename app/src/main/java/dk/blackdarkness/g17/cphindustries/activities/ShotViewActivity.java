@@ -18,8 +18,6 @@ package dk.blackdarkness.g17.cphindustries.activities;
 public class ShotViewActivity extends AppCompatActivity {
 
     private static final String TAG = "ShotViewActivity";
-    private android.support.v4.app.FragmentManager fragmentManager;
-    private android.support.v4.app.FragmentTransaction fragmentTransaction;
     private Fragment shotViewFragment;
 
 
@@ -29,11 +27,7 @@ public class ShotViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        shotViewFragment = new ShotViewFragment();
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, shotViewFragment);
-        fragmentTransaction.commit();
+        initShotViewFragment();
         setContentView(R.layout.activity_shot_view_layout);
     }
 
@@ -41,7 +35,6 @@ public class ShotViewActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-
             //Når der bliver trykket home, tjek om vi skal tilbage til start-activity
             //Hvis vi skal, så start den på ny
             Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
@@ -54,6 +47,13 @@ public class ShotViewActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void initShotViewFragment() {
+        shotViewFragment = new ShotViewFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, shotViewFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
 }

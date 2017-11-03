@@ -10,33 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
-    <Button
-        android:id="@+id/editScene"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/openScene"
-        android:layout_marginTop="16dp"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/createScene"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/lockSceneView"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:visibility="gone"
-        app:backgroundTint="@color/colorPrimarySmoke"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/lockSceneView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
-        app:backgroundTint="@color/colorPrimarySmoke"
-        app:srcCompat="@android:drawable/ic_lock_lock" />
+    <include layout="@layout/fab_buttons_layout"></include>
 
 </RelativeLayout>
