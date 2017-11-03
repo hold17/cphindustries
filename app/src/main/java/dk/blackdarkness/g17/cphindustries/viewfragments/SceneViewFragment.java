@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import dk.blackdarkness.g17.cphindustries.ConnectionStatus;
+import dk.blackdarkness.g17.cphindustries.NavListItem;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.SimpleListAdapter;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
@@ -61,9 +63,15 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
 
         // Initiate list view
         this.listView = (ListView) this.view.findViewById(R.id.fr_scene_listView);
-        String[] foods = { "Bacon", "Ham", "Tuna", "Candy", "Meatball", "Potato" };
+//        String[] foods = { "1 - The shooting scene", "22 - Robbing the Bank", "54 - The escape" };
+        NavListItem[] scenes = {
+                new NavListItem(false, "1 - The shooting scene"),
+                new NavListItem(true, "22 - Robbing the Bank"),
+                new NavListItem(false, "54 - The escape", ConnectionStatus.BAR_2),
+                new NavListItem(true, "Some other", ConnectionStatus.NO_CONNECTION)
+        };
 //        ListAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_list_item, foods);
-        ListAdapter adapter = new SimpleListAdapter(getActivity(), foods);
+        ListAdapter adapter = new SimpleListAdapter(getActivity(), scenes);
 
         this.listView.setAdapter(adapter);
     }
