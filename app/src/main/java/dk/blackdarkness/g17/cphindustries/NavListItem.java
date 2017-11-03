@@ -11,6 +11,7 @@ public class NavListItem {
     private String text;
 
     private ConnectionStatus connectionStatus;
+    private FireMode fireMode;
 
     public NavListItem(boolean warningIsVisible, String text) {
         this.warningIsVisible = warningIsVisible;
@@ -26,8 +27,14 @@ public class NavListItem {
         this.text = text;
     }
 
+    public NavListItem(boolean warningIsVisible, String text, FireMode fireMode, ConnectionStatus connectionStatus) {
+        this(warningIsVisible, text, connectionStatus);
+        this.fireMode = fireMode;
+    }
+
     public boolean warningIsVisible() { return this.warningIsVisible; }
     public boolean goBtnIsVisible() { return this.goBtnIsVisible; }
+    public FireMode getFireMode() { return this.fireMode; }
     public ConnectionStatus getConnectionStatus() { return this.connectionStatus; }
     public String getText() { return this.text; }
 }
