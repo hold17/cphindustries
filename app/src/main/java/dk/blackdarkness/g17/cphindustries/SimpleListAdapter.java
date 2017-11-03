@@ -38,6 +38,7 @@ public class SimpleListAdapter extends ArrayAdapter<NavListItem> {
         // Visibility and color for warning
         if (navListItem.warningIsVisible()) {
             imageWarning.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorWarning));
+            imageWarning.setVisibility(View.VISIBLE);
         } else {
             imageWarning.setVisibility(View.INVISIBLE);
         }
@@ -56,11 +57,6 @@ public class SimpleListAdapter extends ArrayAdapter<NavListItem> {
                     imageGo.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPositive));
             }
         }
-
-
-
-        if (position != 1)
-            imageWarning.setVisibility(View.INVISIBLE);
 
         return simpleListItemView;
     }

@@ -8,9 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
+import dk.blackdarkness.g17.cphindustries.NavListItem;
 import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.SimpleListAdapter;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditShotFragment;
 
 /**
@@ -18,17 +23,19 @@ import dk.blackdarkness.g17.cphindustries.editfragments.EditShotFragment;
  */
 
 public class ShotViewFragment extends Fragment implements View.OnClickListener {
-
+    private View view;
     private static final String TAG = "ShotViewFragment";
     private Fragment weaponViewFragment, editShotFragment;
     private FloatingActionButton lock;
-    private Button goNext;
+//    private Button goNext;
+
+    private ListView listView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_shot_view_layout, container, false);
-        goNext = view.findViewById(R.id.openShot);
+        this.view = inflater.inflate(R.layout.fragment_shot_view_layout, container, false);
+//        goNext = view.findViewById(R.id.openShot);
         lock = view.findViewById(R.id.lockFab);
         initLayout();
         Log.d(TAG, "onCreateView: Returning.");
@@ -38,16 +45,34 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener {
     public void initLayout() {
         getActivity().setTitle("Scenes");
         lock.setOnClickListener(this);
-        goNext.setOnClickListener(this);
-        goNext.setText("Shot #1");
+//        goNext.setOnClickListener(this);
+//        goNext.setText("Shot #1");
+
+        this.listView = (ListView) this.view.findViewById(R.id.fr_shot_listView);
+        NavListItem[] listItems = {
+            new NavListItem(true, "Shoot 1"),
+            new NavListItem(false, "Shoot 2"),
+            new NavListItem(false, "Shoot 3")
+        };
+        ListAdapter adapter = new SimpleListAdapter(getActivity(), listItems);
+        this.listView.setAdapter(adapter);
+
+        this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                goToWeaponViewFragment();
+            }
+        });
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.openShot:
-                goToWeaponViewFragment();
-                break;
+//            case R.id.openShot:
+//                goToWeaponViewFragment();
+//                break;
+            case R.id.fr_shot_listView:
+                    goToWeaponViewFragment(); break;
             case R.id.lockFab:
                 Log.d(TAG, "onClick: lockFab. Returning EditShotFragment.");
                 goToEditShotFragment();

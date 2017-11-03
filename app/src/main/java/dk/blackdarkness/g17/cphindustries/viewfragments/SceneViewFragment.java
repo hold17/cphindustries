@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
@@ -66,14 +67,19 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
 //        String[] foods = { "1 - The shooting scene", "22 - Robbing the Bank", "54 - The escape" };
         NavListItem[] scenes = {
                 new NavListItem(false, "1 - The shooting scene"),
-                new NavListItem(true, "22 - Robbing the Bank"),
-                new NavListItem(false, "54 - The escape", ConnectionStatus.BAR_2),
-                new NavListItem(true, "Some other", ConnectionStatus.NO_CONNECTION)
+                new NavListItem(false, "22 - Robbing the Bank"),
+                new NavListItem(false, "54 - The escape")
         };
 //        ListAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_list_item, foods);
         ListAdapter adapter = new SimpleListAdapter(getActivity(), scenes);
-
         this.listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                goToShotViewActivity();
+            }
+        });
     }
 
 
@@ -83,6 +89,8 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
             /*case R.id.openScene:
                 goToShotViewActivity();
                 break;*/
+            case R.id.fr_scene_listView:
+                goToShotViewActivity(); break;
             case R.id.lockFab:
                 Log.d(TAG, "onClick: lockFab. Returning EditSceneFragment.");
                 goToEditSceneFragment();
