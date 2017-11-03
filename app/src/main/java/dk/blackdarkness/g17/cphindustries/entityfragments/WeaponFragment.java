@@ -27,7 +27,7 @@ public class WeaponFragment extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_weapon_layout, container, false);
+        View view = inflater.inflate(R.layout.fragment_weapon_details_layout, container, false);
         dummy = view.findViewById(R.id.weaponDummy);
         lock = view.findViewById(R.id.lockFab);
         initDisplay();
