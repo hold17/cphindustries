@@ -56,7 +56,7 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
                 new NavListItem(true, "Weapon 1", FireMode.BURST, ConnectionStatus.NO_CONNECTION),
                 new NavListItem(false, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.BAR_0),
                 new NavListItem(false, "Weapon 3", FireMode.SINGLE, ConnectionStatus.BAR_3),
-                new NavListItem(false, "Weapon 4", FireMode.SAFE, ConnectionStatus.NO_CONNECTION.FULL),
+                new NavListItem(false, "Weapon 4", FireMode.SAFE, ConnectionStatus.FULL),
                 new NavListItem(true, "Weapon 5", FireMode.BURST, ConnectionStatus.BAR_1)
         };
         ListAdapter adapter = new SimpleListAdapter(getActivity(), listItems);
