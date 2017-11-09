@@ -9,9 +9,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
+import dk.blackdarkness.g17.cphindustries.ConnectionStatus;
+import dk.blackdarkness.g17.cphindustries.NavListItem;
 import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.SimpleListAdapter;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.activities.ShotViewActivity;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
@@ -22,16 +29,19 @@ import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 
 public class SceneViewFragment extends Fragment implements View.OnClickListener {
 
+    private View view;
     private static final String TAG = "SceneViewFragment";
     private Fragment editSceneFragment, createSceneFragment;
     private FloatingActionButton lock;
-    private Button goNext, editScene;
+    private Button /*goNext,*/ editScene;
+
+    private ListView listView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_scene_view_layout, container, false);
-        goNext = view.findViewById(R.id.openScene);
+        this.view = inflater.inflate(R.layout.fragment_scene_view_layout, container, false);
+        // goNext = view.findViewById(R.id.openScene); // TODO: Disabled because I commented the "next" button out
         lock = view.findViewById(R.id.lockFab);
         initLayout();
         Log.d(TAG, "onCreateView: Returning.");
@@ -46,20 +56,41 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
         lock.setOnClickListener(this);
 
         //erstattes med liste af nuværende scener
-        goNext.setOnClickListener(this);
-        goNext.setText("Scene #1");
+//        goNext.setOnClickListener(this);
+//        goNext.setText("Scene #1");
 
         //Fjern back-knap (dette er startsiden)
         ((SceneViewActivity)getActivity()).resetActionBar(false);
+
+        // Initiate list view
+        this.listView = (ListView) this.view.findViewById(R.id.fr_scene_listView);
+//        String[] foods = { "1 - The shooting scene", "22 - Robbing the Bank", "54 - The escape" };
+        NavListItem[] scenes = {
+                new NavListItem(false, "1 - The shooting scene"),
+                new NavListItem(false, "22 - Robbing the Bank"),
+                new NavListItem(false, "54 - The escape")
+        };
+//        ListAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_list_item, foods);
+        ListAdapter adapter = new SimpleListAdapter(getActivity(), scenes);
+        this.listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                goToShotViewActivity();
+            }
+        });
     }
 
 
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
-            case R.id.openScene:
+            /*case R.id.openScene:
                 goToShotViewActivity();
-                break;
+                break;*/
+            case R.id.fr_scene_listView:
+                goToShotViewActivity(); break;
             case R.id.lockFab:
                 Log.d(TAG, "onClick: lockFab. Returning EditSceneFragment.");
                 goToEditSceneFragment();
