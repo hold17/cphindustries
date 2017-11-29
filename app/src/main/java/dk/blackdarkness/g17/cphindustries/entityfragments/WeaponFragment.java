@@ -21,14 +21,14 @@ public class WeaponFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "WeaponFragment";
     private Fragment editWeaponFragment;
-    private TextView dummy;
+    private TextView statusText;
     private FloatingActionButton lock;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weapon_details_layout, container, false);
-        dummy = view.findViewById(R.id.weaponDummy);
+        statusText = view.findViewById(R.id.fr_weapon_details_status_text);
         lock = view.findViewById(R.id.lockFab);
         initDisplay();
         Log.d(TAG, "onCreateView: Returning.");
@@ -37,7 +37,7 @@ public class WeaponFragment extends Fragment implements View.OnClickListener {
 
     public void initDisplay() {
         getActivity().setTitle("Weapons");
-        dummy.setText("Info about weapon here");
+        statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
         lock.setOnClickListener(this);
     }
 
