@@ -20,15 +20,16 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
 
     private static final String TAG = "CreateShotFragment";
 
-    private TextView dummy;
-    private Button submitCreate;
+    private TextView submitSave, submitCancel;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_shot_layout, container, false);
-        dummy = view.findViewById(R.id.createShotDummy);
-        submitCreate = view.findViewById(R.id.submitShotCreate);
+        submitSave = view.findViewById(R.id.fr_create_shot_tvSave);
+        submitCancel = view.findViewById(R.id.fr_create_shot_tvCancel);
+
         initLayout();
         Log.d(TAG, "onCreateView: Returning.");
         return view;
@@ -36,17 +37,24 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
 
     public void initLayout() {
         getActivity().setTitle("Edit Shot");
-        dummy.setText("<Create form here>");
-        submitCreate.setOnClickListener(this);
-        submitCreate.setText("Submit");
+
+        //Save textView
+        submitSave.setOnClickListener(this);
+
+        //cancel textview
+        submitCancel.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
 
         switch(view.getId()) {
-            case R.id.submitShotCreate:
+            case R.id.fr_create_shot_tvSave:
                 getActivity().onBackPressed();
+                break;
+            case R.id.fr_create_shot_tvCancel:
+                getActivity().onBackPressed();
+                break;
         }
     }
 
