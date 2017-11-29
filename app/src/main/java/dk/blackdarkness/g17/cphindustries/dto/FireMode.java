@@ -1,4 +1,4 @@
-package dk.blackdarkness.g17.cphindustries;
+package dk.blackdarkness.g17.cphindustries.dto;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
