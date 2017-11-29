@@ -319,5 +319,7 @@
 
     </LinearLayout>
 
+    <include layout="@layout/fab_buttons_layout"></include>
+
 </android.support.constraint.ConstraintLayout>
 
