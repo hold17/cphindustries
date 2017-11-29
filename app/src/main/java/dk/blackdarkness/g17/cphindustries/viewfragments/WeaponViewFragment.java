@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import dk.blackdarkness.g17.cphindustries.NavListItem;
 import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
 import dk.blackdarkness.g17.cphindustries.dto.FireMode;
 import dk.blackdarkness.g17.cphindustries.R;
@@ -45,7 +46,7 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
     }
 
     public void initDisplay() {
-        getActivity().setTitle("Shots");
+        getActivity().setTitle("Weapons");
 //        goNext.setOnClickListener(this);
 //        goNext.setText("Weapon #1");
         lock.setOnClickListener(this);
@@ -58,13 +59,15 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
 //                new NavListItem(false, "Weapon 4", FireMode.SAFE, ConnectionStatus.FULL),
 //                new NavListItem(true, "Weapon 5", FireMode.BURST, ConnectionStatus.BAR_1)
 //        };
-        Weapon[] weapons = {
-                new Weapon(0, "Weapon 1", FireMode.BURST, ConnectionStatus.NO_CONNECTION),
-                new Weapon(1, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.BAR_0),
-                new Weapon(2, "Weapon 3", FireMode.SINGLE, ConnectionStatus.BAR_3),
-                new Weapon(3, "Weapon 4", ConnectionStatus.FULL), // Default to SAFE mode
-                new Weapon(4, "Weapon 5", FireMode.BURST, ConnectionStatus.BAR_1)
+
+        NavListItem[] weapons  = {
+                new NavListItem(new Weapon(0, "Weapon 1", FireMode.BURST, ConnectionStatus.NO_CONNECTION), false),
+                new NavListItem(new Weapon(1, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.BAR_0), false),
+                new NavListItem(new Weapon(2, "Weapon 3", FireMode.SINGLE, ConnectionStatus.BAR_3), false),
+                new NavListItem(new Weapon(3, "Weapon 4", ConnectionStatus.FULL), false), // Default to SAFE mode
+                new NavListItem(new Weapon(4, "Weapon 5", FireMode.BURST, ConnectionStatus.BAR_1), false)
         };
+
         ListAdapter adapter = new SimpleListAdapter(getActivity(), weapons);
         this.listView.setAdapter(adapter);
 
