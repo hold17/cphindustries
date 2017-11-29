@@ -38,6 +38,7 @@ public class Weapon extends Item {
         this.connectionStatus = connectionStatus;
 
         this.fireMode = FireMode.SAFE;
+        this.warnings = new ArrayList<>();
     }
 
     public Weapon(int id, String name) {
@@ -45,6 +46,7 @@ public class Weapon extends Item {
 
         this.connectionStatus = ConnectionStatus.NO_CONNECTION;
         this.fireMode = FireMode.SAFE;
+        this.warnings = new ArrayList<>();
     }
 
     public List<String> getWarnings() {

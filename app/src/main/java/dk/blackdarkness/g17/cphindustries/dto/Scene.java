@@ -1,5 +1,6 @@
 package dk.blackdarkness.g17.cphindustries.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,6 +9,11 @@ import java.util.List;
 
 public class Scene  extends Item {
     private List<Shoot> shoots;
+
+    public Scene(int id, String name) {
+        super(id, name);
+        this.shoots = new ArrayList<>();
+    }
 
     public Scene(int id, String name, List<Shoot> shoots) {
         super(id, name);
