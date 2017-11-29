@@ -1,6 +1,5 @@
 package dk.blackdarkness.g17.cphindustries;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,32 +29,40 @@ public class SimpleListAdapter extends ArrayAdapter<NavListItem> {
 
         final NavListItem navListItem = getItem(position);
         final TextView tvHeading =     simpleListItemView.findViewById(R.id.simpleListItem_tvHeading);
-        final ImageView imageWarning = simpleListItemView.findViewById(R.id.simpleListItem_imageWarning);
-        final ImageView imageGo = simpleListItemView.findViewById(R.id.simpleListItem_imageGo);
+        ImageView imageFront = simpleListItemView.findViewById(R.id.simpleListItem_imageFront);
+        ImageView imageBack = simpleListItemView.findViewById(R.id.simpleListItem_imageBack);
 
         tvHeading.setText(navListItem.getText());
 
         // Visibility and color for warning
         if (navListItem.warningIsVisible()) {
-            imageWarning.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorWarning));
-            imageWarning.setVisibility(View.VISIBLE);
+            imageFront.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorWarning));
+            imageFront.setVisibility(View.VISIBLE);
         } else {
-            imageWarning.setVisibility(View.INVISIBLE);
+            imageFront.setVisibility(View.INVISIBLE);
         }
 
         // Visibility and color for goBtn / wifi status
         if (navListItem.goBtnIsVisible()) {
-            imageGo.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+            imageBack.setImageResource(R.drawable.ic_chevron_right_black_24dp);
+            imageBack.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
         } else {
             if (navListItem.getConnectionStatus() != null) {
-                imageGo.setImageDrawable(navListItem.getConnectionStatus().getDrawable(getContext()));
+                imageBack.setImageDrawable(navListItem.getConnectionStatus().getDrawable(getContext()));
 
                 // If no connection, color = red, otherwise, green
                 if (navListItem.getConnectionStatus() == ConnectionStatus.NO_CONNECTION)
-                    imageGo.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorDanger));
+                    imageBack.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorDanger));
                 else
-                    imageGo.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPositive));
+                    imageBack.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPositive));
             }
+        }
+
+        if(navListItem.isEditable()) {
+            imageFront.setVisibility(View.VISIBLE);
+            imageFront.setImageResource(R.drawable.ic_reorder_black_24px);
+            imageBack.setImageResource(R.drawable.ic_edit_black_24dp);
+            imageBack.setVisibility(View.VISIBLE);
         }
 
         return simpleListItemView;

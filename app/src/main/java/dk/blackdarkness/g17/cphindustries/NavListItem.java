@@ -7,16 +7,22 @@ package dk.blackdarkness.g17.cphindustries;
 public class NavListItem {
     private boolean warningIsVisible;
     private boolean goBtnIsVisible;
+    private boolean isEditable;
 
     private String text;
 
     private ConnectionStatus connectionStatus;
     private FireMode fireMode;
 
-    public NavListItem(boolean warningIsVisible, String text) {
-        this.warningIsVisible = warningIsVisible;
-        this.goBtnIsVisible = true;
-        this.connectionStatus = null;
+//    public NavListItem(boolean warningIsVisible, String text) {
+//        this.warningIsVisible = warningIsVisible;
+//        this.goBtnIsVisible = true;
+//        this.connectionStatus = null;
+//        this.text = text;
+//    }
+
+    public NavListItem(boolean isEditable, String text) {
+        this.isEditable = isEditable;
         this.text = text;
     }
 
@@ -34,6 +40,7 @@ public class NavListItem {
 
     public boolean warningIsVisible() { return this.warningIsVisible; }
     public boolean goBtnIsVisible() { return this.goBtnIsVisible; }
+    public boolean isEditable() { return this.isEditable; }
     public FireMode getFireMode() { return this.fireMode; }
     public ConnectionStatus getConnectionStatus() { return this.connectionStatus; }
     public String getText() { return this.text; }
