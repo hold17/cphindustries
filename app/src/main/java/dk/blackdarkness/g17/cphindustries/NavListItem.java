@@ -1,5 +1,8 @@
 package dk.blackdarkness.g17.cphindustries;
 
+import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
+import dk.blackdarkness.g17.cphindustries.dto.FireMode;
+
 /**
  * Created by awo on 03/11/2017.
  */
