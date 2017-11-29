@@ -28,17 +28,17 @@ public class WeaponFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weapon_details_layout, container, false);
-        statusText = view.findViewById(R.id.fr_weapon_details_status_text);
-        lock = view.findViewById(R.id.lockFab);
+        this.statusText = view.findViewById(R.id.fr_weapon_details_status_text);
+        this.lock = view.findViewById(R.id.lockFab);
         initDisplay();
         Log.d(TAG, "onCreateView: Returning.");
         return view;
     }
 
     public void initDisplay() {
-        getActivity().setTitle("Weapons");
-        statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
-        lock.setOnClickListener(this);
+        getActivity().setTitle("Weapon Details");
+        this.statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
+        this.lock.setOnClickListener(this);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class WeaponFragment extends Fragment implements View.OnClickListener {
     }
 
     public void goToEditWeaponFragment() {
-        editWeaponFragment = new EditWeaponFragment();
+        this.editWeaponFragment = new EditWeaponFragment();
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, editWeaponFragment)
                 .addToBackStack(null)

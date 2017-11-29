@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import dk.blackdarkness.g17.cphindustries.NavListItem;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.SimpleListAdapter;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
@@ -42,7 +43,7 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener {
     }
 
     public void initLayout() {
-        getActivity().setTitle("Scenes");
+        getActivity().setTitle("Shots");
         lock.setOnClickListener(this);
 //        goNext.setOnClickListener(this);
 //        goNext.setText("Shot #1");
@@ -53,10 +54,10 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener {
 //            new NavListItem(false, "Shoot 2"),
 //            new NavListItem(false, "Shoot 3")
 //        };
-        Shoot[] shoots = {
-                new Shoot(0, "Shoot 1"),
-                new Shoot(1, "Shoot 2"),
-                new Shoot(2, "Shoot 3")
+        NavListItem[] shoots = {
+                new NavListItem(new Shoot(0, "Shoot 1"), false),
+                new NavListItem(new Shoot(1, "Shoot 2"), false),
+                new NavListItem(new Shoot(2, "Shoot 3"), false)
         };
 
         ListAdapter adapter = new SimpleListAdapter(getActivity(), shoots);
