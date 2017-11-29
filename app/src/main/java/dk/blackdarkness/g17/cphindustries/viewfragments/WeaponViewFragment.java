@@ -9,15 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import dk.blackdarkness.g17.cphindustries.ConnectionStatus;
-import dk.blackdarkness.g17.cphindustries.FireMode;
-import dk.blackdarkness.g17.cphindustries.NavListItem;
+import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
+import dk.blackdarkness.g17.cphindustries.dto.FireMode;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.SimpleListAdapter;
+import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponFragment;
 import dk.blackdarkness.g17.cphindustries.entityfragments.WeaponFragment;
 
@@ -52,14 +51,21 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
         lock.setOnClickListener(this);
 
         this.listView = (ListView) this.view.findViewById(R.id.fr_weapon_listView);
-        NavListItem[] listItems = {
-                new NavListItem(true, "Weapon 1", FireMode.BURST, ConnectionStatus.NO_CONNECTION),
-                new NavListItem(false, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.BAR_0),
-                new NavListItem(false, "Weapon 3", FireMode.SINGLE, ConnectionStatus.BAR_3),
-                new NavListItem(false, "Weapon 4", FireMode.SAFE, ConnectionStatus.FULL),
-                new NavListItem(true, "Weapon 5", FireMode.BURST, ConnectionStatus.BAR_1)
+//        NavListItem[] listItems = {
+//                new NavListItem(true, "Weapon 1", FireMode.BURST, ConnectionStatus.NO_CONNECTION),
+//                new NavListItem(false, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.BAR_0),
+//                new NavListItem(false, "Weapon 3", FireMode.SINGLE, ConnectionStatus.BAR_3),
+//                new NavListItem(false, "Weapon 4", FireMode.SAFE, ConnectionStatus.FULL),
+//                new NavListItem(true, "Weapon 5", FireMode.BURST, ConnectionStatus.BAR_1)
+//        };
+        Weapon[] weapons = {
+                new Weapon(0, "Weapon 1", FireMode.BURST, ConnectionStatus.NO_CONNECTION),
+                new Weapon(1, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.BAR_0),
+                new Weapon(2, "Weapon 3", FireMode.SINGLE, ConnectionStatus.BAR_3),
+                new Weapon(3, "Weapon 4", ConnectionStatus.FULL), // Default to SAFE mode
+                new Weapon(4, "Weapon 5", FireMode.BURST, ConnectionStatus.BAR_1)
         };
-        ListAdapter adapter = new SimpleListAdapter(getActivity(), listItems);
+        ListAdapter adapter = new SimpleListAdapter(getActivity(), weapons);
         this.listView.setAdapter(adapter);
 
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
