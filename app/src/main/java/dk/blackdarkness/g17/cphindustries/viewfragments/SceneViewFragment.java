@@ -19,6 +19,7 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.SimpleListAdapter;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.activities.ShotViewActivity;
+import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 
 /**
@@ -63,10 +64,15 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
         // Initiate list view
         this.listView = (ListView) this.view.findViewById(R.id.fr_scene_listView);
 //        String[] foods = { "1 - The shooting scene", "22 - Robbing the Bank", "54 - The escape" };
-        NavListItem[] scenes = {
-                new NavListItem(false, "1 - The shooting scene"),
-                new NavListItem(false, "22 - Robbing the Bank"),
-                new NavListItem(false, "54 - The escape")
+//        NavListItem[] scenes = {
+//                new NavListItem(false, "1 - The shooting scene"),
+//                new NavListItem(false, "22 - Robbing the Bank"),
+//                new NavListItem(false, "54 - The escape")
+//        };
+        Scene[] scenes = {
+                new Scene(0, "The shooting scene"),
+                new Scene(22, "Robbing the Bank"),
+                new Scene(54, "The escape")
         };
 //        ListAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_list_item, foods);
         ListAdapter adapter = new SimpleListAdapter(getActivity(), scenes);

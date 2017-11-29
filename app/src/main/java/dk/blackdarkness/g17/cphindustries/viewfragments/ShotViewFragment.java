@@ -16,6 +16,7 @@ import android.widget.ListView;
 import dk.blackdarkness.g17.cphindustries.NavListItem;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.SimpleListAdapter;
+import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditShotFragment;
 
 /**
@@ -49,12 +50,18 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener {
 //        goNext.setText("Shot #1");
 
         this.listView = (ListView) this.view.findViewById(R.id.fr_shot_listView);
-        NavListItem[] listItems = {
-            new NavListItem(true, "Shoot 1"),
-            new NavListItem(false, "Shoot 2"),
-            new NavListItem(false, "Shoot 3")
+//        NavListItem[] listItems = {
+//            new NavListItem(true, "Shoot 1"),
+//            new NavListItem(false, "Shoot 2"),
+//            new NavListItem(false, "Shoot 3")
+//        };
+        Shoot[] shoots = {
+                new Shoot(0, "Shoot 1"),
+                new Shoot(1, "Shoot 2"),
+                new Shoot(2, "Shoot 3")
         };
-        ListAdapter adapter = new SimpleListAdapter(getActivity(), listItems);
+
+        ListAdapter adapter = new SimpleListAdapter(getActivity(), shoots);
         this.listView.setAdapter(adapter);
 
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
