@@ -28,17 +28,17 @@ public class WeaponFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weapon_details_layout, container, false);
-        dummy = view.findViewById(R.id.weaponDummy);
-        lock = view.findViewById(R.id.lockFab);
+        this.dummy = view.findViewById(R.id.weaponDummy);
+        this.lock = view.findViewById(R.id.lockFab);
         initDisplay();
         Log.d(TAG, "onCreateView: Returning.");
         return view;
     }
 
     public void initDisplay() {
-        getActivity().setTitle("Weapons");
-        dummy.setText("Info about weapon here");
-        lock.setOnClickListener(this);
+        getActivity().setTitle("Weapon Details");
+        this.dummy.setText("Info about weapon here");
+        this.lock.setOnClickListener(this);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class WeaponFragment extends Fragment implements View.OnClickListener {
     }
 
     public void goToEditWeaponFragment() {
-        editWeaponFragment = new EditWeaponFragment();
+        this.editWeaponFragment = new EditWeaponFragment();
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, editWeaponFragment)
                 .addToBackStack(null)
