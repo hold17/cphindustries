@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:layout_editor_absoluteY="81dp">
 
-
     <TextView
         android:id="@+id/fr_create_scene_title"
         android:layout_width="wrap_content"
@@ -19,31 +18,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/fr_create_scene_scene_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="22dp"
-        android:text="Scene name"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fr_create_scene_title" />
-
-
     <EditText
         android:id="@+id/fr_create_scene_editText_Scene"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Scene x"
+        android:hint="Scene Name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fr_create_scene_scene_name" />
+        app:layout_constraintTop_toBottomOf="@+id/fr_create_scene_title" />
 
     <TextView
         android:id="@+id/fr_create_shot_tvCancel"

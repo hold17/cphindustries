@@ -5,9 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
-
     <TextView
         android:id="@+id/fr_create_shot_title"
         android:layout_width="wrap_content"
@@ -20,32 +17,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/fr_create_shot_shot_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="22dp"
-        android:text="Shot name"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fr_create_shot_title" />
-
-
-
     <EditText
         android:id="@+id/fr_create_scene_editText_Scene"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Shot x"
+        android:hint="Shot Name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fr_create_shot_shot_name" />
+        app:layout_constraintTop_toBottomOf="@+id/fr_create_shot_title" />
 
     <TextView
         android:id="@+id/fr_create_shot_tvCancel"
@@ -68,6 +52,5 @@
         android:textColor="@color/colorEdit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fr_create_scene_editText_Scene" />
-
 
 </android.support.constraint.ConstraintLayout>

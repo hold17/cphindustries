@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import dk.blackdarkness.g17.cphindustries.R;
@@ -17,11 +16,8 @@ import dk.blackdarkness.g17.cphindustries.R;
  */
 
 public class CreateShotFragment extends Fragment implements View.OnClickListener {
-
     private static final String TAG = "CreateShotFragment";
-
     private TextView submitSave, submitCancel;
-
 
     @Nullable
     @Override
@@ -47,7 +43,6 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-
         switch(view.getId()) {
             case R.id.fr_create_shot_tvSave:
                 getActivity().onBackPressed();

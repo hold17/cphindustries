@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 
@@ -17,12 +16,8 @@ import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
  */
 
 public class CreateSceneFragment extends Fragment implements View.OnClickListener {
-
     private static final String TAG = "CreateSceneFragment";
-
     private TextView submitSave, submitCancel;
-
-
 
     @Nullable
     @Override
@@ -45,13 +40,11 @@ public class CreateSceneFragment extends Fragment implements View.OnClickListene
         //cancel textview
         submitCancel.setOnClickListener(this);
 
-
         ((SceneViewActivity)getActivity()).resetActionBar(true);
     }
 
     @Override
     public void onClick(View view) {
-
         switch(view.getId()) {
             case R.id.fr_create_shot_tvSave:
                 getActivity().onBackPressed();
@@ -59,7 +52,6 @@ public class CreateSceneFragment extends Fragment implements View.OnClickListene
             case R.id.fr_create_shot_tvCancel:
                 getActivity().onBackPressed();
                 break;
-
         }
     }
 }
