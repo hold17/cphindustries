@@ -4,4 +4,14 @@
     <string name="sceneview">Scenes</string>
     <string name="shotview">Shots</string>
     <string name="weaponview">Weapons</string>
+    <string name="auto">AUTO</string>
+    <string name="safe">SAFE</string>
+    <string name="oxygen">Oxygen</string>
+    <string name="battery">Battery</string>
+    <string name="propane">Propane</string>
+    <string name="single_fire_button">Single fire button</string>
+    <string name="burst_fire_button">Burst fire button</string>
+    <string name="oxygen_level_icon">Oxygen level icon</string>
+    <string name="battery_level_icon">Battery level icon</string>
+    <string name="propane_level_icon">Propane level icon</string>
 </resources>
