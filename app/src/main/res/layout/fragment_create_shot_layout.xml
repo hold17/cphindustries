@@ -1,18 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/createShotDummy"
+        android:id="@+id/fr_create_shot_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_above="@+id/submitShotCreate"/>
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="Create new Shot"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/submitShotCreate"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/fr_create_scene_editText_Scene"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Shot Name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fr_create_shot_title" />
+
+    <TextView
+        android:id="@+id/fr_create_shot_tvCancel"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="10dp"
+        android:text="Cancel"
+        android:textColor="@color/colorEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fr_create_scene_editText_Scene" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/fr_create_shot_tvSave"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="10dp"
+        android:text="Save"
+        android:textColor="@color/colorEdit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fr_create_scene_editText_Scene" />
+
+</android.support.constraint.ConstraintLayout>
