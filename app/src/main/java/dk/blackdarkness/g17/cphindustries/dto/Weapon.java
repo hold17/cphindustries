@@ -62,8 +62,8 @@ public class Weapon extends Item {
     public Weapon(int id, ConnectionStatus connectionStatus, String ip, String mac) {
         super(id, null);
         this.connectionStatus = connectionStatus;
-        this.ip = ip;
-        this.mac = mac;
+        this.setIp(ip);
+        this.setMac(mac);
 
         this.fireMode = FireMode.SAFE;
 
