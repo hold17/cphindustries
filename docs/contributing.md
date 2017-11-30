@@ -19,13 +19,15 @@ In general all code should be written in english. That includes class names, var
 ## Commit Messages
 
 * Limit the first line to a short descriptive message
+* Use present tense ("Add punctuation" not "Added punctuation")
 * Use the imperative mood ("Move container to ..." not "Moves container to ...")
 * When only changing documentation, include `[ci skip]` in the commit message
+* Avoid spelling mistakes
 
 ### Formatting
 
 * Avoid inline comments (comments should preferably be above)
-* Break lon lines
+* Break long lines
 * Delete trailing whitespace
 * Use an empty line between methods
 * Use empty lines around multi-line blocks
