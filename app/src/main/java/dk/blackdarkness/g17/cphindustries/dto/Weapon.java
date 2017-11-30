@@ -1,8 +1,9 @@
 package dk.blackdarkness.g17.cphindustries.dto;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by awo on 29/11/2017.
@@ -108,40 +109,24 @@ public class Weapon extends Item {
     }
 
     private static boolean verifyIp(String ip) {
-        final String[] numbersStr = ip.split(".");
-        int[] numbers = new int[4];
+        final String ipv4Regex = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
+                + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
+                + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
+                + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
 
-        if (numbersStr.length != 4) return false;
+        final Pattern pattern = Pattern.compile(ipv4Regex);
+        final Matcher matcher = pattern.matcher(ip);
 
-        for (int i = 0; i < 4; i++) {
-            try {
-                numbers[i] = Integer.parseInt(numbersStr[i]);
-            } catch (NumberFormatException e) {
-                return false;
-            }
-            if (numbers[i] > 255) return false;
-        }
-
-        return true;
+        return matcher.matches();
     }
 
     private static boolean verifyMac(String mac) {
-        final String[] numbersStr = mac.split(":");
-        long[] numbers = new long[6];
+        final String macRegex = "([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$";
 
-        if (numbersStr.length != 6) return false;
+        final Pattern pattern = Pattern.compile(macRegex);
+        final Matcher matcher = pattern.matcher(mac);
 
-        for (int i = 0; i < 6; i++) {
-            try {
-                numbers[i] = Long.parseLong(numbersStr[i], 16);
-            } catch (NumberFormatException e) {
-                return false;
-            }
-
-            if (numbers[i] > Long.parseLong("FF", 16)) return false;
-        }
-
-        return true;
+        return matcher.matches();
     }
 
     public String getMac() {
