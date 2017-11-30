@@ -30,4 +30,8 @@ jobs:
       - store_test_results:
           path: app/build/test-results
 
-
+deployment:
+   staging:
+      branch: develop
+      heroku:
+         appname: cphindustries-hold17
