@@ -1,7 +1,8 @@
 # App for CPH Industries
 
-## How to contribute
+[![CircleCI](https://img.shields.io/circleci/project/github/hold17/cphindustries.svg)](https://circleci.com/gh/hold17/cphindustries/)
+[![release](https://img.shields.io/github/release/hold17/cphindustries.svg)](https://github.com/hold17/cphindustries/releases)
 
-1. Fork this repository
-2. Commit changes to personal repository
-3. Create pull request to `develop` branch in this repository
+## Contributing
+
+To contribute to this repository, follow [this guideline](docs/contributing.md).
