@@ -9,4 +9,4 @@ To contribute to this repository, follow [this guideline](docs/contributing.md).
 
 ## API Version
 
-API Version 23 is used in this project. [Read more here](docs/api-version.md).
+Minimal SDK in this project is API 21, however CI tests are tested on API 25. [Read more here](docs/api-version.md).
