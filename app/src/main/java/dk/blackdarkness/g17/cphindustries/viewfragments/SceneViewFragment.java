@@ -26,6 +26,7 @@ import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 
 import dk.blackdarkness.g17.cphindustries.helper.OnStartDragListener;
+import dk.blackdarkness.g17.cphindustries.helper.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.helper.SimpleItemTouchHelperCallback;
 
 /**
@@ -76,7 +77,12 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         scenes.add(new NavListItem(new Scene(22, "22 - Robbing the Bank"), false));
         scenes.add(new NavListItem(new Scene(53, "54 - The escape"), false));
 
-        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes);
+        final RecyclerViewClickListener listener = (v, position) -> {
+            System.out.println("STUFF " + position);
+            goToShotViewActivity();
+        };
+
+        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes, listener);
         this.recyclerView.setAdapter(adapter);
         this.recyclerView.setHasFixedSize(true);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

@@ -38,6 +38,7 @@ import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.helper.ItemTouchHelperAdapter;
 import dk.blackdarkness.g17.cphindustries.helper.ItemTouchHelperViewHolder;
 import dk.blackdarkness.g17.cphindustries.helper.OnStartDragListener;
+import dk.blackdarkness.g17.cphindustries.helper.RecyclerViewClickListener;
 
 /**
  * Simple RecyclerView.Adapter that implements {@link ItemTouchHelperAdapter} to respond to move and
@@ -49,21 +50,21 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         implements ItemTouchHelperAdapter {
 
     private final List<NavListItem> mItems = new ArrayList<>();
-
     private final OnStartDragListener mDragStartListener;
+    private final RecyclerViewClickListener listener;
+    private final Context context;
 
-    private Context context;
-
-    public RecyclerListAdapter(Context context, OnStartDragListener dragStartListener, List<NavListItem> items) {
+    public RecyclerListAdapter(Context context, OnStartDragListener dragStartListener, List<NavListItem> items, RecyclerViewClickListener listener) {
         mDragStartListener = dragStartListener;
         mItems.addAll(items);
         this.context=context;
+        this.listener = listener;
     }
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.simple_list_item, parent, false);
-        return new ItemViewHolder(view);
+        return new ItemViewHolder(view, this.listener);
     }
 
     @Override
@@ -140,27 +141,41 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
      * "handle" view that initiates a drag event when touched.
      */
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements
-            ItemTouchHelperViewHolder {
+//            ItemTouchHelperViewHolder,
+            View.OnClickListener
+    {
 
         private final TextView tvHeading;
         private final ImageView imageFront;
         private final ImageView imageBack;
 
-        private ItemViewHolder(View itemView) {
+        private final RecyclerViewClickListener listener;
+
+        private ItemViewHolder(View itemView, RecyclerViewClickListener listener) {
             super(itemView);
             tvHeading = (TextView) itemView.findViewById(R.id.simpleListItem_tvHeading);
             imageFront = (ImageView) itemView.findViewById(R.id.simpleListItem_imageFront);
             imageBack = (ImageView) itemView.findViewById(R.id.simpleListItem_imageBack);
+
+            this.listener = listener;
+            itemView.setOnClickListener(this);
         }
 
         @Override
-        public void onItemSelected() {
-            itemView.setBackgroundColor(Color.LTGRAY);
+        public void onClick(View view) {
+            System.out.println("I WAS CLICKED!!!");
+            this.listener.onClick(view, getAdapterPosition());
+
         }
 
-        @Override
-        public void onItemClear() {
-            itemView.setBackgroundColor(0);
-        }
+        //        @Override
+//        public void onItemSelected() {
+//            itemView.setBackgroundColor(Color.LTGRAY);
+//        }
+//
+//        @Override
+//        public void onItemClear() {
+//            itemView.setBackgroundColor(0);
+//        }
     }
 }
