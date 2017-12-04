@@ -4,33 +4,40 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.NavListItem;
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.SimpleListAdapter;
+import dk.blackdarkness.g17.cphindustries.RecyclerListAdapter;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateSceneFragment;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
+import dk.blackdarkness.g17.cphindustries.helper.OnStartDragListener;
+import dk.blackdarkness.g17.cphindustries.helper.SimpleItemTouchHelperCallback;
 
 /**
  * Created by Thoma on 11/02/2017.
  */
 
-public class EditSceneFragment extends Fragment implements View.OnClickListener {
+public class EditSceneFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
 
     private static final String TAG = "EditSceneFragment";
 
     private View view;
     private FloatingActionButton add, lock;
     private Fragment createSceneFragment;
-    private ListView listView;
+
+    private RecyclerView recyclerView;
+    private ItemTouchHelper mItemTouchHelper;
 
     @Nullable
     @Override
@@ -38,12 +45,13 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener 
         this.view = inflater.inflate(R.layout.fragment_edit_scene_layout, container, false);
         this.add = view.findViewById(R.id.createFab);
         this.lock = view.findViewById(R.id.lockFab);
-        initDisplay();
         Log.d(TAG, "onCreateView: Returning.");
         return view;
     }
 
-    public void initDisplay() {
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Edit Scene");
         ((SceneViewActivity)getActivity()).resetActionBar(true);
         this.add.setVisibility(View.VISIBLE);
@@ -51,17 +59,24 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener 
         this.lock.setOnClickListener(this);
 
         // Initiate list view
-        this.listView = this.view.findViewById(R.id.fr_editScene_listView);
-//        String[] foods = { "1 - The shooting scene", "22 - Robbing the Bank", "54 - The escape" };
-        NavListItem[] scenes = {
-                new NavListItem(new Scene(1, "1 - The shooting scene"), true),
-                new NavListItem(new Scene(22, "22 - Robbing the Bank"), true),
-                new NavListItem(new Scene(53, "54 - The escape"), true),
-        };
+        this.recyclerView = this.view.findViewById(R.id.fr_editScene_recyclerView);
 
-        // ListAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_list_item, foods);
-        ListAdapter adapter = new SimpleListAdapter(getActivity(), scenes);
-        this.listView.setAdapter(adapter);
+        List<NavListItem> scenes = new ArrayList<NavListItem>();
+        scenes.add(new NavListItem(new Scene(1, "1 - The shooting scene"), true));
+        scenes.add(new NavListItem(new Scene(22, "22 - Robbing the Bank"), true));
+        scenes.add(new NavListItem(new Scene(53, "54 - The escape"), true));
+
+        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes);
+        this.recyclerView.setAdapter(adapter);
+        this.recyclerView.setHasFixedSize(true);
+        this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
+        SITHCallback.setDragEnabled(true);
+        SITHCallback.setSwipeEnabled(true);
+
+        mItemTouchHelper = new ItemTouchHelper(SITHCallback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -89,4 +104,8 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener 
                 .commit();
     }
 
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
+    }
 }

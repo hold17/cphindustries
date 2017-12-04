@@ -5,28 +5,34 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.NavListItem;
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.SimpleListAdapter;
+import dk.blackdarkness.g17.cphindustries.RecyclerListAdapter;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.activities.ShotViewActivity;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 
+import dk.blackdarkness.g17.cphindustries.helper.OnStartDragListener;
+import dk.blackdarkness.g17.cphindustries.helper.SimpleItemTouchHelperCallback;
+
 /**
  * Created by Thoma on 11/02/2017.
  */
 
-public class SceneViewFragment extends Fragment implements View.OnClickListener {
+public class SceneViewFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
 
     private View view;
     private static final String TAG = "SceneViewFragment";
@@ -34,7 +40,8 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
     private FloatingActionButton lock;
     private Button /*goNext,*/ editScene;
 
-    private ListView listView;
+    private RecyclerView recyclerView;
+    private ItemTouchHelper mItemTouchHelper;
 
     @Nullable
     @Override
@@ -42,15 +49,15 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
         this.view = inflater.inflate(R.layout.fragment_scene_view_layout, container, false);
         // goNext = view.findViewById(R.id.openScene); // TODO: Disabled because I commented the "next" button out
         lock = view.findViewById(R.id.lockFab);
-        initLayout();
         Log.d(TAG, "onCreateView: Returning.");
         return view;
 //        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
 //        getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
 
-
-    public void initLayout() {
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Scenes");
         lock.setOnClickListener(this);
 
@@ -62,25 +69,29 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
         ((SceneViewActivity)getActivity()).resetActionBar(false);
 
         // Initiate list view
-        this.listView = (ListView) this.view.findViewById(R.id.fr_scene_listView);
-//        String[] foods = { "1 - The shooting scene", "22 - Robbing the Bank", "54 - The escape" };
-//        NavListItem[] scenes = {
-//                new NavListItem(false, "1 - The shooting scene"),
-//                new NavListItem(false, "22 - Robbing the Bank"),
-//                new NavListItem(false, "54 - The escape")
-//        };
-        NavListItem[] scenes = {
-                new NavListItem(new Scene(1, "1 - The shooting scene"), false),
-                new NavListItem(new Scene(22, "22 - Robbing the Bank"), false),
-                new NavListItem(new Scene(53, "54 - The escape"), false),
-        };
-//        ListAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_list_item, foods);
-        ListAdapter adapter = new SimpleListAdapter(getActivity(), scenes);
-        this.listView.setAdapter(adapter);
+        this.recyclerView = this.view.findViewById(R.id.fr_scene_recyclerView);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        List<NavListItem> scenes = new ArrayList<NavListItem>();
+        scenes.add(new NavListItem(new Scene(1, "1 - The shooting scene"), false));
+        scenes.add(new NavListItem(new Scene(22, "22 - Robbing the Bank"), false));
+        scenes.add(new NavListItem(new Scene(53, "54 - The escape"), false));
+
+        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes);
+        this.recyclerView.setAdapter(adapter);
+        this.recyclerView.setHasFixedSize(true);
+        this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
+        SITHCallback.setDragEnabled(false);
+        SITHCallback.setSwipeEnabled(false);
+
+        mItemTouchHelper = new ItemTouchHelper(SITHCallback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
+
+
+        this.recyclerView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onClick(View view) {
                 goToShotViewActivity();
             }
         });
@@ -90,10 +101,7 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
-            /*case R.id.openScene:
-                goToShotViewActivity();
-                break;*/
-            case R.id.fr_scene_listView:
+            case R.id.fr_scene_recyclerView:
                 goToShotViewActivity(); break;
             case R.id.lockFab:
                 Log.d(TAG, "onClick: lockFab. Returning EditSceneFragment.");
@@ -117,4 +125,8 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
         getActivity().finish();
     }
 
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
+    }
 }
