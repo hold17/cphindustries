@@ -4,12 +4,10 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ListView
-        android:id="@+id/fr_scene_listView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fr_scene_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </ListView>
+        android:layout_height="match_parent" />
 
     <!--<Button
         android:id="@+id/openScene"

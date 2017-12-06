@@ -24,12 +24,14 @@
 
     <TextView
         android:id="@+id/fr_weapon_details_status"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Status"
         android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/fr_weapon_details_title"
         app:layout_constraintTop_toBottomOf="@+id/fr_weapon_details_title" />
 
@@ -41,8 +43,8 @@
         android:layout_marginTop="8dp"
         android:textSize="12sp"
         android:layout_marginEnd="32dp"
-        app:layout_constraintStart_toStartOf="@+id/fr_weapon_details_status"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/fr_weapon_details_status"
         app:layout_constraintTop_toBottomOf="@+id/fr_weapon_details_status" />
 
     <TextView
@@ -193,7 +195,7 @@
     </LinearLayout>
 
    <!-- <LinearLayout
-        android:id="@+id/fr_weapon_details_linearLayout_oxgen"
+        android:id="@+id/fr_weapon_details_linearLayout_oxygen"
         android:layout_width="50dp"
         android:layout_height="88dp"
         android:layout_marginBottom="8dp"

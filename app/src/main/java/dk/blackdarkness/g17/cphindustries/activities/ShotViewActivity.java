@@ -51,9 +51,9 @@ public class ShotViewActivity extends AppCompatActivity {
 
     public void initShotViewFragment() {
         shotViewFragment = new ShotViewFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, shotViewFragment)
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, shotViewFragment)
                 .addToBackStack(null)
                 .commit();
     }
-
 }
