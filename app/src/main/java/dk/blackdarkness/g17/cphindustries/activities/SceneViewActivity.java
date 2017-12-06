@@ -10,6 +10,9 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.viewfragments.SceneViewFragment;
 
 public class SceneViewActivity extends AppCompatActivity {
+    public static final String SCENE_ID_KEY = "SCENE_ID";
+    public static final String SHOOT_ID_KEY = "SHOOT_ID";
+    public static final String WEAPON_ID_KEY = "WEAPON_ID";
 
     private static final String TAG = "SceneViewActivity";
     private Fragment sceneViewFragment;

@@ -19,6 +19,8 @@ import java.util.List;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.activities.ShotViewActivity;
+import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 
@@ -37,6 +39,7 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
     private static final String TAG = "SceneViewFragment";
     private FloatingActionButton lock;
     private ItemTouchHelper mItemTouchHelper;
+    private SceneDao sceneDao;
 
     @Nullable
     @Override
@@ -44,6 +47,9 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         this.view = inflater.inflate(R.layout.fragment_scene_view_layout, container, false);
         lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
+
+        this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
+
         return view;
 //        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
 //        getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -60,14 +66,15 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_scene_recyclerView);
 
-        List<NavListItem> scenes = new ArrayList<>();
-        scenes.add(new NavListItem(new Scene(1, "1 - The shooting scene"), false));
-        scenes.add(new NavListItem(new Scene(22, "22 - Robbing the Bank"), false));
-        scenes.add(new NavListItem(new Scene(53, "54 - The escape"), false));
+//        List<NavListItem> scenes = new ArrayList<>();
+//        scenes.add(new NavListItem(new Scene(1, "1 - The shooting scene"), false));
+//        scenes.add(new NavListItem(new Scene(22, "22 - Robbing the Bank"), false));
+//        scenes.add(new NavListItem(new Scene(53, "54 - The escape"), false));
 
-        final RecyclerViewClickListener listener = (v, position) -> goToShotViewActivity();
+        final RecyclerViewClickListener listener = (v, position) -> goToShotViewActivity(position);
 
-        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes, listener);
+//        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes, listener);
+        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, getListOfNavListItemsWithScenes(), listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -78,6 +85,17 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
 
         mItemTouchHelper = new ItemTouchHelper(SITHCallback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private static List<NavListItem> getListOfNavListItemsWithScenes() {
+        final List<NavListItem> navListScenes = new ArrayList<>();
+        final List<Scene> scenes = ApplicationConfig.getDaoFactory().getSceneDao().get();
+
+        for (Scene s : scenes) {
+            navListScenes.add(new NavListItem(s, false));
+        }
+
+        return navListScenes;
     }
 
 
@@ -96,9 +114,13 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
                 .commit();
     }
 
-    public void goToShotViewActivity() {
+    public void goToShotViewActivity(int position) {
         Log.d(TAG, "goToShotViewActivity: Returning");
         Intent shotView = new Intent(getActivity(), ShotViewActivity.class);
+
+        final Scene chosenScene = this.sceneDao.get().get(position);
+        shotView.putExtra(SceneViewActivity.SCENE_ID_KEY, chosenScene.getId());
+
         startActivity(shotView);
         getActivity().finish();
     }

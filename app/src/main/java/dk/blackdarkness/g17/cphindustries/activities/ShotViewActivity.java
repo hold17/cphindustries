@@ -28,6 +28,7 @@ public class ShotViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         initShotViewFragment();
+
         setContentView(R.layout.activity_shot_view_layout);
     }
 
@@ -50,7 +51,14 @@ public class ShotViewActivity extends AppCompatActivity {
     }
 
     public void initShotViewFragment() {
+        int sceneId = getIntent().getIntExtra(SceneViewActivity.SCENE_ID_KEY, -1);
+        Bundle bundle = new Bundle();
+        bundle.putInt(SceneViewActivity.SCENE_ID_KEY, sceneId);
+
         shotViewFragment = new ShotViewFragment();
+
+        shotViewFragment.setArguments(bundle);
+
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, shotViewFragment)
                 .addToBackStack(null)
