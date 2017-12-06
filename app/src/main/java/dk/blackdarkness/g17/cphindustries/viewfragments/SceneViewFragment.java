@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
 //        scenes.add(new NavListItem(new Scene(22, "22 - Robbing the Bank"), false));
 //        scenes.add(new NavListItem(new Scene(53, "54 - The escape"), false));
 
-        final RecyclerViewClickListener listener = (v, position) -> goToShotViewActivity();
+        final RecyclerViewClickListener listener = (v, position) -> goToShotViewActivity(position);
 
 //        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes, listener);
         RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, getListOfNavListItemsWithScenes(), listener);
@@ -109,9 +110,12 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
                 .commit();
     }
 
-    public void goToShotViewActivity() {
+    public void goToShotViewActivity(int position) {
         Log.d(TAG, "goToShotViewActivity: Returning");
         Intent shotView = new Intent(getActivity(), ShotViewActivity.class);
+        shotView.putExtra("SCENE_ID", ApplicationConfig.getDaoFactory().getSceneDao().get().get(position).getId());
+
+//        Toast.makeText(getContext().getApplicationContext(), "Index: " + position + ", id: " + ApplicationConfig.getDaoFactory().getSceneDao().get().get(position).getId(), Toast.LENGTH_LONG).show();
         startActivity(shotView);
         getActivity().finish();
     }

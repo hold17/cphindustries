@@ -36,7 +36,7 @@ public class SceneDaoDemo implements SceneDao {
         warnings.add("This is a warning");
 
         // Demo Weapons
-        final Weapon weapon1 = new Weapon(0, "Weapon 1", warnings, FireMode.BURST, ConnectionStatus.BAR_1);
+        final Weapon weapon1 = new Weapon(1337, "Weapon 1", warnings, FireMode.BURST, ConnectionStatus.BAR_1);
         final Weapon weapon2 = new Weapon(1, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.FULL);
         final Weapon weapon3 = new Weapon(2, "Weapon 3", ConnectionStatus.NO_CONNECTION);
         final Weapon weapon4 = new Weapon(3, "Weapon 4", FireMode.SINGLE, ConnectionStatus.BAR_2);
@@ -72,7 +72,7 @@ public class SceneDaoDemo implements SceneDao {
         s6weapons.add(weapon6);
         s6weapons.add(weapon8);
 
-        shoot1 = new Shoot(0, "Shoot 1", s1weapons);
+        shoot1 = new Shoot(1337, "Shoot 1", s1weapons);
         shoot2 = new Shoot(1, "Shoot 2", s2weapons);
         shoot3 = new Shoot(2, "Shoot 3", s3weapons);
         shoot4 = new Shoot(3, "Shoot 4", s4weapons);
@@ -89,7 +89,7 @@ public class SceneDaoDemo implements SceneDao {
         scene3Shoots.add(shoot5);
         scene3Shoots.add(shoot6);
 
-        scene1 = new Scene(0, "1 - Ze Zjuting sihn", scene1Shoots);
+        scene1 = new Scene(1337, "1 - Ze Zjuting sihn", scene1Shoots);
         scene2 = new Scene(1, "22 - Robbing the bank", scene2Shoots);
         scene3 = new Scene(2, "54 - The escape", scene3Shoots);
 
