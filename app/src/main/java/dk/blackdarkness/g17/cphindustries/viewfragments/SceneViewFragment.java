@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +20,7 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.activities.ShotViewActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 
@@ -39,6 +39,7 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
     private static final String TAG = "SceneViewFragment";
     private FloatingActionButton lock;
     private ItemTouchHelper mItemTouchHelper;
+    private SceneDao sceneDao;
 
     @Nullable
     @Override
@@ -46,6 +47,9 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         this.view = inflater.inflate(R.layout.fragment_scene_view_layout, container, false);
         lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
+
+        this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
+
         return view;
 //        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
 //        getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -113,9 +117,10 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
     public void goToShotViewActivity(int position) {
         Log.d(TAG, "goToShotViewActivity: Returning");
         Intent shotView = new Intent(getActivity(), ShotViewActivity.class);
-        shotView.putExtra("SCENE_ID", ApplicationConfig.getDaoFactory().getSceneDao().get().get(position).getId());
 
-//        Toast.makeText(getContext().getApplicationContext(), "Index: " + position + ", id: " + ApplicationConfig.getDaoFactory().getSceneDao().get().get(position).getId(), Toast.LENGTH_LONG).show();
+        final Scene chosenScene = this.sceneDao.get().get(position);
+        shotView.putExtra(SceneViewActivity.SCENE_ID_KEY, chosenScene.getId());
+
         startActivity(shotView);
         getActivity().finish();
     }

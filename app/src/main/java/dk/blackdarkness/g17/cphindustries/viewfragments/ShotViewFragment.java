@@ -11,14 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
-//import dk.blackdarkness.g17.cphindustries.dto.Scene;
+import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditShotFragment;
 
@@ -38,6 +36,7 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
     private FloatingActionButton lock;
     private ItemTouchHelper mItemTouchHelper;
     private int sceneId = -1;
+    private ShootDao shootDao;
 
     @Nullable
     @Override
@@ -46,7 +45,8 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
         lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
 
-        this.sceneId = getArguments().getInt("SCENE_ID");
+        this.sceneId = getArguments().getInt(SceneViewActivity.SCENE_ID_KEY);
+        this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
 
         return view;
     }
@@ -106,9 +106,11 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
 //        Toast.makeText(getContext().getApplicationContext(), "Index: " + position + ", ID = " + ApplicationConfig.getDaoFactory().getShootDao().get(this.sceneId).get(position).getId(), Toast.LENGTH_LONG).show();
 
         // Add shoot ID to arguemnts
+        final Shoot chosenShoot = this.shootDao.get(this.sceneId).get(position);
+
         Bundle bundle = new Bundle();
-        bundle.putInt("SCENE_ID", this.sceneId);
-        bundle.putInt("SHOOT_ID", ApplicationConfig.getDaoFactory().getShootDao().get(this.sceneId).get(position).getId());
+        bundle.putInt(SceneViewActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(SceneViewActivity.SHOOT_ID_KEY, chosenShoot.getId());
         weaponViewFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

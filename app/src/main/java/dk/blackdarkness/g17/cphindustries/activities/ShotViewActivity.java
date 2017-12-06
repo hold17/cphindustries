@@ -51,13 +51,9 @@ public class ShotViewActivity extends AppCompatActivity {
     }
 
     public void initShotViewFragment() {
-        System.out.println("Creating shoot");
-        int sceneId = getIntent().getIntExtra("SCENE_ID", -1);
-        System.out.println("Scene ID = " + sceneId);
-//        savedInstanceState.putInt("SCENE_ID", getIntent().getIntExtra("SCENE_ID", -1));
-        System.out.println("Saving...");
+        int sceneId = getIntent().getIntExtra(SceneViewActivity.SCENE_ID_KEY, -1);
         Bundle bundle = new Bundle();
-        bundle.putInt("SCENE_ID", sceneId);
+        bundle.putInt(SceneViewActivity.SCENE_ID_KEY, sceneId);
 
         shotViewFragment = new ShotViewFragment();
 

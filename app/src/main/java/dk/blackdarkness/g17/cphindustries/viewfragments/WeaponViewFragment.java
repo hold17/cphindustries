@@ -16,7 +16,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
+import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
 import dk.blackdarkness.g17.cphindustries.dto.FireMode;
 import dk.blackdarkness.g17.cphindustries.R;
@@ -40,6 +42,7 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
     private static final String TAG = "WeaponViewFragment";
     private FloatingActionButton lock;
     private ItemTouchHelper mItemTouchHelper;
+    private WeaponDao weaponDao;
     private int sceneId = -1;
     private int shootId = -1;
 
@@ -50,8 +53,10 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
         lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
 
-        this.sceneId = getArguments().getInt("SCENE_ID");
-        this.shootId = getArguments().getInt("SHOOT_ID");
+        this.sceneId = getArguments().getInt(SceneViewActivity.SCENE_ID_KEY);
+        this.shootId = getArguments().getInt(SceneViewActivity.SHOOT_ID_KEY);
+
+        this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
 
         return view;
     }
@@ -114,7 +119,8 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
         Log.d(TAG, "goToDetailWeaponFragment: Returning");
         Fragment detailWeaponFragment = new DetailWeaponFragment();
 
-        final Weapon chosenWeapon = ApplicationConfig.getDaoFactory().getWeaponDao().get(sceneId, shootId).get(position);
+        final Weapon chosenWeapon = this.weaponDao.get(sceneId, shootId).get(position);
+
         Bundle bundle = new Bundle();
         bundle.putInt("SCENE_ID", this.sceneId);
         bundle.putInt("SHOOT_ID", this.shootId);
