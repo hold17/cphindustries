@@ -112,28 +112,21 @@ public class SceneDaoDemo implements SceneDao {
 
     @Override
     public Scene get(int id) {
-        Scene scene = null;
-
         for (Scene s : this.allScenes) {
             if (s.getId() == id) {
-                scene = s;
+                return s;
             }
         }
 
-        return scene;
+        return null;
     }
 
     @Override
-    public void create(Scene scene) {
-        int highestId = 0;
-
-        for (Scene s : this.allScenes) {
-            if (s.getId() > highestId) {
-                highestId = s.getId();
+    public void create(Scene scene) {for (Scene s : this.allScenes) {
+            if (s.getId() > scene.getId()) {
+                scene.setId(s.getId() + 1);
             }
         }
-
-        scene.setId(highestId + 1);
 
         this.allScenes.add(scene);
     }

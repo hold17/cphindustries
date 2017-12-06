@@ -9,9 +9,9 @@ import dk.blackdarkness.g17.cphindustries.dto.Shoot;
  */
 
 public interface ShootDao {
-    List<Shoot> get();
-    Shoot get(int id);
-    void create(Shoot shoot);
-    void update(Shoot newShoot);
-    void delete(int id);
+    List<Shoot> get(int sceneId);
+    Shoot get(int sceneId, int id);
+    void create(int sceneId, Shoot shoot);
+    void update(int sceneId, Shoot newShoot);
+    void delete(int sceneId, int id);
 }
