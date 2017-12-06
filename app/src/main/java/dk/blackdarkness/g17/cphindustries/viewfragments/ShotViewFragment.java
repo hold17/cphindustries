@@ -11,11 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
+import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
+import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditShotFragment;
 
@@ -34,6 +35,8 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
     private static final String TAG = "ShotViewFragment";
     private FloatingActionButton lock;
     private ItemTouchHelper mItemTouchHelper;
+    private int sceneId = -1;
+    private ShootDao shootDao;
 
     @Nullable
     @Override
@@ -41,6 +44,10 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
         this.view = inflater.inflate(R.layout.fragment_shot_view_layout, container, false);
         lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
+
+        this.sceneId = getArguments().getInt(SceneViewActivity.SCENE_ID_KEY);
+        this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
+
         return view;
     }
 
@@ -51,14 +58,9 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_shot_recyclerView);
 
-        List<NavListItem> shoots = new ArrayList<>();
-        shoots.add(new NavListItem(new Shoot(0, "Shoot 1"), false));
-        shoots.add(new NavListItem(new Shoot(1, "Shoot 2"), false));
-        shoots.add(new NavListItem(new Shoot(2, "Shoot 3"), false));
+        final RecyclerViewClickListener listener = (v, position) -> goToWeaponViewFragment(position);
 
-        final RecyclerViewClickListener listener = (v, position) -> goToWeaponViewFragment();
-
-        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, shoots, listener);
+        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, getListOfNavListItemsWithShoots(this.sceneId), listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -69,6 +71,17 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
 
         mItemTouchHelper = new ItemTouchHelper(SITHCallback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private static List<NavListItem> getListOfNavListItemsWithShoots(int sceneId) {
+        final List<NavListItem> navListShoots = new ArrayList<>();
+        final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().get(sceneId);
+
+        for (Shoot s : shoots) {
+            navListShoots.add(new NavListItem(s, false));
+        }
+
+        return navListShoots;
     }
 
     @Override
@@ -86,9 +99,20 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
                 .commit();
     }
 
-    public void goToWeaponViewFragment() {
+    public void goToWeaponViewFragment(int position) {
         Log.d(TAG, "goToWeaponViewFragment: Returning");
         Fragment weaponViewFragment = new WeaponViewFragment();
+
+//        Toast.makeText(getContext().getApplicationContext(), "Index: " + position + ", ID = " + ApplicationConfig.getDaoFactory().getShootDao().get(this.sceneId).get(position).getId(), Toast.LENGTH_LONG).show();
+
+        // Add shoot ID to arguemnts
+        final Shoot chosenShoot = this.shootDao.get(this.sceneId).get(position);
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(SceneViewActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(SceneViewActivity.SHOOT_ID_KEY, chosenShoot.getId());
+        weaponViewFragment.setArguments(bundle);
+
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, weaponViewFragment)
                 .addToBackStack(null)
