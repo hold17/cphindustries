@@ -19,4 +19,8 @@ public class ApplicationConfig extends Application {
     public static boolean useDemoData() {
         return true; // TODO: Read from shared prefs or something...
     }
+
+    public static DaoFactory getDaoFactory() {
+        return new DaoFactory();
+    }
 }
