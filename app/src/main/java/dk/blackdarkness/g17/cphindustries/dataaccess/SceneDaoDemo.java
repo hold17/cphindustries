@@ -89,7 +89,7 @@ public class SceneDaoDemo implements SceneDao {
         scene3Shoots.add(shoot5);
         scene3Shoots.add(shoot6);
 
-        scene1 = new Scene(0, "1 - The shooting scene", scene1Shoots);
+        scene1 = new Scene(0, "1 - Zjuting scene", scene1Shoots);
         scene2 = new Scene(1, "22 - Robbing the bank", scene2Shoots);
         scene3 = new Scene(2, "54 - The escape", scene3Shoots);
 
