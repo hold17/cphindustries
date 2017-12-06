@@ -1,4 +1,4 @@
-package dk.blackdarkness.g17.cphindustries;
+package dk.blackdarkness.g17.cphindustries.recyclerview;
 
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 

@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
 import java.util.ArrayList;
+
 import dk.blackdarkness.g17.cphindustries.R;
 
 /**
