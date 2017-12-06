@@ -1,6 +1,6 @@
 package dk.blackdarkness.g17.cphindustries.viewfragments;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -18,7 +18,6 @@ import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
-import dk.blackdarkness.g17.cphindustries.activities.ShotViewActivity;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 
@@ -55,9 +54,6 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         getActivity().setTitle("Scenes");
         lock.setOnClickListener(this);
 
-        //Fjern back-knap (dette er startsiden)
-        ((SceneViewActivity)getActivity()).resetActionBar(false);
-
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_scene_recyclerView);
 
         List<NavListItem> scenes = new ArrayList<>();
@@ -65,7 +61,7 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         scenes.add(new NavListItem(new Scene(22, "22 - Robbing the Bank"), false));
         scenes.add(new NavListItem(new Scene(53, "54 - The escape"), false));
 
-        final RecyclerViewClickListener listener = (v, position) -> goToShotViewActivity();
+        final RecyclerViewClickListener listener = (v, position) -> goToShotViewFragment();
 
         RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes, listener);
         recyclerView.setAdapter(adapter);
@@ -80,7 +76,6 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-
     @Override
     public void onClick(View view) {
         Log.d(TAG, "onClick: lockFab. Returning EditSceneFragment.");
@@ -91,16 +86,19 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         Log.d(TAG, "goToEditSceneFragment: Returning");
         Fragment editSceneFragment = new EditSceneFragment();
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.scene_fragment_container, editSceneFragment)
+                .replace(R.id.fragment_container, editSceneFragment)
                 .addToBackStack(null)
                 .commit();
     }
 
-    public void goToShotViewActivity() {
-        Log.d(TAG, "goToShotViewActivity: Returning");
-        Intent shotView = new Intent(getActivity(), ShotViewActivity.class);
-        startActivity(shotView);
-        getActivity().finish();
+    public void goToShotViewFragment() {
+        Log.d(TAG, "goToShotViewFragment: Returning");
+        ((SceneViewActivity)getActivity()).enableActionBar(true);
+        Fragment shotViewFragment = new ShotViewFragment();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, shotViewFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

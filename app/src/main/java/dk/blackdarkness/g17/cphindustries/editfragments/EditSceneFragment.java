@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateSceneFragment;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 
@@ -50,7 +49,6 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Edit Scene");
-        ((SceneViewActivity)getActivity()).resetActionBar(true);
         this.add.setVisibility(View.VISIBLE);
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
@@ -98,7 +96,7 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
         Log.d(TAG, "goToCreateSceneFragment: Returning");
         Fragment createSceneFragment = new CreateSceneFragment();
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.scene_fragment_container, createSceneFragment)
+                .replace(R.id.fragment_container, createSceneFragment)
                 .addToBackStack(null)
                 .commit();
     }
