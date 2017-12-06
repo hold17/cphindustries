@@ -1,10 +1,6 @@
-package dk.blackdarkness.g17.cphindustries.helper;
+package dk.blackdarkness.g17.cphindustries.recyclerview.helpers;
 
 import android.view.View;
-
-/**
- * Created by awo on 04/12/2017.
- */
 
 public interface RecyclerViewClickListener {
     void onClick(View view, int position);

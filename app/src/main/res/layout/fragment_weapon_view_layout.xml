@@ -11,11 +11,16 @@
         android:layout_centerInParent="true"
         android:layout_marginBottom="16dp"/>-->
 
-    <ListView
-        android:id="@+id/fr_weapon_listView"
+    <!--<ListView-->
+        <!--android:id="@+id/fr_weapon_listView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+    <!--</ListView>-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fr_weapon_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="match_parent"/>
 
     <include layout="@layout/fab_buttons_layout"></include>
 

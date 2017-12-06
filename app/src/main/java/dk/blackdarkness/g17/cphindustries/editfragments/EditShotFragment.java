@@ -4,32 +4,36 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import dk.blackdarkness.g17.cphindustries.NavListItem;
+import java.util.ArrayList;
+import java.util.List;
+
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.SimpleListAdapter;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateShotFragment;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
+
+import dk.blackdarkness.g17.cphindustries.recyclerview.NavListItem;
+import dk.blackdarkness.g17.cphindustries.recyclerview.RecyclerListAdapter;
+import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
+import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
+import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
 
 /**
  * Created by Thoma on 11/02/2017.
  */
 
-public class EditShotFragment extends Fragment implements View.OnClickListener {
-
-    private static final String TAG = "EditShotFragment";
-
+public class EditShotFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
     private View view;
+    private static final String TAG = "EditShotFragment";
     private FloatingActionButton lock, add;
-    private Fragment createShotFragment;
-    private ListView listView;
+    private ItemTouchHelper mItemTouchHelper;
 
     @Nullable
     @Override
@@ -37,29 +41,38 @@ public class EditShotFragment extends Fragment implements View.OnClickListener {
         this.view = inflater.inflate(R.layout.fragment_edit_shot_layout, container, false);
         this.add = view.findViewById(R.id.createFab);
         this.lock = view.findViewById(R.id.lockFab);
-        initDisplay();
         Log.d(TAG, "onCreateView: Returning.");
         return view;
     }
 
-    public void initDisplay() {
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Edit Shot");
-        this.lock.setOnClickListener(this);
-        this.add.setOnClickListener(this);
         this.add.setVisibility(View.VISIBLE);
+        this.add.setOnClickListener(this);
+        this.lock.setOnClickListener(this);
 
-        // Initiate list view
-        this.listView = this.view.findViewById(R.id.fr_editShot_listView);
-//        String[] foods = { "1 - The shooting scene", "22 - Robbing the Bank", "54 - The escape" };
-        NavListItem[] shoots = {
-                new NavListItem(new Shoot(0, "Shoot 1"), true),
-                new NavListItem(new Shoot(1, "Shoot 2"), true),
-                new NavListItem(new Shoot(2, "Shoot 3"), true)
-        };
+        RecyclerView recyclerView = this.view.findViewById(R.id.fr_editShot_recyclerView);
 
-        // ListAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_list_item, foods);
-        ListAdapter adapter = new SimpleListAdapter(getActivity(), shoots);
-        this.listView.setAdapter(adapter);
+        List<NavListItem> shoots = new ArrayList<>();
+        shoots.add(new NavListItem(new Shoot(0, "Shoot 1"), true));
+        shoots.add(new NavListItem(new Shoot(1, "Shoot 2"), true));
+        shoots.add(new NavListItem(new Shoot(2, "Shoot 3"), true));
+
+        final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
+
+        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, shoots, listener);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
+        SITHCallback.setDragEnabled(true);
+        SITHCallback.setSwipeEnabled(true);
+
+        mItemTouchHelper = new ItemTouchHelper(SITHCallback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -69,7 +82,7 @@ public class EditShotFragment extends Fragment implements View.OnClickListener {
                 checkLock();
                 break;
             case R.id.createFab:
-                goToCreateShot();
+                goToCreateShotFragment();
                 break;
         }
     }
@@ -78,11 +91,17 @@ public class EditShotFragment extends Fragment implements View.OnClickListener {
             Log.d(TAG, "checkLock: Should save input data.");
             getActivity().onBackPressed();
     }
-    public void goToCreateShot() {
-        this.createShotFragment = new CreateShotFragment();
+    public void goToCreateShotFragment() {
+        Log.d(TAG, "goToCreateShotFragment: Returning.");
+        Fragment createShotFragment = new CreateShotFragment();
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, createShotFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
     }
 }

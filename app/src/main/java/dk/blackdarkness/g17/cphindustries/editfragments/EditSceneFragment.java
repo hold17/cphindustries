@@ -15,29 +15,25 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import dk.blackdarkness.g17.cphindustries.NavListItem;
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.RecyclerListAdapter;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateSceneFragment;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
-import dk.blackdarkness.g17.cphindustries.helper.OnStartDragListener;
-import dk.blackdarkness.g17.cphindustries.helper.RecyclerViewClickListener;
-import dk.blackdarkness.g17.cphindustries.helper.SimpleItemTouchHelperCallback;
+
+import dk.blackdarkness.g17.cphindustries.recyclerview.NavListItem;
+import dk.blackdarkness.g17.cphindustries.recyclerview.RecyclerListAdapter;
+import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
+import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
+import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
 
 /**
  * Created by Thoma on 11/02/2017.
  */
 
 public class EditSceneFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
-
-    private static final String TAG = "EditSceneFragment";
-
     private View view;
+    private static final String TAG = "EditSceneFragment";
     private FloatingActionButton add, lock;
-    private Fragment createSceneFragment;
-
-    private RecyclerView recyclerView;
     private ItemTouchHelper mItemTouchHelper;
 
     @Nullable
@@ -59,22 +55,19 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
 
-        // Initiate list view
-        this.recyclerView = this.view.findViewById(R.id.fr_editScene_recyclerView);
+        RecyclerView recyclerView = this.view.findViewById(R.id.fr_editScene_recyclerView);
 
-        List<NavListItem> scenes = new ArrayList<NavListItem>();
+        List<NavListItem> scenes = new ArrayList<>();
         scenes.add(new NavListItem(new Scene(1, "1 - The shooting scene"), true));
         scenes.add(new NavListItem(new Scene(22, "22 - Robbing the Bank"), true));
         scenes.add(new NavListItem(new Scene(53, "54 - The escape"), true));
 
-        final RecyclerViewClickListener listener = (v, position) -> {
-            System.out.println("STUFF");
-        };
+        final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
 
         RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes, listener);
-        this.recyclerView.setAdapter(adapter);
-        this.recyclerView.setHasFixedSize(true);
-        this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
         SITHCallback.setDragEnabled(true);
@@ -102,7 +95,8 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
     }
 
     public void goToCreateSceneFragment() {
-        createSceneFragment = new CreateSceneFragment();
+        Log.d(TAG, "goToCreateSceneFragment: Returning");
+        Fragment createSceneFragment = new CreateSceneFragment();
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.scene_fragment_container, createSceneFragment)
                 .addToBackStack(null)
