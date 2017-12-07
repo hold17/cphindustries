@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateSceneFragment;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 
@@ -73,6 +74,12 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
 
         mItemTouchHelper = new ItemTouchHelper(SITHCallback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((SceneViewActivity)getActivity()).enableActionBar(false);
     }
 
     @Override

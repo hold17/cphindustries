@@ -101,6 +101,7 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
 
     public void goToEditSceneFragment() {
         Log.d(TAG, "goToEditSceneFragment: Returning");
+        ((SceneViewActivity)getActivity()).enableActionBar(true);
         Fragment editSceneFragment = new EditSceneFragment();
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, editSceneFragment)
