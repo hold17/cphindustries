@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 
 /**
  * Created by Thoma on 11/03/2017.
@@ -39,8 +39,6 @@ public class CreateSceneFragment extends Fragment implements View.OnClickListene
 
         //cancel textview
         submitCancel.setOnClickListener(this);
-
-        ((SceneViewActivity)getActivity()).resetActionBar(true);
     }
 
     @Override
