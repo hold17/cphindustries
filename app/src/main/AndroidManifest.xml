@@ -13,20 +13,14 @@
         <activity
             android:name=".activities.SceneViewActivity"
             android:label="@string/sceneview"
-            android:theme="@style/CPHIndustriesTheme">
+            android:theme="@style/CPHIndustriesTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activities.ShotViewActivity"
-            android:label="@string/shotview"
-            android:theme="@style/CPHIndustriesTheme">
-
-        </activity>
-
     </application>
 
 </manifest>
