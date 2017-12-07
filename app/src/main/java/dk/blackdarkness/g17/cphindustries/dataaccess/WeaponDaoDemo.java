@@ -1,6 +1,5 @@
 package dk.blackdarkness.g17.cphindustries.dataaccess;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
