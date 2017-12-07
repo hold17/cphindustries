@@ -2,7 +2,6 @@ package dk.blackdarkness.g17.cphindustries.recyclerview;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
@@ -71,25 +69,14 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             holder.imageBack.setImageResource(R.drawable.ic_chevron_right_black_24dp);
             holder.imageBack.setVisibility(View.VISIBLE);
         } else if (curItem instanceof Weapon) {
-            // Warnings
-            if (((Weapon) curItem).getWarnings().size() > 0) {
-//                holder.imageFront.setColorFilter(ContextCompat.getColor(context, R.color.colorWarning));
-                holder.imageFront.setVisibility(View.VISIBLE);
-                holder.imageFront.setImageResource(R.drawable.ic_warning_orange_24dp);
-                System.out.println("IRAQ! There are warnings");
-            } else {
-                System.out.println("no warnings"); }
-//                holder.imageFront.setVisibility(View.INVISIBLE);
-//            }
+            // Set first image to warning no matter what, then invisible if there are no warnings - to align text
+            holder.imageFront.setImageResource(R.drawable.ic_warning_orange_24dp);
+            if (((Weapon) curItem).getWarnings().size() == 0) {
+                holder.imageFront.setVisibility(View.INVISIBLE);
+            }
 
             // Set go button image to the connection status
-            holder.imageBack.setImageDrawable(((Weapon) curItem).getConnectionStatus().getDrawable(context));
-
-            if (((Weapon) curItem).getConnectionStatus() == ConnectionStatus.NO_CONNECTION) {
-                holder.imageBack.setColorFilter(ContextCompat.getColor(context, R.color.colorDanger));
-            } else {
-                holder.imageBack.setColorFilter(ContextCompat.getColor(context, R.color.colorPositive));
-            }
+            holder.imageBack.setImageResource(((Weapon) curItem).getConnectionStatus().getDrawableId());
         }
     }
 
