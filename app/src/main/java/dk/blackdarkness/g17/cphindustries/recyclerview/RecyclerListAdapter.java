@@ -26,7 +26,6 @@ import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperVi
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 
-
 public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder> implements ItemTouchHelperAdapter {
     private final List<NavListItem> mItems = new ArrayList<>();
     private final OnStartDragListener mDragStartListener;
@@ -74,11 +73,14 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         } else if (curItem instanceof Weapon) {
             // Warnings
             if (((Weapon) curItem).getWarnings().size() > 0) {
-                holder.imageFront.setColorFilter(ContextCompat.getColor(context, R.color.colorWarning));
+//                holder.imageFront.setColorFilter(ContextCompat.getColor(context, R.color.colorWarning));
                 holder.imageFront.setVisibility(View.VISIBLE);
+                holder.imageFront.setImageResource(R.drawable.ic_warning_orange_24dp);
+                System.out.println("IRAQ! There are warnings");
             } else {
-                holder.imageFront.setVisibility(View.INVISIBLE);
-            }
+                System.out.println("no warnings"); }
+//                holder.imageFront.setVisibility(View.INVISIBLE);
+//            }
 
             // Set go button image to the connection status
             holder.imageBack.setImageDrawable(((Weapon) curItem).getConnectionStatus().getDrawable(context));
