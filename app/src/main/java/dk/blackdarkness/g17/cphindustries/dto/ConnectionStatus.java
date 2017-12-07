@@ -10,13 +10,13 @@ public enum ConnectionStatus {
 
     public int getDrawableId() {
         switch (this) {
-            case NO_CONNECTION: return R.drawable.ic_signal_wifi_off_black_24dp;
-            case BAR_3: return R.drawable.ic_signal_wifi_3_bar_black_24dp;
-            case BAR_2: return R.drawable.ic_signal_wifi_2_bar_black_24dp;
-            case BAR_1: return R.drawable.ic_signal_wifi_1_bar_black_24dp;
-            case BAR_0: return R.drawable.ic_signal_wifi_0_bar_black_24dp;
-            case BAR_4: case FULL: return R.drawable.ic_signal_wifi_4_bar_black_24dp;
-            default: return R.drawable.ic_signal_wifi_off_black_24dp;
+            case NO_CONNECTION: return R.drawable.ic_signal_wifi_off_red_24dp;
+            case BAR_3: return R.drawable.ic_signal_wifi_3_bar_green_24dp;
+            case BAR_2: return R.drawable.ic_signal_wifi_2_bar_green_24dp;
+            case BAR_1: return R.drawable.ic_signal_wifi_1_bar_green_24dp;
+            case BAR_0: return R.drawable.ic_signal_wifi_0_bar_green_24dp;
+            case BAR_4: case FULL: return R.drawable.ic_signal_wifi_4_bar_green_24dp;
+            default: return R.drawable.ic_signal_wifi_off_red_24dp;
         }
     }
 }
