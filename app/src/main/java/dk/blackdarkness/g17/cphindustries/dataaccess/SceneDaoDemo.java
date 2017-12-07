@@ -34,16 +34,17 @@ public class SceneDaoDemo implements SceneDao {
         // Demo Warnings
         final List<String> warnings = new ArrayList<>();
         warnings.add("This is a warning");
+        warnings.add("This is a secondary warning!");
 
         // Demo Weapons
-        final Weapon weapon1 = new Weapon(1337, "Weapon 1", warnings, FireMode.BURST, ConnectionStatus.BAR_1);
+        final Weapon weapon1 = new Weapon(1337, "Weapon 1", warnings, FireMode.BURST, ConnectionStatus.NO_CONNECTION);
         final Weapon weapon2 = new Weapon(1, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.FULL);
         final Weapon weapon3 = new Weapon(2, "Weapon 3", ConnectionStatus.NO_CONNECTION);
         final Weapon weapon4 = new Weapon(3, "Weapon 4", FireMode.SINGLE, ConnectionStatus.BAR_2);
-        final Weapon weapon5 = new Weapon(4, "weapon 5", FireMode.SINGLE, ConnectionStatus.BAR_3);
-        final Weapon weapon6 = new Weapon(4, "weapon 6", warnings, FireMode.BURST, ConnectionStatus.BAR_1);
-        final Weapon weapon7 = new Weapon(4, "weapon 7", FireMode.SINGLE, ConnectionStatus.BAR_2);
-        final Weapon weapon8 = new Weapon(4, "weapon 8", FireMode.FULL_AUTO, ConnectionStatus.NO_CONNECTION);
+        final Weapon weapon5 = new Weapon(4, "weapon 5", warnings, FireMode.SINGLE, ConnectionStatus.BAR_3);
+        final Weapon weapon6 = new Weapon(5, "weapon 6", warnings, FireMode.BURST, ConnectionStatus.BAR_1);
+        final Weapon weapon7 = new Weapon(6, "weapon 7", FireMode.SINGLE, ConnectionStatus.BAR_2);
+        final Weapon weapon8 = new Weapon(7, "weapon 8", FireMode.FULL_AUTO, ConnectionStatus.BAR_1);
 
         // Demo Shoot weapon lists
         final List<Weapon> s1weapons = new ArrayList<>();
