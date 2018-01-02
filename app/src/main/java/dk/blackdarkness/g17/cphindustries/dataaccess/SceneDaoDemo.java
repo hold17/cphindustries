@@ -112,9 +112,11 @@ public class SceneDaoDemo implements SceneDao {
     SceneDaoDemo() {
         if (SharedPreferenceManager.getInstance() == null) {
             this.allScenes = this.generateDemoData();
+            System.out.println("IRAQ: NO DATA");
             return;
         }
 
+        System.out.println("IRAQ: THERE IS DATA");
         Object allScenesObj = SharedPreferenceManager.getInstance().getObject(SAVED_SCENES_LOCATION);
         if (allScenesObj == null) this.allScenes = this.generateDemoData();
         else this.allScenes = (List<Scene>)(Object) allScenesObj;
