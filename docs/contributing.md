@@ -10,7 +10,7 @@ Fork, then clone the repository:
 git clone git@github.com:<your-username>/cphindustries.git
 ```
 
-Make your changes, and then push to your fork and [submit a pull request](/hold17/cphindustries/compare).
+Make your changes, and then push to your fork and [submit a pull request](https://github.com/hold17/cphindustries/compare).
 
 ## Commit Messages
 
