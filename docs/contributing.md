@@ -10,11 +10,7 @@ Fork, then clone the repository:
 git clone git@github.com:<your-username>/cphindustries.git
 ```
 
-Make your changes, and then push to your fork and [submit a pull request](https://github.com/hold17/cphindustries/compare).
-
-## Style
-
-In general all code should be written in english. That includes class names, variable names, comments etc. Additionally, please follow the following standards.
+Make your changes, and then push to your fork and [submit a pull request](/hold17/cphindustries/compare).
 
 ## Commit Messages
 
@@ -28,7 +24,11 @@ In general all code should be written in english. That includes class names, var
 When closing an issue, the commit message to the commit that closes the issue is very important. The commit name still follows the rules of [Commit Messages](#Closing issues). 
 The important part is that it has to end with `(Resolves #<number>)`. As an example, a commit message that closes an issue of id 1, should be as following: 
 
-> Fix button placement (Closes #1)
+> Fix button placement (Resolves #1)
+
+## Style
+
+In general all code should be written in english. That includes class names, variable names, comments etc. Additionally, please follow the following standards.
 
 ### Formatting
 
