@@ -5,6 +5,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
+import dk.blackdarkness.g17.cphindustries.dto.Item;
+import dk.blackdarkness.g17.cphindustries.dto.Scene;
 
 /**
  * Created by awo on 06-12-2017.
@@ -71,13 +78,29 @@ public class SharedPreferenceManager {
      * @param storeLocation Where the object is stored - should be a string from "strings.xml"
      * @return Returns the wanted object if it exists, null if it does not
      */
-    public Object getObject(String storeLocation) {
+//    public Object getObject(String storeLocation) {
+//        if (instance == null) return null;
+//
+//        final String jsonObj = this.prefs.getString(storeLocation, null);
+//        System.out.println(jsonObj);
+//        final Object obj = this.gson.fromJson(jsonObj, Object.class);
+//
+//        return obj;
+//    }
+    public Object getObject(String storeLocation, Type returnType) {
         if (instance == null) return null;
 
         final String jsonObj = this.prefs.getString(storeLocation, null);
         System.out.println(jsonObj);
-        final Object obj = this.gson.fromJson(jsonObj, Object.class);
+
+        //Type ArrayListType = new TypeToken<ArrayList<T>>(){}.getType();
+
+        final Object obj = this.gson.fromJson(jsonObj, returnType);
 
         return obj;
+    }
+
+    public void clear() {
+        this.prefsEditor.clear().commit();
     }
 }

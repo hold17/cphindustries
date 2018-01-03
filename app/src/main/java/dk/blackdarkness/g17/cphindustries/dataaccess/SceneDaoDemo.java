@@ -1,5 +1,9 @@
 package dk.blackdarkness.g17.cphindustries.dataaccess;
 
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -111,9 +115,15 @@ public class SceneDaoDemo implements SceneDao {
      */
     SceneDaoDemo() {
         if (SharedPreferenceManager.getInstance() == null) return;
+        //SharedPreferenceManager.getInstance().clear();
 
 
-        Object allScenesObj = SharedPreferenceManager.getInstance().getObject(SAVED_SCENES_LOCATION);
+        Type returnType = new TypeToken<ArrayList<Scene>>(){}.getType();
+
+
+        Object allScenesObj = SharedPreferenceManager.getInstance().getObject(SAVED_SCENES_LOCATION,returnType);
+
+
         if (allScenesObj == null) {
             this.allScenes = this.generateDemoData();
             System.out.println("IRAQ: NO DATA");
@@ -121,6 +131,7 @@ public class SceneDaoDemo implements SceneDao {
         else {
             System.out.println("IRAQ: THERE IS DATA");
             this.allScenes = (ArrayList<Scene>) allScenesObj;
+
         }
 //        this.allScenes = this.generateDemoData();
     }
