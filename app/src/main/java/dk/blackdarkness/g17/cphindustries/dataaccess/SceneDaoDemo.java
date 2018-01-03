@@ -110,16 +110,18 @@ public class SceneDaoDemo implements SceneDao {
      * This will not work if SharedPreferenceManager has not yet been initialized with a context.
      */
     SceneDaoDemo() {
-        if (SharedPreferenceManager.getInstance() == null) {
+        if (SharedPreferenceManager.getInstance() == null) return;
+
+
+        Object allScenesObj = SharedPreferenceManager.getInstance().getObject(SAVED_SCENES_LOCATION);
+        if (allScenesObj == null) {
             this.allScenes = this.generateDemoData();
             System.out.println("IRAQ: NO DATA");
-            return;
         }
-
-        System.out.println("IRAQ: THERE IS DATA");
-        Object allScenesObj = SharedPreferenceManager.getInstance().getObject(SAVED_SCENES_LOCATION);
-        if (allScenesObj == null) this.allScenes = this.generateDemoData();
-        else this.allScenes = (List<Scene>)(Object) allScenesObj;
+        else {
+            System.out.println("IRAQ: THERE IS DATA");
+            this.allScenes = (ArrayList<Scene>) allScenesObj;
+        }
 //        this.allScenes = this.generateDemoData();
     }
 
