@@ -17,11 +17,11 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
+import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditShotFragment;
 
-import dk.blackdarkness.g17.cphindustries.recyclerview.NavListItem;
-import dk.blackdarkness.g17.cphindustries.recyclerview.RecyclerListAdapter;
+import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
@@ -60,7 +60,7 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
 
         final RecyclerViewClickListener listener = (v, position) -> goToWeaponViewFragment(position);
 
-        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, getListOfNavListItemsWithShoots(this.sceneId), listener);
+        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), this, getListOfShoots(this.sceneId), listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -73,15 +73,15 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private static List<NavListItem> getListOfNavListItemsWithShoots(int sceneId) {
-        final List<NavListItem> navListShoots = new ArrayList<>();
+    private static List<Item> getListOfShoots(int sceneId) {
+        final List<Item> itemShoots = new ArrayList<>();
         final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().get(sceneId);
 
         for (Shoot s : shoots) {
-            navListShoots.add(new NavListItem(s, false));
+            itemShoots.add(s);
         }
 
-        return navListShoots;
+        return itemShoots;
     }
 
     @Override
