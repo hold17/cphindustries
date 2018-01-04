@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorStatusBar">#151E28</color>
-    <color name="textColorInverse">#ffffff</color>
+    <color name="textColorInverse">#FFFFFF</color>
     <color name="textColorPrimary">#1F2D3D</color>
     <color name="colorPrimary">#1F2D3D</color>
-    <color name="colorPrimaryDark">#c0ccda</color>
+    <color name="colorPrimaryDark">#C0CCDA</color>
     <color name="colorPrimarySmoke">#E0E6ED</color>
     <color name="colorPrimaryDarkSmoke">#D3DCE6</color>
     <color name="colorAccent">#8492A6</color>
