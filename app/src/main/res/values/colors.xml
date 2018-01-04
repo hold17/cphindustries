@@ -4,7 +4,7 @@
     <color name="textColorInverse">#ffffff</color>
     <color name="textColorPrimary">#1F2D3D</color>
     <color name="colorPrimary">#1F2D3D</color>
-    <color name="colorPrimaryDark">#C0CCDA</color>
+    <color name="colorPrimaryDark">#c0ccda</color>
     <color name="colorPrimarySmoke">#E0E6ED</color>
     <color name="colorPrimaryDarkSmoke">#D3DCE6</color>
     <color name="colorAccent">#8492A6</color>
