@@ -19,11 +19,11 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
+import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 
-import dk.blackdarkness.g17.cphindustries.recyclerview.NavListItem;
-import dk.blackdarkness.g17.cphindustries.recyclerview.RecyclerListAdapter;
+import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
@@ -69,7 +69,7 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         final RecyclerViewClickListener listener = (v, position) -> goToShotViewFragment(position);
 
 //        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes, listener);
-        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, getListOfNavListItemsWithScenes(), listener);
+        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), this, getListOfScenes(), listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -82,15 +82,15 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private static List<NavListItem> getListOfNavListItemsWithScenes() {
-        final List<NavListItem> navListScenes = new ArrayList<>();
-        final List<Scene> scenes = ApplicationConfig.getDaoFactory().getSceneDao().get();
+    private static List<Item> getListOfScenes() {
+      final List<Item> itemScenes = new ArrayList<>();
+        final List<Scene> scenes =  ApplicationConfig.getDaoFactory().getSceneDao().get();
 
         for (Scene s : scenes) {
-            navListScenes.add(new NavListItem(s, false));
+            itemScenes.add(s);
         }
 
-        return navListScenes;
+        return itemScenes;
     }
 
     @Override
