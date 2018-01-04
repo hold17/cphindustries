@@ -78,22 +78,10 @@ public class SharedPreferenceManager {
      * @param storeLocation Where the object is stored - should be a string from "strings.xml"
      * @return Returns the wanted object if it exists, null if it does not
      */
-//    public Object getObject(String storeLocation) {
-//        if (instance == null) return null;
-//
-//        final String jsonObj = this.prefs.getString(storeLocation, null);
-//        System.out.println(jsonObj);
-//        final Object obj = this.gson.fromJson(jsonObj, Object.class);
-//
-//        return obj;
-//    }
     public Object getObject(String storeLocation, Type returnType) {
         if (instance == null) return null;
 
         final String jsonObj = this.prefs.getString(storeLocation, null);
-        System.out.println(jsonObj);
-
-        //Type ArrayListType = new TypeToken<ArrayList<T>>(){}.getType();
 
         final Object obj = this.gson.fromJson(jsonObj, returnType);
 
