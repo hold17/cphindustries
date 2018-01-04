@@ -17,10 +17,10 @@ import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateShotFragment;
+import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 
-import dk.blackdarkness.g17.cphindustries.recyclerview.NavListItem;
-import dk.blackdarkness.g17.cphindustries.recyclerview.RecyclerListAdapter;
+import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
@@ -55,14 +55,14 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_editShot_recyclerView);
 
-        List<NavListItem> shoots = new ArrayList<>();
-        shoots.add(new NavListItem(new Shoot(0, "Shoot 1"), true));
-        shoots.add(new NavListItem(new Shoot(1, "Shoot 2"), true));
-        shoots.add(new NavListItem(new Shoot(2, "Shoot 3"), true));
+        List<Item> shoots = new ArrayList<>();
+        shoots.add(new Shoot(0, "Shoot 1"));
+        shoots.add(new Shoot(1, "Shoot 2"));
+        shoots.add(new Shoot(2, "Shoot 3"));
 
         final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
 
-        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, shoots, listener);
+        EditRecListAdapter adapter = new EditRecListAdapter(getActivity(), this, shoots, listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

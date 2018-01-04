@@ -1,5 +1,9 @@
 package dk.blackdarkness.g17.cphindustries.dataaccess;
 
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -14,9 +18,10 @@ import dk.blackdarkness.g17.cphindustries.dto.Weapon;
  */
 
 public class SceneDaoDemo implements SceneDao {
+    private static final String SAVED_SCENES_LOCATION = "SAVED_SCENES_LIST";
     private List<Scene> allScenes;
 
-    private void generateDemoData() {
+    private List<Scene> generateDemoData() {
         Scene scene1;
         Scene scene2;
         Scene scene3;
@@ -99,11 +104,26 @@ public class SceneDaoDemo implements SceneDao {
         scenes.add(scene2);
         scenes.add(scene3);
 
-        this.allScenes = scenes;
+        return scenes;
     }
 
+    /**
+     * This will not work if SharedPreferenceManager has not yet been initialized with a context.
+     */
     SceneDaoDemo() {
-        this.generateDemoData();
+        if (SharedPreferenceManager.getInstance() == null) return;
+
+        Type returnType = new TypeToken<ArrayList<Scene>>(){}.getType();
+
+        Object allScenesObj = SharedPreferenceManager.getInstance().getObject(SAVED_SCENES_LOCATION,returnType);
+
+        if (allScenesObj == null) {
+            this.allScenes = this.generateDemoData();
+        }
+        else {
+            this.allScenes = (ArrayList<Scene>) allScenesObj;
+
+        }
     }
 
     @Override
@@ -123,13 +143,16 @@ public class SceneDaoDemo implements SceneDao {
     }
 
     @Override
-    public void create(Scene scene) {for (Scene s : this.allScenes) {
+    public void create(Scene scene) {
+        for (Scene s : this.allScenes) {
             if (s.getId() > scene.getId()) {
                 scene.setId(s.getId() + 1);
             }
         }
 
         this.allScenes.add(scene);
+
+        this.commitChanges();
     }
 
     @Override
@@ -140,6 +163,8 @@ public class SceneDaoDemo implements SceneDao {
                 s.setName(updatedScene.getName());
             }
         }
+
+        this.commitChanges();
     }
 
     @Override
@@ -149,5 +174,12 @@ public class SceneDaoDemo implements SceneDao {
                 this.allScenes.remove(s);
             }
         }
+
+        this.commitChanges();
+    }
+
+    private void commitChanges() {
+        if (SharedPreferenceManager.getInstance() == null) return;
+        SharedPreferenceManager.getInstance().saveObject(SAVED_SCENES_LOCATION, this.allScenes);
     }
 }

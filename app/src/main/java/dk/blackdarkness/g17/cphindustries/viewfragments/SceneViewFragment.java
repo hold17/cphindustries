@@ -19,11 +19,12 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
+import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 
-import dk.blackdarkness.g17.cphindustries.recyclerview.NavListItem;
-import dk.blackdarkness.g17.cphindustries.recyclerview.RecyclerListAdapter;
+import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
@@ -54,22 +55,16 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Scenes");
-        lock.setOnClickListener(this);
+    public void onResume() {
+        super.onResume();
+        SharedPreferenceManager.init(getContext());
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_scene_recyclerView);
-
-//        List<NavListItem> scenes = new ArrayList<>();
-//        scenes.add(new NavListItem(new Scene(1, "1 - The shooting scene"), false));
-//        scenes.add(new NavListItem(new Scene(22, "22 - Robbing the Bank"), false));
-//        scenes.add(new NavListItem(new Scene(53, "54 - The escape"), false));
 
         final RecyclerViewClickListener listener = (v, position) -> goToShotViewFragment(position);
 
 //        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes, listener);
-        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, getListOfNavListItemsWithScenes(), listener);
+        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), this, getListOfScenes(), listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -82,15 +77,22 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private static List<NavListItem> getListOfNavListItemsWithScenes() {
-        final List<NavListItem> navListScenes = new ArrayList<>();
-        final List<Scene> scenes = ApplicationConfig.getDaoFactory().getSceneDao().get();
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Scenes");
+        lock.setOnClickListener(this);
+    }
+
+    private static List<Item> getListOfScenes() {
+      final List<Item> itemScenes = new ArrayList<>();
+        final List<Scene> scenes =  ApplicationConfig.getDaoFactory().getSceneDao().get();
 
         for (Scene s : scenes) {
-            navListScenes.add(new NavListItem(s, false));
+            itemScenes.add(s);
         }
 
-        return navListScenes;
+        return itemScenes;
     }
 
     @Override
