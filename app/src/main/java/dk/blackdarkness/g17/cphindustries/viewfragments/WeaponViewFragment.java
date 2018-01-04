@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,16 +18,13 @@ import java.util.List;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
-import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
-import dk.blackdarkness.g17.cphindustries.dto.FireMode;
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.dto.Shoot;
+import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponFragment;
 import dk.blackdarkness.g17.cphindustries.entityfragments.DetailWeaponFragment;
 
-import dk.blackdarkness.g17.cphindustries.recyclerview.NavListItem;
-import dk.blackdarkness.g17.cphindustries.recyclerview.RecyclerListAdapter;
+import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
@@ -85,7 +81,7 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
         final RecyclerViewClickListener listener = (v, position) -> goToDetailWeaponFragment(position);
 
 //        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, weapons, listener);
-        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, getListOfNavListItemsWithWeapons(sceneId, shootId), listener);
+        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), this, getListOfWeapons(sceneId, shootId), listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -98,15 +94,15 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private static List<NavListItem> getListOfNavListItemsWithWeapons(int sceneId, int shootId) {
-        final List<NavListItem> navListWeapons = new ArrayList<>();
+    private static List<Item> getListOfWeapons(int sceneId, int shootId) {
+        final List<Item> itemWeapons = new ArrayList<>();
         final List<Weapon> weapons = ApplicationConfig.getDaoFactory().getWeaponDao().get(sceneId, shootId);
 
         for (Weapon w : weapons) {
-            navListWeapons.add(new NavListItem(w, false));
+            itemWeapons.add(w);
         }
 
-        return navListWeapons;
+        return itemWeapons;
     }
 
     @Override

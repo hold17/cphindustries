@@ -20,20 +20,23 @@ import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
-
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperViewHolder;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 
+/**
+ * Created by Thoma on 01/03/2018.
+ */
 
-public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder> implements ItemTouchHelperAdapter {
-    private final List<NavListItem> mItems = new ArrayList<>();
+public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.ItemViewHolder> implements ItemTouchHelperAdapter {
+
+    private final List<Item> mItems = new ArrayList<>();
     private final OnStartDragListener mDragStartListener;
     private final RecyclerViewClickListener listener;
     private final Context context;
 
-    public RecyclerListAdapter(Context context, OnStartDragListener dragStartListener, List<NavListItem> items, RecyclerViewClickListener listener) {
+    public EditRecListAdapter(Context context, OnStartDragListener dragStartListener, List<Item> items, RecyclerViewClickListener listener) {
         mDragStartListener = dragStartListener;
         mItems.addAll(items);
         this.context = context;
@@ -41,54 +44,25 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     }
 
     @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EditRecListAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.simple_list_item, parent, false);
-        return new ItemViewHolder(view, this.listener);
+        return new EditRecListAdapter.ItemViewHolder(view, this.listener);
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder holder, int position) {
-        final NavListItem curNavListItem = mItems.get(position);
-        final Item curItem = curNavListItem.getItem();
+    public void onBindViewHolder(final EditRecListAdapter.ItemViewHolder holder, int position) {
+        final Item curItem = mItems.get(position);
 
-        holder.tvHeading.setText(curNavListItem.getItem().getName());
-
-        if (curNavListItem.isEditable()) {
-            holder.imageFront.setImageResource(R.drawable.ic_reorder_black_24px);
-            holder.imageBack.setImageResource(R.drawable.ic_edit_black_24dp);
-            // Start a drag whenever the handle view it touched
-            holder.imageFront.setOnTouchListener((v, event) -> {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    mDragStartListener.onStartDrag(holder);
-                }
-                return false;
-            });
-        } else if (curItem instanceof Scene) {
-            holder.imageFront.setVisibility(View.GONE);
-            holder.imageBack.setImageResource(R.drawable.ic_chevron_right_black_24dp);
-            holder.imageBack.setVisibility(View.VISIBLE);
-        } else if (curItem instanceof Shoot) {
-            holder.imageFront.setVisibility(View.GONE);
-            holder.imageBack.setImageResource(R.drawable.ic_chevron_right_black_24dp);
-            holder.imageBack.setVisibility(View.VISIBLE);
-        } else if (curItem instanceof Weapon) {
-            // Warnings
-            if (((Weapon) curItem).getWarnings().size() > 0) {
-                holder.imageFront.setColorFilter(ContextCompat.getColor(context, R.color.colorWarning));
-                holder.imageFront.setVisibility(View.VISIBLE);
-            } else {
-                holder.imageFront.setVisibility(View.INVISIBLE);
+        holder.tvHeading.setText(curItem.getName());
+        holder.imageFront.setImageResource(R.drawable.ic_reorder_black_24px);
+        holder.imageBack.setImageResource(R.drawable.ic_edit_black_24dp);
+        // Start a drag whenever the handle view it touched
+        holder.imageFront.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                mDragStartListener.onStartDrag(holder);
             }
-
-            // Set go button image to the connection status
-            holder.imageBack.setImageDrawable(((Weapon) curItem).getConnectionStatus().getDrawable(context));
-
-            if (((Weapon) curItem).getConnectionStatus() == ConnectionStatus.NO_CONNECTION) {
-                holder.imageBack.setColorFilter(ContextCompat.getColor(context, R.color.colorDanger));
-            } else {
-                holder.imageBack.setColorFilter(ContextCompat.getColor(context, R.color.colorPositive));
-            }
-        }
+            return false;
+        });
     }
 
     @Override
@@ -99,7 +73,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        NavListItem movedItem = mItems.remove(fromPosition);
+        Item movedItem = mItems.remove(fromPosition);
         mItems.add(toPosition, movedItem);
         notifyItemMoved(fromPosition, toPosition);
         return true;
@@ -109,6 +83,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public int getItemCount() {
         return mItems.size();
     }
+
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder, View.OnClickListener {
         private final TextView tvHeading;

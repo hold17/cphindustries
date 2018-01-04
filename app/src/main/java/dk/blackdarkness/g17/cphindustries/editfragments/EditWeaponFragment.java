@@ -19,10 +19,11 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateWeaponFragment;
 import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
 import dk.blackdarkness.g17.cphindustries.dto.FireMode;
+import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
-import dk.blackdarkness.g17.cphindustries.recyclerview.NavListItem;
-import dk.blackdarkness.g17.cphindustries.recyclerview.RecyclerListAdapter;
+import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
+//import dk.blackdarkness.g17.cphindustries.recyclerview.NavListItem;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
@@ -57,16 +58,16 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_editWeapon_recyclerView);
 
-        List<NavListItem> weapons = new ArrayList<>();
-        weapons.add(new NavListItem(new Weapon(0, "Weapon 1", FireMode.BURST, ConnectionStatus.NO_CONNECTION), true));
-        weapons.add(new NavListItem(new Weapon(1, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.BAR_0), true));
-        weapons.add(new NavListItem(new Weapon(2, "Weapon 3", FireMode.SINGLE, ConnectionStatus.BAR_3), true));
-        weapons.add(new NavListItem(new Weapon(3, "Weapon 4", ConnectionStatus.FULL), true)); // Default to SAFE mode
-        weapons.add(new NavListItem(new Weapon(4, "Weapon 5", FireMode.BURST, ConnectionStatus.BAR_1), true));
+        List<Item> weapons = new ArrayList<>();
+        weapons.add(new Weapon(0, "Weapon 1", FireMode.BURST, ConnectionStatus.NO_CONNECTION));
+        weapons.add(new Weapon(1, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.BAR_0));
+        weapons.add(new Weapon(2, "Weapon 3", FireMode.SINGLE, ConnectionStatus.BAR_3));
+        weapons.add(new Weapon(3, "Weapon 4", ConnectionStatus.FULL)); // Default to SAFE mode
+        weapons.add(new Weapon(4, "Weapon 5", FireMode.BURST, ConnectionStatus.BAR_1));
 
         final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
 
-        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, weapons, listener);
+        EditRecListAdapter adapter = new EditRecListAdapter(getActivity(), this, weapons, listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

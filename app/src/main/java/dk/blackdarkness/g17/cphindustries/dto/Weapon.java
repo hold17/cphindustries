@@ -72,6 +72,12 @@ public class Weapon extends Item {
     }
 
     public List<String> getWarnings() {
+        final String errorMsg = "No connection to the device."; // TODO: Put this in "strings.xml"
+
+        if (!this.warnings.contains(errorMsg) && this.connectionStatus == ConnectionStatus.NO_CONNECTION) {
+            this.warnings.add(errorMsg);
+        }
+
         return warnings;
     }
 

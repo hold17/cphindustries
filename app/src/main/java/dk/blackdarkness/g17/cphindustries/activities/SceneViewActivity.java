@@ -24,10 +24,14 @@ public class SceneViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_scene_view_layout);
         Log.d(TAG, "onCreate: Creating ShotViewActivity");
         enableActionBar(false);
-        initSceneViewFragment();
-        setContentView(R.layout.activity_scene_view_layout);
+
+        // only ADD the fragment if starting after app has been completely killed off
+        if (savedInstanceState == null) {
+            initSceneViewFragment();
+        }
     }
 
     @Override
@@ -43,15 +47,18 @@ public class SceneViewActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if(fragmentManager.getBackStackEntryCount() > 1) {
+        // if we're not yet back at sceneViewFragment, pop stack
+        if (fragmentManager.getBackStackEntryCount() > 1) {
             //fragmentManager.popBackStack();
             //TODO: find better method than immediate
             fragmentManager.popBackStackImmediate();
+            // if after popping stack we're back at sceneViewFragment, disable 'up' button
             Fragment f = fragmentManager.findFragmentById(R.id.fragment_container);
             if (f instanceof SceneViewFragment) {
                 enableActionBar(false);
             }
         } else {
+            // if we're on sceneViewFragment, finish activity and go to dashboard
             finish();
         }
     }
