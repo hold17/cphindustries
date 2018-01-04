@@ -44,6 +44,7 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_scene_view_layout, container, false);
+        SharedPreferenceManager.init(getContext());
         lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
 
