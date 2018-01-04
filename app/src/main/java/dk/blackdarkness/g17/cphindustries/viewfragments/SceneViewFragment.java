@@ -19,6 +19,7 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
@@ -54,17 +55,11 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Scenes");
-        lock.setOnClickListener(this);
+    public void onResume() {
+        super.onResume();
+        SharedPreferenceManager.init(getContext());
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_scene_recyclerView);
-
-//        List<NavListItem> scenes = new ArrayList<>();
-//        scenes.add(new NavListItem(new Scene(1, "1 - The shooting scene"), false));
-//        scenes.add(new NavListItem(new Scene(22, "22 - Robbing the Bank"), false));
-//        scenes.add(new NavListItem(new Scene(53, "54 - The escape"), false));
 
         final RecyclerViewClickListener listener = (v, position) -> goToShotViewFragment(position);
 
@@ -80,6 +75,13 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
 
         mItemTouchHelper = new ItemTouchHelper(SITHCallback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Scenes");
+        lock.setOnClickListener(this);
     }
 
     private static List<Item> getListOfScenes() {
