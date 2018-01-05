@@ -18,22 +18,13 @@ import dk.blackdarkness.g17.cphindustries.dto.Weapon;
  * Created by jonaslarsen on 04/01/2018.
  */
 
-public class DemoData {
+public class DemoDataRepository {
     private static final String SAVED_SCENES_LOCATION = "SAVED_SCENES_LIST";
 
     public static void save(List<Scene> allScenes){
-
         if (SharedPreferenceManager.getInstance() == null) throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
         SharedPreferenceManager.getInstance().saveObject(SAVED_SCENES_LOCATION, allScenes);
     }
-
-    private static Object loadFromPrefs() {
-
-        Type returnType = new TypeToken<ArrayList<Scene>>(){}.getType();
-        return SharedPreferenceManager.getInstance().getObject(SAVED_SCENES_LOCATION,returnType);
-
-    }
-
 
     public static List<Scene> load(){
         if (SharedPreferenceManager.getInstance() == null) throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
@@ -43,7 +34,11 @@ public class DemoData {
         }
 
         return (ArrayList<Scene>) loadFromPrefs();
-        //return this.allScenes;
+    }
+
+    private static Object loadFromPrefs() {
+        Type returnType = new TypeToken<ArrayList<Scene>>(){}.getType();
+        return SharedPreferenceManager.getInstance().getObject(SAVED_SCENES_LOCATION,returnType);
     }
 
     private static List<Scene> generateDemoData() {
@@ -135,6 +130,4 @@ public class DemoData {
 
         return scenes;
     }
-
-
 }
