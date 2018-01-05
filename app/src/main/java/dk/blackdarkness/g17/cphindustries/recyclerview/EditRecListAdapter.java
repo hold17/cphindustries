@@ -2,7 +2,6 @@ package dk.blackdarkness.g17.cphindustries.recyclerview;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,11 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
+import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
-import dk.blackdarkness.g17.cphindustries.dto.Scene;
-import dk.blackdarkness.g17.cphindustries.dto.Shoot;
-import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperViewHolder;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
@@ -67,8 +63,15 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
 
     @Override
     public void onItemDismiss(int position) {
+        final Item deletedItem = mItems.get(position);
+        System.out.println("Iraq: Deleting scene " + deletedItem.getId() + "(" + deletedItem.getName() + ")");
+
+        // TODO: Only works for scenes, crashes for shoots and weapons - See issue #xx on GH
+        ApplicationConfig.getDaoFactory().getSceneDao().delete(deletedItem.getId());
+
         mItems.remove(position);
         notifyItemRemoved(position);
+
     }
 
     @Override
