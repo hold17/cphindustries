@@ -85,13 +85,11 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         lock.setOnClickListener(this);
     }
 
-    private static List<Item> getListOfScenes() {
-      final List<Item> itemScenes = new ArrayList<>();
+    public static List<Item> getListOfScenes() {
+        final List<Item> itemScenes = new ArrayList<>();
         final List<Scene> scenes =  ApplicationConfig.getDaoFactory().getSceneDao().get();
 
-        for (Scene s : scenes) {
-            itemScenes.add(s);
-        }
+        itemScenes.addAll(scenes);
 
         return itemScenes;
     }
