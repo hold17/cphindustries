@@ -25,6 +25,7 @@ import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
+import dk.blackdarkness.g17.cphindustries.viewfragments.SceneViewFragment;
 
 /**
  * Created by Thoma on 11/02/2017.
@@ -56,14 +57,9 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_editScene_recyclerView);
 
-        List<Item> scenes = new ArrayList<>();
-        scenes.add(new Scene(1, "1 - The shooting scene"));
-        scenes.add(new Scene(22, "22 - Robbing the Bank"));
-        scenes.add(new Scene(53, "54 - The escape"));
+        final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF"); // TODO: Stuff???
 
-        final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
-
-        EditRecListAdapter adapter = new EditRecListAdapter(getActivity(), this, scenes, listener);
+        EditRecListAdapter adapter = new EditRecListAdapter(getActivity(), this, SceneViewFragment.getListOfScenes(), listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
