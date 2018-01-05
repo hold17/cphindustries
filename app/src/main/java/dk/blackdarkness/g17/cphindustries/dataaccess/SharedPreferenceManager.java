@@ -63,12 +63,12 @@ public class SharedPreferenceManager {
     /**
      * Saves objects in Shared Preferences
      * @param storeLocation Where to store the object - should be a string from "strings.xml"
-     * @param obj The object to be stored
+     * @param object The object to be stored
      */
-    public void saveObject(String storeLocation, Object obj) {
+    public void saveObject(String storeLocation, Object object) {
         if (instance == null) return;
 
-        final String jsonObj = gson.toJson(obj);
+        final String jsonObj = gson.toJson(object);
 
         this.prefsEditor.putString(storeLocation, jsonObj).commit();
     }
