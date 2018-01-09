@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,14 +25,13 @@ import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperVi
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 
-public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.ItemViewHolder> implements ItemTouchHelperAdapter {
+public class StdRecListAdapter extends RecyclerView.Adapter<ItemViewHolder> implements ItemTouchHelperAdapter {
     private final List<Item> mItems = new ArrayList<>();
-    private final OnStartDragListener mDragStartListener;
     private final RecyclerViewClickListener listener;
     private final Context context;
 
     public StdRecListAdapter(Context context, OnStartDragListener dragStartListener, List<Item> items, RecyclerViewClickListener listener) {
-        mDragStartListener = dragStartListener;
+        //mDragStartListener = dragStartListener; //not used here
         mItems.addAll(items);
         this.context = context;
         this.listener = listener;
@@ -101,7 +99,9 @@ public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.It
         return mItems.size();
     }
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder, View.OnClickListener {
+
+    // TODO: delete this when we're sure we don't need a local itemviewholder
+    /*public static class ItemViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder, View.OnClickListener {
         private final TextView tvHeading;
         private final ImageView imageFront;
         private final ImageView imageBack;
@@ -133,5 +133,6 @@ public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.It
             System.out.println("dk.blackdarkness.g17.cphindustries.RecyclerView item clicked on View: " + view.getTag() +  " Position: " + position);
             this.listener.onClick(view, position);
         }
-    }
+    }*/
+
 }
