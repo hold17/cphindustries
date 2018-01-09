@@ -1,15 +1,11 @@
 package dk.blackdarkness.g17.cphindustries.recyclerview;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,31 +18,28 @@ import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperAdapter;
-import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperViewHolder;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 
-public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.ItemViewHolder> implements ItemTouchHelperAdapter {
+public class StdRecListAdapter extends RecyclerView.Adapter<ItemViewHolderCommon> implements ItemTouchHelperAdapter {
     private final List<Item> mItems = new ArrayList<>();
-    private final OnStartDragListener mDragStartListener;
     private final RecyclerViewClickListener listener;
     private final Context context;
 
-    public StdRecListAdapter(Context context, OnStartDragListener dragStartListener, List<Item> items, RecyclerViewClickListener listener) {
-        mDragStartListener = dragStartListener;
+    public StdRecListAdapter(Context context/*, OnStartDragListener dragStartListener*/, List<Item> items, RecyclerViewClickListener listener) {
         mItems.addAll(items);
         this.context = context;
         this.listener = listener;
     }
 
     @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ItemViewHolderCommon onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.simple_list_item, parent, false);
-        return new ItemViewHolder(view, this.listener);
+        return new ItemViewHolderCommon(view, this.listener);
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder holder, int position) {
+    public void onBindViewHolder(final ItemViewHolderCommon holder, int position) {
         final Item curItem = mItems.get(position);
 
         holder.tvHeading.setText(curItem.getName());
@@ -62,7 +55,6 @@ public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.It
         } else if (curItem instanceof Weapon) {
             // Warnings
             if (((Weapon) curItem).getWarnings().size() > 0) {
-//                holder.imageFront.setColorFilter(ContextCompat.getColor(context, R.color.colorWarning));
                 holder.imageFront.setVisibility(View.VISIBLE);
                 holder.imageFront.setImageResource(R.drawable.ic_warning_orange_24dp);
                 System.out.println("IRAQ! There are warnings");
@@ -99,39 +91,5 @@ public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.It
     @Override
     public int getItemCount() {
         return mItems.size();
-    }
-
-    public static class ItemViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder, View.OnClickListener {
-        private final TextView tvHeading;
-        private final ImageView imageFront;
-        private final ImageView imageBack;
-        private final RecyclerViewClickListener listener;
-
-        private ItemViewHolder(View itemView, RecyclerViewClickListener listener) {
-            super(itemView);
-            tvHeading = itemView.findViewById(R.id.simpleListItem_tvHeading);
-            imageFront = itemView.findViewById(R.id.simpleListItem_imageFront);
-            imageBack = itemView.findViewById(R.id.simpleListItem_imageBack);
-
-            this.listener = listener;
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onItemSelected() {
-            itemView.setBackgroundColor(Color.LTGRAY);
-        }
-
-        @Override
-        public void onItemClear() {
-            itemView.setBackgroundColor(0);
-        }
-
-        @Override
-        public void onClick(View view) {
-            int position = getAdapterPosition();
-            System.out.println("dk.blackdarkness.g17.cphindustries.RecyclerView item clicked on View: " + view.getTag() +  " Position: " + position);
-            this.listener.onClick(view, position);
-        }
     }
 }

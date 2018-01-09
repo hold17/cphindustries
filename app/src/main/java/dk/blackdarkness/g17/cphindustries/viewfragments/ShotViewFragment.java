@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,6 @@ import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditShotFragment;
 
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
-import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
 
@@ -30,11 +28,10 @@ import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHe
  * Created by Thoma on 11/02/2017.
  */
 
-public class ShotViewFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
+public class ShotViewFragment extends Fragment implements View.OnClickListener {
     private View view;
     private static final String TAG = "ShotViewFragment";
     private FloatingActionButton lock;
-    private ItemTouchHelper mItemTouchHelper;
     private int sceneId = -1;
     private ShootDao shootDao;
 
@@ -60,7 +57,7 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
 
         final RecyclerViewClickListener listener = (v, position) -> goToWeaponViewFragment(position);
 
-        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), this, getListOfShoots(this.sceneId), listener);
+        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), getListOfShoots(this.sceneId), listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -69,8 +66,6 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
         SITHCallback.setDragEnabled(false);
         SITHCallback.setSwipeEnabled(false);
 
-        mItemTouchHelper = new ItemTouchHelper(SITHCallback);
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     private static List<Item> getListOfShoots(int sceneId) {
@@ -117,10 +112,5 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
                 .replace(R.id.fragment_container, weaponViewFragment)
                 .addToBackStack(null)
                 .commit();
-    }
-
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        mItemTouchHelper.startDrag(viewHolder);
     }
 }

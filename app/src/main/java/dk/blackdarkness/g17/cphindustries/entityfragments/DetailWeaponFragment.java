@@ -60,7 +60,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         this.weaponNameText.setText(this.weapon.getName());
 
         this.weaponIdText.setText(Integer.toString(this.weapon.getId()));
-        this.weaponIdText.setText("" + this.weapon.getId());
+        //this.weaponIdText.setText("" + this.weapon.getId());
         this.weaponFiremodeText.setText(this.weapon.getFireMode().name());
         this.weaponShootsText.setText("Shoots will go here...");
         // Set warnings

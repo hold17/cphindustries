@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
-import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
 
@@ -33,11 +31,10 @@ import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHe
  * Created by Thoma on 11/02/2017.
  */
 
-public class SceneViewFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
+public class SceneViewFragment extends Fragment implements View.OnClickListener {
     private View view;
     private static final String TAG = "SceneViewFragment";
     private FloatingActionButton lock;
-    private ItemTouchHelper mItemTouchHelper;
     private SceneDao sceneDao;
 
     @Nullable
@@ -65,7 +62,7 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         final RecyclerViewClickListener listener = (v, position) -> goToShotViewFragment(position);
 
 //        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes, listener);
-        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), this, getListOfScenes(), listener);
+        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), getListOfScenes(), listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -73,9 +70,6 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
         SITHCallback.setDragEnabled(false);
         SITHCallback.setSwipeEnabled(false);
-
-        mItemTouchHelper = new ItemTouchHelper(SITHCallback);
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -126,10 +120,5 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
                 .replace(R.id.fragment_container, shotViewFragment)
                 .addToBackStack(null)
                 .commit();
-    }
-
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        mItemTouchHelper.startDrag(viewHolder);
     }
 }
