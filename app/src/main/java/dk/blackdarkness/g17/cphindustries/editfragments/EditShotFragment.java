@@ -63,11 +63,6 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_editShot_recyclerView);
 
-//        List<Item> shoots = new ArrayList<>();
-//        shoots.add(new Shoot(0, "Shoot 1"));
-//        shoots.add(new Shoot(1, "Shoot 2"));
-//        shoots.add(new Shoot(2, "Shoot 3"));
-
         final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
 
         final List<Item> shoots = ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().get(sceneId));
@@ -84,16 +79,6 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
         mItemTouchHelper = new ItemTouchHelper(SITHCallback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
-
-//    private List<Item> getListOfShootsAsItems() {
-//        final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().get(sceneId);
-//        final List<Item> items = new ArrayList<>();
-//
-//        for (Item shoot : shoots)
-//            items.add(shoot);
-//
-//        return items;
-//    }
 
     @Override
     public void onClick(View view) {
