@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import dk.blackdarkness.g17.cphindustries.BuildConfig;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.viewfragments.SceneViewFragment;
 
@@ -111,13 +112,6 @@ public class SceneViewActivity extends AppCompatActivity {
     }
 
     public String getAppVersion() {
-        try {
-            PackageInfo packageInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
-            String version = packageInfo.versionName;
-            return "Current application version: " + version;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
+            return "Current application version: " + BuildConfig.VERSION_NAME;
     }
 }
