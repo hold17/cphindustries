@@ -10,13 +10,13 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperViewHolder;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 
-class ItemViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder, View.OnClickListener {
+class ItemViewHolderCommon extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder, View.OnClickListener {
     final TextView tvHeading;
     final ImageView imageFront;
     final ImageView imageBack;
     final RecyclerViewClickListener listener;
 
-    ItemViewHolder(View itemView, RecyclerViewClickListener listener) {
+    ItemViewHolderCommon(View itemView, RecyclerViewClickListener listener) {
         super(itemView);
         tvHeading = itemView.findViewById(R.id.simpleListItem_tvHeading);
         imageFront = itemView.findViewById(R.id.simpleListItem_imageFront);

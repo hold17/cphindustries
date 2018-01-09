@@ -16,7 +16,7 @@ import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperAd
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 
-public class EditRecListAdapter extends RecyclerView.Adapter<ItemViewHolder> implements ItemTouchHelperAdapter {
+public class EditRecListAdapter extends RecyclerView.Adapter<ItemViewHolderCommon> implements ItemTouchHelperAdapter {
     private final List<Item> mItems = new ArrayList<>();
     private final OnStartDragListener mDragStartListener;
     private final RecyclerViewClickListener listener;
@@ -30,13 +30,13 @@ public class EditRecListAdapter extends RecyclerView.Adapter<ItemViewHolder> imp
     }
 
     @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ItemViewHolderCommon onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.simple_list_item, parent, false);
-        return new ItemViewHolder(view, this.listener);
+        return new ItemViewHolderCommon(view, this.listener);
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder holder, int position) {
+    public void onBindViewHolder(final ItemViewHolderCommon holder, int position) {
         final Item curItem = mItems.get(position);
 
         holder.tvHeading.setText(curItem.getName());

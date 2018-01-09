@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponFragment;
 import dk.blackdarkness.g17.cphindustries.entityfragments.DetailWeaponFragment;
 
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
-import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
 
@@ -33,11 +31,10 @@ import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHe
  * Created by Thoma on 11/02/2017.
  */
 
-public class WeaponViewFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
+public class WeaponViewFragment extends Fragment implements View.OnClickListener {
     private View view;
     private static final String TAG = "WeaponViewFragment";
     private FloatingActionButton lock;
-    private ItemTouchHelper mItemTouchHelper;
     private WeaponDao weaponDao;
     private int sceneId = -1;
     private int shootId = -1;
@@ -81,7 +78,7 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
         final RecyclerViewClickListener listener = (v, position) -> goToDetailWeaponFragment(position);
 
 //        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, weapons, listener);
-        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), this, getListOfWeapons(sceneId, shootId), listener);
+        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), getListOfWeapons(sceneId, shootId), listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -89,9 +86,6 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
         SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
         SITHCallback.setDragEnabled(false);
         SITHCallback.setSwipeEnabled(false);
-
-        mItemTouchHelper = new ItemTouchHelper(SITHCallback);
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     private static List<Item> getListOfWeapons(int sceneId, int shootId) {
@@ -137,10 +131,5 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
                 .replace(R.id.fragment_container, editWeaponFragment)
                 .addToBackStack(null)
                 .commit();
-    }
-
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        mItemTouchHelper.startDrag(viewHolder);
     }
 }
