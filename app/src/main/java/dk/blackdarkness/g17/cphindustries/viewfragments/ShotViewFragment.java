@@ -98,7 +98,7 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener {
         Fragment editShotFragment = new EditShotFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt("sceneId", this.sceneId);
+        bundle.putInt(SceneViewActivity.SCENE_ID_KEY, this.sceneId);
         editShotFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

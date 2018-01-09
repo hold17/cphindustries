@@ -47,7 +47,7 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
         this.lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
 
-        this.sceneId = getArguments().getInt("sceneId");
+        this.sceneId = getArguments().getInt(SceneViewActivity.SCENE_ID_KEY);
         System.out.println("SCENE ID: " + this.sceneId);
 
         return view;
