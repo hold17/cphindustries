@@ -70,22 +70,8 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_weapon_recyclerView);
 
-//        Toast.makeText(getContext(), "Shoot ID = " + getArguments().getInt("SHOOT_ID"), Toast.LENGTH_LONG).show();
-//        int sceneId = getArguments().getInt("SCENE_ID", -1);
-//        System.out.println("SCENE ID = " + sceneId);
-//        int shootId = getArguments().getInt("SHOOT_ID", -1);
-//        System.out.println("SHOOT ID = " + shootId);
-
-//        List<NavListItem> weapons = new ArrayList<>();
-//        weapons.add(new NavListItem(new Weapon(0, "Weapon 1", FireMode.BURST, ConnectionStatus.NO_CONNECTION), false));
-//        weapons.add(new NavListItem(new Weapon(1, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.BAR_0), false));
-//        weapons.add(new NavListItem(new Weapon(2, "Weapon 3", FireMode.SINGLE, ConnectionStatus.BAR_3), false));
-//        weapons.add(new NavListItem(new Weapon(3, "Weapon 4", ConnectionStatus.FULL), false)); // Default to SAFE mode
-//        weapons.add(new NavListItem(new Weapon(4, "Weapon 5", FireMode.BURST, ConnectionStatus.BAR_1), false));
-
         final RecyclerViewClickListener listener = (v, position) -> goToDetailWeaponFragment(position);
 
-//        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, weapons, listener);
         StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), getListOfWeapons(sceneId, shootId), listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
@@ -120,10 +106,9 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
         final Weapon chosenWeapon = this.weaponDao.get(sceneId, shootId).get(position);
 
         Bundle bundle = new Bundle();
-        bundle.putInt("SCENE_ID", this.sceneId);
-        bundle.putInt("SHOOT_ID", this.shootId);
-        bundle.putInt("WEAPON_ID", chosenWeapon.getId());
-
+        bundle.putInt(SceneViewActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(SceneViewActivity.SHOOT_ID_KEY, this.shootId);
+        bundle.putInt(SceneViewActivity.WEAPON_ID_KEY, chosenWeapon.getId());
         detailWeaponFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()
@@ -135,6 +120,12 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
     public void goToEditWeaponFragment() {
         Log.d(TAG, "goToEditWeaponFragment: Returning");
         Fragment editWeaponFragment = new EditWeaponFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(SceneViewActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(SceneViewActivity.SHOOT_ID_KEY, this.shootId);
+        editWeaponFragment.setArguments(bundle);
+
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, editWeaponFragment)
                 .addToBackStack(null)
