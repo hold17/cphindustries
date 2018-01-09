@@ -1,7 +1,5 @@
 package dk.blackdarkness.g17.cphindustries.activities;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
