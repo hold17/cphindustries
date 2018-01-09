@@ -18,10 +18,10 @@ import java.util.List;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateSceneFragment;
+import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 
-import dk.blackdarkness.g17.cphindustries.recyclerview.NavListItem;
-import dk.blackdarkness.g17.cphindustries.recyclerview.RecyclerListAdapter;
+import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
@@ -49,21 +49,21 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Edit Scene");
+        ((SceneViewActivity)getActivity()).setActionBarTitle("Edit Scenes");
         this.add.setVisibility(View.VISIBLE);
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_editScene_recyclerView);
 
-        List<NavListItem> scenes = new ArrayList<>();
-        scenes.add(new NavListItem(new Scene(1, "1 - The shooting scene"), true));
-        scenes.add(new NavListItem(new Scene(22, "22 - Robbing the Bank"), true));
-        scenes.add(new NavListItem(new Scene(53, "54 - The escape"), true));
+        List<Item> scenes = new ArrayList<>();
+        scenes.add(new Scene(1, "1 - The shooting scene"));
+        scenes.add(new Scene(22, "22 - Robbing the Bank"));
+        scenes.add(new Scene(53, "54 - The escape"));
 
         final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
 
-        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes, listener);
+        EditRecListAdapter adapter = new EditRecListAdapter(getActivity(), this, scenes, listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
