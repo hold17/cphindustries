@@ -2,6 +2,7 @@ package dk.blackdarkness.g17.cphindustries.dataaccess;
 
 import java.util.List;
 
+import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 
 /**
@@ -32,16 +33,26 @@ public class ShootDaoDemo implements ShootDao {
     }
 
     @Override
-    public void create(int sceneId, Shoot shoot) {
-        shoot.setId(0);
+    public void create(int sceneId, Shoot newShoot) {
+        final SceneDaoDemo dao = new SceneDaoDemo();
+        final Scene scene = dao.get(sceneId);
 
-        for (Shoot s : factory.getSceneDao().get(sceneId).getShoots()) {
-            if (s.getId() > shoot.getId()) {
-                shoot.setId(s.getId() + 1);
+        int highestId = newShoot.getId();
+
+        for (Shoot shoot : scene.getShoots()) {
+            // +1 for O(n^2)
+            if (shoot.getId() > highestId) {
+                highestId = shoot.getId() + 1;
             }
         }
 
-        factory.getSceneDao().get(sceneId).getShoots().add(shoot);
+        newShoot.setId(highestId);
+
+        List<Shoot> sceneShoots = scene.getShoots();
+        sceneShoots.add(newShoot);
+        scene.setShoots(sceneShoots);
+
+        dao.update(scene);
     }
 
     @Override

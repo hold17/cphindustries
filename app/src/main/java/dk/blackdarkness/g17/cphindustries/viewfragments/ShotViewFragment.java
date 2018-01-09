@@ -22,6 +22,7 @@ import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditShotFragment;
 
 import dk.blackdarkness.g17.cphindustries.helper.BreadcrumbHelper;
+import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
@@ -62,7 +63,9 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener {
 
         final RecyclerViewClickListener listener = (v, position) -> goToWeaponViewFragment(position);
 
-        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), getListOfShoots(this.sceneId), listener);
+        final List<Item> shoots = ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().get(sceneId));
+
+        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), shoots, listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -73,16 +76,16 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private static List<Item> getListOfShoots(int sceneId) {
-        final List<Item> itemShoots = new ArrayList<>();
-        final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().get(sceneId);
-
-        for (Shoot s : shoots) {
-            itemShoots.add(s);
-        }
-
-        return itemShoots;
-    }
+//    private static List<Item> getListOfShoots(int sceneId) {
+//        final List<Item> itemShoots = new ArrayList<>();
+//        final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().get(sceneId);
+//
+//        for (Shoot s : shoots) {
+//            itemShoots.add(s);
+//        }
+//
+//        return itemShoots;
+//    }
 
     @Override
     public void onClick(View view) {
@@ -93,6 +96,11 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener {
     public void goToEditShotFragment() {
         Log.d(TAG, "goToEditShotFragment: Returning");
         Fragment editShotFragment = new EditShotFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("sceneId", this.sceneId);
+        editShotFragment.setArguments(bundle);
+
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, editShotFragment)
                 .addToBackStack(null)

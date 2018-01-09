@@ -18,9 +18,11 @@ import java.util.List;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateShotFragment;
+import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 
+import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
@@ -35,6 +37,7 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
     private static final String TAG = "EditShotFragment";
     private FloatingActionButton lock, add;
     private ItemTouchHelper mItemTouchHelper;
+    private int sceneId; // TODO: HARDCODED for now...
 
     @Nullable
     @Override
@@ -43,6 +46,10 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
         this.add = view.findViewById(R.id.createFab);
         this.lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
+
+        this.sceneId = getArguments().getInt("sceneId");
+        System.out.println("SCENE ID: " + this.sceneId);
+
         return view;
     }
 
@@ -56,12 +63,14 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_editShot_recyclerView);
 
-        List<Item> shoots = new ArrayList<>();
-        shoots.add(new Shoot(0, "Shoot 1"));
-        shoots.add(new Shoot(1, "Shoot 2"));
-        shoots.add(new Shoot(2, "Shoot 3"));
+//        List<Item> shoots = new ArrayList<>();
+//        shoots.add(new Shoot(0, "Shoot 1"));
+//        shoots.add(new Shoot(1, "Shoot 2"));
+//        shoots.add(new Shoot(2, "Shoot 3"));
 
         final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
+
+        final List<Item> shoots = ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().get(sceneId));
 
         EditRecListAdapter adapter = new EditRecListAdapter(getActivity(), this, shoots, listener);
         recyclerView.setAdapter(adapter);
@@ -75,6 +84,16 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
         mItemTouchHelper = new ItemTouchHelper(SITHCallback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
+
+//    private List<Item> getListOfShootsAsItems() {
+//        final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().get(sceneId);
+//        final List<Item> items = new ArrayList<>();
+//
+//        for (Item shoot : shoots)
+//            items.add(shoot);
+//
+//        return items;
+//    }
 
     @Override
     public void onClick(View view) {
@@ -95,6 +114,11 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
     public void goToCreateShotFragment() {
         Log.d(TAG, "goToCreateShotFragment: Returning.");
         Fragment createShotFragment = new CreateShotFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("sceneId", this.sceneId);
+        createShotFragment.setArguments(bundle);
+
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, createShotFragment)
                 .addToBackStack(null)
