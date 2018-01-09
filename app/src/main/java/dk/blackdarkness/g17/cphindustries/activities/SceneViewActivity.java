@@ -1,5 +1,7 @@
 package dk.blackdarkness.g17.cphindustries.activities;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,22 +22,17 @@ public class SceneViewActivity extends AppCompatActivity {
 
     private static final String TAG = "SceneViewActivity";
 
-//    TODO: Bliver ikke brugt lige nu - er til actionbar metode, linie 53
-//    private String back = "back";
-//    private String cancel = "cancel";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scene_view_layout);
         Log.d(TAG, "onCreate: Creating ShotViewActivity");
 
+        //Create custom toolbar, set title and set toolbar as activity actionbar
         Toolbar customToolbar = findViewById(R.id.customToolbar);
-        customToolbar.setTitle("Scenes");
         setSupportActionBar(customToolbar);
-//        getSupportActionBar().setDisplayShowTitleEnabled(true);
-//        getSupportActionBar().setTitle("Scenes");
-          enableActionBar(false);
+        setActionBarTitle("Scenes");
+        enableActionBar(false);
 
         // only ADD the fragment if starting after app has been completely killed off
         if (savedInstanceState == null) {
@@ -53,6 +50,10 @@ public class SceneViewActivity extends AppCompatActivity {
                 return true;
             case R.id.action_settings:
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_about:
+                Toast.makeText(this, getAppVersion(), Toast.LENGTH_SHORT).show();
+
         }
         if (id == android.R.id.home) {
             onBackPressed();
@@ -88,9 +89,6 @@ public class SceneViewActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    //Forsøg evt. med enableActionBar(Boolean display, String type)
-    //type.equals(this.cancel) el. (this.back) for at sætte det rigtige
-    //ikon i actionbar. Måske skal der custom action bar til!
     public void enableActionBar(Boolean display) {
         getSupportActionBar().setDisplayHomeAsUpEnabled(display);
         getSupportActionBar().setHomeButtonEnabled(display);
@@ -110,5 +108,16 @@ public class SceneViewActivity extends AppCompatActivity {
                 .add(R.id.fragment_container, sceneViewFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public String getAppVersion() {
+        try {
+            PackageInfo packageInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            String version = packageInfo.versionName;
+            return "Current application version: " + version;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

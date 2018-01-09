@@ -51,8 +51,6 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
 
         return view;
-//        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
-//        getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
 
     @Override
