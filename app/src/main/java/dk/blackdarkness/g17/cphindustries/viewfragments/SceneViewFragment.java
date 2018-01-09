@@ -48,8 +48,6 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
         this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
 
         return view;
-//        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
-//        getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
 
     @Override
@@ -75,7 +73,9 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Scenes");
+        ((SceneViewActivity)getActivity()).setActionBarTitle("Scenes");
+        ((SceneViewActivity)getActivity()).setActionBarSubtitle("");
+
         lock.setOnClickListener(this);
     }
 
