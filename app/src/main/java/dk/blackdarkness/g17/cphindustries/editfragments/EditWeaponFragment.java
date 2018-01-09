@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateWeaponFragment;
 import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
 import dk.blackdarkness.g17.cphindustries.dto.FireMode;
@@ -51,7 +52,7 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Edit Weapon");
+        ((SceneViewActivity)getActivity()).setActionBarTitle("Edit Weapons");
         this.add.setVisibility(View.VISIBLE);
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);

@@ -81,7 +81,9 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Scenes");
+        ((SceneViewActivity)getActivity()).setActionBarTitle("Scenes");
+        ((SceneViewActivity)getActivity()).setActionBarSubtitle("");
+
         lock.setOnClickListener(this);
     }
 

@@ -16,11 +16,13 @@ import java.util.List;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditShotFragment;
 
+import dk.blackdarkness.g17.cphindustries.helper.BreadcrumbHelper;
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
@@ -37,6 +39,7 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
     private ItemTouchHelper mItemTouchHelper;
     private int sceneId = -1;
     private ShootDao shootDao;
+    private SceneDao sceneDao;
 
     @Nullable
     @Override
@@ -47,13 +50,15 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener, 
 
         this.sceneId = getArguments().getInt(SceneViewActivity.SCENE_ID_KEY);
         this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
+        this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
 
         return view;
     }
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Shots");
+        ((SceneViewActivity)getActivity()).setActionBarTitle("Shoots");
+        ((SceneViewActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.get(sceneId)));
         lock.setOnClickListener(this);
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_shot_recyclerView);
