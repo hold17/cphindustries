@@ -1,5 +1,6 @@
 package dk.blackdarkness.g17.cphindustries.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -48,6 +49,7 @@ public class SceneViewActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_about:
