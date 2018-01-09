@@ -69,39 +69,4 @@ public class EditRecListAdapter extends RecyclerView.Adapter<ItemViewHolder> imp
     public int getItemCount() {
         return mItems.size();
     }
-
-
-    /*public static class ItemViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder, View.OnClickListener {
-        private final TextView tvHeading;
-        private final ImageView imageFront;
-        private final ImageView imageBack;
-        private final RecyclerViewClickListener listener;
-
-        private ItemViewHolder(View itemView, RecyclerViewClickListener listener) {
-            super(itemView);
-            tvHeading = itemView.findViewById(R.id.simpleListItem_tvHeading);
-            imageFront = itemView.findViewById(R.id.simpleListItem_imageFront);
-            imageBack = itemView.findViewById(R.id.simpleListItem_imageBack);
-
-            this.listener = listener;
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onItemSelected() {
-            itemView.setBackgroundColor(Color.LTGRAY);
-        }
-
-        @Override
-        public void onItemClear() {
-            itemView.setBackgroundColor(0);
-        }
-
-        @Override
-        public void onClick(View view) {
-            int position = getAdapterPosition();
-            System.out.println("dk.blackdarkness.g17.cphindustries.RecyclerView item clicked on View: " + view.getTag() +  " Position: " + position);
-            this.listener.onClick(view, position);
-        }
-    }*/
 }
