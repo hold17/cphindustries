@@ -116,6 +116,7 @@
             tools:layout_editor_absoluteY="303dp" />
     </LinearLayout>
 
+<!--
     <LinearLayout
         android:id="@+id/fr_weapon_details_edit_linearLayout_battery"
         android:layout_width="50dp"
@@ -158,6 +159,7 @@
             android:textSize="12sp" />
 
     </LinearLayout>
+-->
 
     <!-- <LinearLayout
          android:id="@+id/fr_weapon_details_edit_linearLayout_oxgen"
@@ -241,7 +243,7 @@
 
      </LinearLayout> -->
 
-    <LinearLayout
+  <!--  <LinearLayout
         android:id="@+id/fr_weapon_details_edit_linearLayout_fire_mode"
         android:layout_width="248dp"
         android:layout_height="40dp"
@@ -286,7 +288,7 @@
             android:background="@drawable/buttonshape_right"
             android:text="@string/safe" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <include layout="@layout/fab_buttons_layout"></include>
 

@@ -3,6 +3,7 @@ package dk.blackdarkness.g17.cphindustries.editfragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -92,7 +93,6 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         switch (view.getId()) {
             case R.id.fr_weapon_details_edit_popup:
                 onButtonShowPopup(view);
-                System.out.println("sker der noget");
                 break;
         }
 
@@ -102,25 +102,24 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     public void onButtonShowPopup(View view){
 
         // get a reference to the already created main layout
-        //LinearLayout mainLayout = (LinearLayout) view.findViewById(R.id.weapon_details_edit);
-
+        ConstraintLayout relativeLayout = getView().findViewById(R.id.weapon_details_edit);
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.edit_weapon_details_popup, null);
+        ViewGroup popupView = (ViewGroup) inflater.inflate(R.layout.edit_weapon_details_popup, null);
 
         // create the popup window
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true; // lets taps outside the popup also dismiss it
         popupWindow = new PopupWindow(popupView, width, height, focusable);
+        System.out.println("sker der noget");
 
 
         // show the popup window
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(relativeLayout, Gravity.CENTER, 0, 0);
 
         // dismiss the popup window
 
-        popupWindow.dismiss();
 
 
     }
