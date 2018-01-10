@@ -102,7 +102,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     public void onButtonShowPopup(View view){
 
         // get a reference to the already created main layout
-        ConstraintLayout relativeLayout = getView().findViewById(R.id.weapon_details_edit);
+        ConstraintLayout relativeLayout = view.findViewById(R.id.weapon_details_edit);
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
         ViewGroup popupView = (ViewGroup) inflater.inflate(R.layout.edit_weapon_details_popup, null);
