@@ -11,14 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
+import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponFragment;
-
-/**
- * Created by Thoma on 11/02/2017.
- */
 
 public class DetailWeaponFragment extends Fragment implements View.OnClickListener {
 
@@ -55,7 +51,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((SceneViewActivity)getActivity()).setActionBarTitle(weapon.getName() + " " + "Details");
+        ((ViewSceneActivity)getActivity()).setActionBarTitle(weapon.getName() + " " + "Details");
 //        this.statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
         this.weaponNameTitle.setText(this.weapon.getName());
         this.weaponNameText.setText(this.weapon.getName());
@@ -66,11 +62,11 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         this.weaponShootsText.setText("Shoots will go here...");
         // Set warnings
         if (this.weapon.getWarnings().size() > 0) {
-            String warnings = "";
+            StringBuilder sb = new StringBuilder();
             for (int c = 0; c < this.weapon.getWarnings().size(); c++) {
-                warnings += c + 1 + " " + this.weapon.getWarnings().get(c) + "\n";
+                sb.append(c).append(1).append(" ").append(this.weapon.getWarnings().get(c)).append("\n");
             }
-            this.statusText.setText(warnings);
+            this.statusText.setText(sb);
         } else {
             this.statusText.setText("No warnings.");
         }
@@ -82,7 +78,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         switch (view.getId()) {
             case R.id.lockFab:
                 //Edit view should be different from the one navigated to
-                //from WeaponViewFragment. Edit this one weapon only?
+                //from ViewWeaponFragment. Edit this one weapon only?
                 Log.d(TAG, "onClick: Trying to open edit weapon fragment.");
                 goToEditWeaponFragment();
         }
