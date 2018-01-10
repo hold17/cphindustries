@@ -41,15 +41,17 @@ public class WeaponDaoDemo implements WeaponDao {
 
     @Override
     public void create(Weapon weapon) {
-        weapon.setId(0);
+        weapon.setId(1);
 
         this.allWeapons = DemoDataRepository.loadListOfWeapons();
 
         for (Weapon w : allWeapons) {
-            if (w.getId() > weapon.getId()) {
+            if (w.getId() == weapon.getId()) {
                 weapon.setId(w.getId() + 1);
-            }
+            } else break;
         }
+
+        this.allWeapons.add(weapon);
         DemoDataRepository.saveListOfWeapons(allWeapons);
     }
 

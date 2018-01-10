@@ -69,16 +69,19 @@ public class ShootDaoDemo implements ShootDao {
 
     @Override
     public void create(Shoot shoot) {
-        shoot.setId(0);
+        shoot.setId(1);
 
         this.allShoots = DemoDataRepository.loadListOfShoots();
 
         for (Shoot s : allShoots) {
-            if (s.getId() > shoot.getId()) {
+            if (s.getId() == shoot.getId()) {
                 shoot.setId(s.getId() + 1);
-            }
+            } else break;
         }
 
+        System.out.println("Created this shoot: " + shoot.toString());
+
+        this.allShoots.add(shoot);
         DemoDataRepository.saveListOfShoots(allShoots);
     }
 

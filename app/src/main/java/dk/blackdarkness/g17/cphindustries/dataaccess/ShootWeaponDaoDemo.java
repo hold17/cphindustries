@@ -38,13 +38,14 @@ public class ShootWeaponDaoDemo implements ShootWeaponDao {
 
     @Override
     public void create(ShootWeapon shootWeapon) {
-        shootWeapon.setShootWeaponId(0);
+        shootWeapon.setShootWeaponId(1);
 
         this.allShootWeapon = DemoDataRepository.loadListOfShootWeapon();
 
         for (ShootWeapon sw :allShootWeapon){
-            if (sw.getShootWeaponId()>shootWeapon.getShootWeaponId()){
-                shootWeapon.setShootWeaponId(shootWeapon.getShootWeaponId()+1);            }
+            if (sw.getShootWeaponId() == shootWeapon.getShootWeaponId()) {
+                shootWeapon.setShootWeaponId(shootWeapon.getShootWeaponId()+1);
+            } else break;
         }
 
         this.allShootWeapon.add(shootWeapon);

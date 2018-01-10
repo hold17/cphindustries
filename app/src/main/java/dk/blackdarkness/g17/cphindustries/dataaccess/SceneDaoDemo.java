@@ -37,15 +37,15 @@ public class SceneDaoDemo implements SceneDao {
 
     @Override
     public void create(Scene scene) {
-        scene.setId(0);
+        scene.setId(1);
 
         this.allScenes = DemoDataRepository.loadListOfScenes();
 
         // Finds new sceneId
         for (Scene s : allScenes) {
-            if (s.getId() > scene.getId()) {
+            if (s.getId() == scene.getId()) {
                 scene.setId(s.getId() + 1);
-            }
+            } else break;
         }
 
         allScenes.add(scene);
