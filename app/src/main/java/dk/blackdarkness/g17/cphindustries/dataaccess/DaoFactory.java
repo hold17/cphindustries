@@ -9,7 +9,7 @@ public class DaoFactory implements IDaoFactory {
     public SceneDao getSceneDao() {
         if (!ApplicationConfig.useDemoData()) return null;
 
-        return new SceneDaoDemo();
+        return new SceneDaoDemo(this);
     }
 
     @Override
@@ -24,5 +24,12 @@ public class DaoFactory implements IDaoFactory {
         if (!ApplicationConfig.useDemoData()) return null;
 
         return new WeaponDaoDemo(this);
+    }
+
+    @Override
+    public ShootWeaponDao getShootWeaponDao() {
+        if (!ApplicationConfig.useDemoData()) return null;
+
+        return new ShootWeaponDaoDemo(this);
     }
 }

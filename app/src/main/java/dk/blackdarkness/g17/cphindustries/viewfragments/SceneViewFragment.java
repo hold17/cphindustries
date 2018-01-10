@@ -37,6 +37,8 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
     private FloatingActionButton lock;
     private SceneDao sceneDao;
 
+    private List<Item> scenes;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,10 +59,13 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_scene_recyclerView);
 
+        System.out.println("position - jeg blev kaldt");
         final RecyclerViewClickListener listener = (v, position) -> goToShotViewFragment(position);
 
+        this.scenes = getListOfScenes();
+
 //        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes, listener);
-        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), getListOfScenes(), listener);
+        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), this.scenes, listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -107,11 +112,14 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener 
     }
 
     public void goToShotViewFragment(int position) {
+        Scene chosenScene = (Scene) this.scenes.get(position);
+
         Log.d(TAG, "goToShotViewFragment: Returning");
         ((SceneViewActivity)getActivity()).enableActionBar(true);
         Fragment shotViewFragment = new ShotViewFragment();
 
-        final Scene chosenScene = this.sceneDao.get().get(position);
+        //final Scene chosenScene = this.sceneDao.get().get(this.scenes.get(position).getId());
+        System.out.println("SceneID: " + chosenScene.getId());
         Bundle bundle = new Bundle();
         bundle.putInt(SceneViewActivity.SCENE_ID_KEY, chosenScene.getId());
         shotViewFragment.setArguments(bundle);

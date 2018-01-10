@@ -44,6 +44,8 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
     private int sceneId = -1;
     private int shootId = -1;
 
+    private List<Item> weapons;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((SceneViewActivity)getActivity()).setActionBarTitle("Weapons");
-        ((SceneViewActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.get(sceneId), shootDao.get(sceneId, shootId)));
+        ((SceneViewActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.get(sceneId), shootDao.get(shootId)));
         lock.setOnClickListener(this);
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_weapon_recyclerView);
@@ -83,10 +85,12 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
 //        weapons.add(new NavListItem(new Weapon(3, "Weapon 4", ConnectionStatus.FULL), false)); // Default to SAFE mode
 //        weapons.add(new NavListItem(new Weapon(4, "Weapon 5", FireMode.BURST, ConnectionStatus.BAR_1), false));
 
+        this.weapons = getListOfWeapons(sceneId, shootId);
+
         final RecyclerViewClickListener listener = (v, position) -> goToDetailWeaponFragment(position);
 
 //        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, weapons, listener);
-        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), getListOfWeapons(sceneId, shootId), listener);
+        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), this.weapons, listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -98,7 +102,7 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
 
     private static List<Item> getListOfWeapons(int sceneId, int shootId) {
         final List<Item> itemWeapons = new ArrayList<>();
-        final List<Weapon> weapons = ApplicationConfig.getDaoFactory().getWeaponDao().get(sceneId, shootId);
+        final List<Weapon> weapons = ApplicationConfig.getDaoFactory().getWeaponDao().getWeapons(shootId);
 
         for (Weapon w : weapons) {
             itemWeapons.add(w);
@@ -117,7 +121,7 @@ public class WeaponViewFragment extends Fragment implements View.OnClickListener
         Log.d(TAG, "goToDetailWeaponFragment: Returning");
         Fragment detailWeaponFragment = new DetailWeaponFragment();
 
-        final Weapon chosenWeapon = this.weaponDao.get(sceneId, shootId).get(position);
+        final Weapon chosenWeapon = (Weapon) this.weapons.get(position);
 
         Bundle bundle = new Bundle();
         bundle.putInt("SCENE_ID", this.sceneId);
