@@ -11,10 +11,6 @@ import android.widget.TextView;
 
 import dk.blackdarkness.g17.cphindustries.R;
 
-/**
- * Created by Thoma on 11/03/2017.
- */
-
 public class CreateShotFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "CreateShotFragment";
     private TextView submitSave, submitCancel;

@@ -4,10 +4,6 @@ import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
-/**
- * Created by awo on 06-12-2017.
- */
-
 public class WeaponDaoDemo implements WeaponDao {
     private final IDaoFactory factory;
 

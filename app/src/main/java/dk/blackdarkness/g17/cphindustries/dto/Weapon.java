@@ -5,10 +5,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by awo on 29/11/2017.
- */
-
 public class Weapon extends Item {
     private List<String> warnings;
     private FireMode fireMode;

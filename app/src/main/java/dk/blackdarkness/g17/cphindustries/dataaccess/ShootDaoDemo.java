@@ -4,10 +4,6 @@ import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 
-/**
- * Created by awo on 06-12-2017.
- */
-
 public class ShootDaoDemo implements ShootDao {
     private final IDaoFactory factory;
 

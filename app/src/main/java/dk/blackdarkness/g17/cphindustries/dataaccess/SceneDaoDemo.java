@@ -3,10 +3,6 @@ package dk.blackdarkness.g17.cphindustries.dataaccess;
 import java.util.List;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 
-/**
- * Created by awo on 06-12-2017.
- */
-
 public class SceneDaoDemo implements SceneDao {
     private List<Scene> allScenes;
 

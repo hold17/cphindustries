@@ -4,10 +4,6 @@ import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
-/**
- * Created by awo on 06-12-2017.
- */
-
 public interface WeaponDao {
     List<Weapon> get(int sceneId, int shootId);
     Weapon get(int sceneId, int shootId, int id);
