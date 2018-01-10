@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import dk.blackdarkness.g17.cphindustries.BuildConfig;
 import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.settings.SettingsActivity;
 import dk.blackdarkness.g17.cphindustries.viewfragments.SceneViewFragment;
 
 public class SceneViewActivity extends AppCompatActivity {

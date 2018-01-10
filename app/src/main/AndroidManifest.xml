@@ -21,9 +21,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
-    </application>
 
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="Settings"
+            android:theme="@style/SettingsTheme"
+            android:parentActivityName=".activities.SceneViewActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.SceneViewActivity">
+            </meta-data>
+        </activity>
+
+    </application>
 </manifest>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:layout="@layout/custom_toolbar_layout"></PreferenceCategory>
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="demoDataSwitch"
+        android:summary="Turn demo data on/off"
+        android:title="Demo data" />
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="orientationSwitch"
+        android:summary="Turn screen orientation switch on/off"
+        android:title="Screen orientation" />
+
+    <ListPreference
+        android:defaultValue="false"
+        android:entries="@array/array_updatePreferences"
+        android:entryValues="@array/array_updateValues"
+        android:key="updateRate"
+        android:summary="Choose weapon information update interval"
+        android:title="Update rate" />
+    <Preference
+        android:title="Clear app settings"
+        android:key="clearSettings"/>
+    <Preference
+        android:title="Clear cache"
+        android:key="clearCache" />
+
+</PreferenceScreen>

@@ -32,7 +32,7 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
     }
 
     public void initLayout() {
-        getActivity().setTitle("Edit Shot");
+        getActivity().setTitle("Create Shot");
 
         //Save textView
         submitSave.setOnClickListener(this);

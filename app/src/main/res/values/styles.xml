@@ -9,10 +9,14 @@
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:textColorPrimaryInverse">@color/textColorInverse</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
     <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name ="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="SettingsTheme" parent="CPHIndustriesTheme">
     </style>
 
 
