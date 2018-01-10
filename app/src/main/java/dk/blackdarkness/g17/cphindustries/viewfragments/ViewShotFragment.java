@@ -10,12 +10,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
+import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
@@ -26,17 +29,14 @@ import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
 
-/**
- * Created by Thoma on 11/02/2017.
- */
-
-public class ShotViewFragment extends Fragment implements View.OnClickListener {
+public class ViewShotFragment extends Fragment implements View.OnClickListener {
     private View view;
-    private static final String TAG = "ShotViewFragment";
+    private static final String TAG = "ViewShotFragment";
     private FloatingActionButton lock;
-    private int sceneId = -1;
+    private int sceneId;
     private ShootDao shootDao;
     private SceneDao sceneDao;
+    private StdRecListAdapter adapter;
 
     @Nullable
     @Override
@@ -45,7 +45,9 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener {
         lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
 
-        this.sceneId = getArguments().getInt(SceneViewActivity.SCENE_ID_KEY);
+        SharedPreferenceManager.init(getContext());
+
+        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
         this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
         this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
 
@@ -54,15 +56,15 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener {
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((SceneViewActivity)getActivity()).setActionBarTitle("Shoots");
-        ((SceneViewActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.get(sceneId)));
+        ((ViewSceneActivity)getActivity()).setActionBarTitle("Shoots");
+        ((ViewSceneActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.get(sceneId)));
         lock.setOnClickListener(this);
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_shot_recyclerView);
 
-        final RecyclerViewClickListener listener = (v, position) -> goToWeaponViewFragment(position);
+        final RecyclerViewClickListener listener = (v, position) -> goToViewWeaponFragment(position);
 
-        StdRecListAdapter adapter = new StdRecListAdapter(getActivity(), getListOfShoots(this.sceneId), listener);
+        adapter = new StdRecListAdapter(getActivity(), getListOfShoots(this.sceneId), listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -70,16 +72,19 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener {
         SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
         SITHCallback.setDragEnabled(false);
         SITHCallback.setSwipeEnabled(false);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
     private static List<Item> getListOfShoots(int sceneId) {
         final List<Item> itemShoots = new ArrayList<>();
         final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().get(sceneId);
 
-        for (Shoot s : shoots) {
-            itemShoots.add(s);
-        }
+        itemShoots.addAll(shoots);
 
         return itemShoots;
     }
@@ -99,18 +104,17 @@ public class ShotViewFragment extends Fragment implements View.OnClickListener {
                 .commit();
     }
 
-    public void goToWeaponViewFragment(int position) {
+    public void goToViewWeaponFragment(int position) {
         Log.d(TAG, "goToWeaponViewFragment: Returning");
-        Fragment weaponViewFragment = new WeaponViewFragment();
+        Fragment weaponViewFragment = new ViewWeaponFragment();
 
 //        Toast.makeText(getContext().getApplicationContext(), "Index: " + position + ", ID = " + ApplicationConfig.getDaoFactory().getShootDao().get(this.sceneId).get(position).getId(), Toast.LENGTH_LONG).show();
 
-        // Add shoot ID to arguemnts
+        // Add shoot ID to arguments
         final Shoot chosenShoot = this.shootDao.get(this.sceneId).get(position);
-
         Bundle bundle = new Bundle();
-        bundle.putInt(SceneViewActivity.SCENE_ID_KEY, this.sceneId);
-        bundle.putInt(SceneViewActivity.SHOOT_ID_KEY, chosenShoot.getId());
+        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, chosenShoot.getId());
         weaponViewFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()
