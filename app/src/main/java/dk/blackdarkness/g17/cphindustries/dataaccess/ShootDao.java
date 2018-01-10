@@ -4,10 +4,6 @@ import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 
-/**
- * Created by awo on 06-12-2017.
- */
-
 public interface ShootDao {
     List<Shoot> get(int sceneId);
     Shoot get(int sceneId, int id);

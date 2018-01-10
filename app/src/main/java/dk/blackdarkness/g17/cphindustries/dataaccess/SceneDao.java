@@ -4,10 +4,6 @@ import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 
-/**
- * Created by awo on 06-12-2017.
- */
-
 public interface SceneDao {
     List<Scene> get();
     Scene get(int id);

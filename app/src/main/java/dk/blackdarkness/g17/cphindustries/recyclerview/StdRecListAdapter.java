@@ -23,7 +23,7 @@ public class StdRecListAdapter extends RecyclerView.Adapter<ItemViewHolderCommon
     private final RecyclerViewClickListener listener;
     private final Context context;
 
-    public StdRecListAdapter(Context context/*, OnStartDragListener dragStartListener*/, List<Item> items, RecyclerViewClickListener listener) {
+    public StdRecListAdapter(Context context, List<Item> items, RecyclerViewClickListener listener) {
         mItems.addAll(items);
         this.context = context;
         this.listener = listener;
