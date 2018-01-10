@@ -1,56 +1,66 @@
-package dk.blackdarkness.g17.cphindustries.entityfragments;
+package dk.blackdarkness.g17.cphindustries.editfragments;
+
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
-import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponDetailsFragment;
 
-/**
- * Created by Thoma on 11/02/2017.
- */
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
-public class DetailWeaponFragment extends Fragment implements View.OnClickListener {
+
+public class EditWeaponDetailsFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "DetailWeaponFragment";
     private TextView weaponNameTitle, weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
     private FloatingActionButton lock;
     private int sceneId;
     private int shootId;
-    private int weaponId;
-
     private Weapon weapon;
+    private Button popupButton;
+    private PopupWindow popupWindow;
+
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_weapon_details_layout, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_weapon_details, container, false);
 
-        this.weaponNameTitle = view.findViewById(R.id.fr_weapon_details_title);
-        this.weaponNameText = view.findViewById(R.id.fr_weapon_details_tvName_description);
-        this.weaponIdText = view.findViewById(R.id.fr_weapon_details_tvId_description);
-        this.weaponFiremodeText = view.findViewById(R.id.fr_weapon_details_tvFire_mode_description);
-        this.weaponShootsText = view.findViewById(R.id.fr_weapon_details_tvShoot_description);
+        this.weaponNameTitle = view.findViewById(R.id.fr_weapon_details_edit_title);
+        this.weaponNameText = view.findViewById(R.id.fr_weapon_details_edit_tvName_description);
+        this.weaponShootsText = view.findViewById(R.id.fr_weapon_details_edit_tvShoot);
 
-        this.statusText = view.findViewById(R.id.fr_weapon_details_status_text);
+        this.statusText = view.findViewById(R.id.fr_weapon_details_edit_status_text);
         this.lock = view.findViewById(R.id.lockFab);
+        this.popupButton = view.findViewById(R.id.fr_weapon_details_edit_popup);
         Log.d(TAG, "onCreateView: Returning.");
 
         this.sceneId = getArguments().getInt("SCENE_ID");
         this.shootId = getArguments().getInt("SHOOT_ID");
-        this.weaponId = getArguments().getInt("WEAPON_ID");
+        final int weaponId = getArguments().getInt("WEAPON_ID");
         this.weapon = ApplicationConfig.getDaoFactory().getWeaponDao().get(sceneId, shootId, weaponId);
+        this.popupWindow = popupWindow;
+
+
+
 
         return view;
+
+
     }
 
     @Override
@@ -60,10 +70,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
 //        this.statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
         this.weaponNameTitle.setText(this.weapon.getName());
         this.weaponNameText.setText(this.weapon.getName());
-
-        this.weaponIdText.setText(Integer.toString(this.weapon.getId()));
         //this.weaponIdText.setText("" + this.weapon.getId());
-        this.weaponFiremodeText.setText(this.weapon.getFireMode().name());
         this.weaponShootsText.setText("Shoots will go here...");
         // Set warnings
         if (this.weapon.getWarnings().size() > 0) {
@@ -76,29 +83,45 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
             this.statusText.setText("No warnings.");
         }
         this.lock.setOnClickListener(this);
+        this.popupButton.setOnClickListener(this);
     }
+
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.lockFab:
-                //Edit view should be different from the one navigated to
-                //from WeaponViewFragment. Edit this one weapon only?
-                Log.d(TAG, "onClick: Trying to open edit weapon fragment.");
-                goToEditWeaponFragment();
+            case R.id.fr_weapon_details_edit_popup:
+                onButtonShowPopup(view);
+                System.out.println("sker der noget");
+                break;
         }
+
     }
 
-    public void goToEditWeaponFragment() {
-        Log.d(TAG, "goToEditWeaponFragment: Returning");
-        Fragment editWeaponDetailsFragment = new EditWeaponDetailsFragment();
 
-        editWeaponDetailsFragment.setArguments(getArguments());
+    public void onButtonShowPopup(View view){
+
+        // get a reference to the already created main layout
+        //LinearLayout mainLayout = (LinearLayout) view.findViewById(R.id.weapon_details_edit);
+
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.edit_weapon_details_popup, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        popupWindow = new PopupWindow(popupView, width, height, focusable);
 
 
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, editWeaponDetailsFragment)
-                .addToBackStack(null)
-                .commit();
+        // show the popup window
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        // dismiss the popup window
+
+        popupWindow.dismiss();
+
+
     }
 }
