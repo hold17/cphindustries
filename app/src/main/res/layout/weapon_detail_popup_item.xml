@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/weapon_details_popup_recycler_item"
     android:layout_width="match_parent"
-    android:layout_height="64dp">
+    android:layout_height="64dp"
+    android:background="#add8a1">
 
     <TextView
-        android:id="@+id/weapon_details_popup_recycler_tv"
+        android:id="@+id/recListText"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
@@ -22,16 +23,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/Line"
+        android:id="@+id/recListLine"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="@color/colorPrimaryDark"
         app:layout_constraintBottom_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp" />
 
     <CheckBox
-        android:id="@+id/weapon_details_popup_recycler_popup"
+        android:id="@+id/recListCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -41,7 +42,8 @@
         android:text="Add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/weapon_details_popup_recycler_tv"
+        app:layout_constraintStart_toEndOf="@+id/recListText"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

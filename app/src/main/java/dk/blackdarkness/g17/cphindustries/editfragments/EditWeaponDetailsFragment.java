@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,9 +18,15 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
+import dk.blackdarkness.g17.cphindustries.dto.Item;
+import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
+import dk.blackdarkness.g17.cphindustries.recyclerview.PopupRecListAdapter;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -33,6 +41,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     private Weapon weapon;
     private Button popupButton;
     private PopupWindow popupWindow;
+    //private PopupRecListAdapter adapter;
 
 
 
@@ -54,7 +63,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         this.shootId = getArguments().getInt("SHOOT_ID");
         final int weaponId = getArguments().getInt("WEAPON_ID");
         this.weapon = ApplicationConfig.getDaoFactory().getWeaponDao().get(sceneId, shootId, weaponId);
-        this.popupWindow = popupWindow;
+        //this.popupWindow = popupWindow;
 
 
 
@@ -85,6 +94,8 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         }
         this.lock.setOnClickListener(this);
         this.popupButton.setOnClickListener(this);
+
+
     }
 
 
@@ -92,7 +103,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fr_weapon_details_edit_popup:
-                onButtonShowPopup(view);
+                onButtonShowPopup(getView());
                 break;
         }
 
@@ -102,17 +113,21 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     public void onButtonShowPopup(View view){
 
         // get a reference to the already created main layout
+
+
         ConstraintLayout relativeLayout = view.findViewById(R.id.weapon_details_edit);
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
-        ViewGroup popupView = (ViewGroup) inflater.inflate(R.layout.edit_weapon_details_popup, null);
+        View popupView = inflater.inflate(R.layout.edit_weapon_details_popup, null);
 
         // create the popup window
+        createRecycler(popupView);
+
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true; // lets taps outside the popup also dismiss it
         popupWindow = new PopupWindow(popupView, width, height, focusable);
-        System.out.println("sker der noget");
+
 
 
         // show the popup window
@@ -122,5 +137,24 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
 
 
 
+    }
+
+    public void createRecycler(View view){
+        RecyclerView recyclerView = view.findViewById(R.id.fr_editWeaponDetails_recyclerView);
+        PopupRecListAdapter adapter = new PopupRecListAdapter(getContext(), getListOfShoots(sceneId));
+        recyclerView.setAdapter(adapter);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+
+    }
+    private static List<Item> getListOfShoots(int sceneId) {
+        final List<Item> itemShoots = new ArrayList<>();
+        final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().get(sceneId);
+
+        for (Shoot s : shoots) {
+            itemShoots.add(s);
+        }
+        System.out.println("Et egentligt ord" + itemShoots.toString());
+        return itemShoots;
     }
 }
