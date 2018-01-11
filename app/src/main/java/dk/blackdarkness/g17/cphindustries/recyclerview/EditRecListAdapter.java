@@ -13,7 +13,6 @@ import java.util.List;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
-import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
@@ -55,8 +54,15 @@ public class EditRecListAdapter extends RecyclerView.Adapter<ItemViewHolderCommo
 
     @Override
     public void onItemDismiss(int position) {
+        final Item deletedItem = mItems.get(position);
+        System.out.println("Iraq: Deleting scene " + deletedItem.getId() + "(" + deletedItem.getName() + ")");
+
+        // TODO: Only works for scenes, crashes for shoots and weapons - See issue #xx on GH
+        ApplicationConfig.getDaoFactory().getSceneDao().delete(deletedItem.getId());
+
         mItems.remove(position);
         notifyItemRemoved(position);
+
         System.out.println("IRAQ: I was dismissed: " + position);
     }
 

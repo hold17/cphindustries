@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
@@ -20,7 +19,6 @@ import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateSceneFragment;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
-import dk.blackdarkness.g17.cphindustries.dto.Scene;
 
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;

@@ -79,8 +79,8 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
         adapter.notifyDataSetChanged();
     }
 
-    private static List<Item> getListOfScenes() {
-      final List<Item> itemScenes = new ArrayList<>();
+    public static List<Item> getListOfScenes() {
+        final List<Item> itemScenes = new ArrayList<>();
         final List<Scene> scenes =  ApplicationConfig.getDaoFactory().getSceneDao().get();
 
         itemScenes.addAll(scenes);
