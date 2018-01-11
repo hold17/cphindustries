@@ -60,7 +60,7 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
 
     private void saveClicked() {
         System.out.println("Iraq");
-        final Shoot shoot = new Shoot(-1, this.shootNameText.getText().toString());
-        ApplicationConfig.getDaoFactory().getShootDao().create(this.sceneId, shoot);
+        final Shoot shoot = new Shoot(-1, this.shootNameText.getText().toString(), this.sceneId);
+        ApplicationConfig.getDaoFactory().getShootDao().create(shoot);
     }
 }
