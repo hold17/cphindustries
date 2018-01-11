@@ -16,8 +16,8 @@ android {
         applicationId "dk.blackdarkness.g17.cphindustries"
         minSdkVersion project.ext.minimumSdkVersion
         targetSdkVersion 26
-        versionCode generateVersionCode() // 150010203
-        versionName generateVersionName() // 1.2.3-SNAPSHOT
+        versionCode generateVersionCode() // i.e. 210010403
+        versionName generateVersionName() // 1.4.3-SNAPSHOT
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
