@@ -12,21 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateWeaponFragment;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
-import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
-import dk.blackdarkness.g17.cphindustries.dto.FireMode;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
-import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
-//import dk.blackdarkness.g17.cphindustries.recyclerview.NavListItem;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
@@ -46,8 +41,8 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
         this.add = view.findViewById(R.id.createFab);
         Log.d(TAG, "onCreateView: Returning.");
 
-        this.sceneId = getArguments().getInt(SceneViewActivity.SCENE_ID_KEY);
-        this.shootId = getArguments().getInt(SceneViewActivity.SHOOT_ID_KEY);
+        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
+        this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
 
         return view;
     }
@@ -62,13 +57,7 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_editWeapon_recyclerView);
 
-//        List<Item> weapons = new ArrayList<>();
-//        weapons.add(new Weapon(0, "Weapon 1", FireMode.BURST, ConnectionStatus.NO_CONNECTION));
-//        weapons.add(new Weapon(1, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.BAR_0));
-//        weapons.add(new Weapon(2, "Weapon 3", FireMode.SINGLE, ConnectionStatus.BAR_3));
-//        weapons.add(new Weapon(3, "Weapon 4", ConnectionStatus.FULL)); // Default to SAFE mode
-//        weapons.add(new Weapon(4, "Weapon 5", FireMode.BURST, ConnectionStatus.BAR_1));
-        List<Item> weapons = ItemConverter.weaponToItem(ApplicationConfig.getDaoFactory().getWeaponDao().get(sceneId, shootId));
+        List<Item> weapons = ItemConverter.weaponToItem(ApplicationConfig.getDaoFactory().getWeaponDao().getWeapons(shootId));
 
         final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
 
@@ -107,7 +96,13 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
         Log.d(TAG, "goToCreateWeaponFragment: Returning.");
         Fragment createWeaponFragment = new CreateWeaponFragment();
 
-        createWeaponFragment.setArguments(getArguments());
+        Bundle bundle = new Bundle();
+        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY));
+        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY));
+        createWeaponFragment.setArguments(bundle);
+
+        //TODO: Which do we use?
+        //createWeaponFragment.setArguments(getArguments());
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, createWeaponFragment)
