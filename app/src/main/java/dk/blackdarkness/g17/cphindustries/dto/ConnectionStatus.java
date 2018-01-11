@@ -1,9 +1,6 @@
 package dk.blackdarkness.g17.cphindustries.dto;
-import dk.blackdarkness.g17.cphindustries.R;
 
-/**
- * Created by awo on 03/11/2017.
- */
+import dk.blackdarkness.g17.cphindustries.R;
 
 public enum ConnectionStatus {
     FULL, BAR_4, BAR_3, BAR_2, BAR_1, BAR_0, NO_CONNECTION;

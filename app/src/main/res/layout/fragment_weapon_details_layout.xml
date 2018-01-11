@@ -8,7 +8,7 @@
     android:layout_centerHorizontal="false"
     android:layout_centerInParent="false"
     android:layout_centerVertical="false"
-    tools:context="dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity">
+    tools:context="dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity">
 
 
     <TextView

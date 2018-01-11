@@ -7,10 +7,6 @@ import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
-/**
- * Created by jonaslarsen on 06-12-2017.
- */
-
 public class WeaponDaoDemo implements WeaponDao {
     private List<Weapon> allWeapons;
 

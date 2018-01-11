@@ -15,10 +15,6 @@ import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
-/**
- * Created by jonaslarsen on 04/01/2018.
- */
-
 public class DemoDataRepository {
     private static final String SAVED_SCENES_LOCATION = "SAVED_SCENES_LIST";
     private static final String SAVED_SHOOTS_LOCATION = "SAVED_SHOOTS_LIST";

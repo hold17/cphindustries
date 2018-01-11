@@ -4,10 +4,6 @@ import java.util.List;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 
-/**
- * Created by jonaslarsen on 06-12-2017.
- */
-
 public class SceneDaoDemo implements SceneDao {
     private List<Scene> allScenes;
     private final IDaoFactory factory;
