@@ -21,17 +21,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="3880ff607ba8029ca6386dcb8788d10d9151e29d" />
 
         <activity
             android:name=".settings.SettingsActivity"
             android:label="Settings"
-            android:theme="@style/SettingsTheme"
-            android:parentActivityName=".activities.ViewSceneActivity">
+            android:parentActivityName=".activities.ViewSceneActivity"
+            android:theme="@style/SettingsTheme">
+            <!--crashlytics-->
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.ViewSceneActivity">
-            </meta-data>
+                android:name="io.fabric.ApiKey"
+                android:value="3880ff607ba8029ca6386dcb8788d10d9151e29d"
+                />
         </activity>
 
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

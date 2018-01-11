@@ -11,6 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+//crashlytics
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
+
 import dk.blackdarkness.g17.cphindustries.BuildConfig;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.settings.SettingsActivity;
@@ -40,6 +44,8 @@ public class ViewSceneActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             goToSceneViewFragment();
         }
+        //crashlyics
+        Fabric.with(this, new Crashlytics());
     }
 
     @Override
