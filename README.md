@@ -10,3 +10,13 @@ To contribute to this repository, follow [this guideline](docs/contributing.md).
 ## API Version
 
 Minimal SDK in this project is API 21, however CI tests are tested on API 25. [Read more here](docs/api-version.md).
+
+## Team 17 
+
+Team 17 consist of following students:
+
+- s136335
+- s145918
+- s165239
+- s165241
+- s165242
