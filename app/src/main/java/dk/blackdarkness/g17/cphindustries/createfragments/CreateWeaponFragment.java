@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
+import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
 public class CreateWeaponFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "CreateWeaponFragment";
@@ -23,6 +26,7 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
     private TextView submitSave, submitCancel;
     private RadioGroup rgLeft, rgRight;
     private ConstraintLayout radioButtons, loading;
+    private EditText weaponNameText;
 
     @Nullable
     @Override
@@ -37,6 +41,8 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
 
         radioButtons = view.findViewById(R.id.fr_create_weapon_constraintLayout_bottom);
         loading = view.findViewById(R.id.fr_create_weapon_constraintLayout_loading);
+
+        this.weaponNameText = view.findViewById(R.id.fr_create_weapon_editText);
 
         initLayout();
         Log.d(TAG, "onCreateView: Returning");
@@ -65,11 +71,16 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
         switch (view.getId()) {
             case R.id.fr_create_weapon_tvSave:
                 getActivity().onBackPressed();
+                saveClicked();
                 break;
             case R.id.fr_create_weapon_tvCancel:
                 getActivity().onBackPressed();
                 break;
         }
+    }
+
+    private void saveClicked() {
+
     }
 
     private RadioGroup.OnCheckedChangeListener lis1 = new RadioGroup.OnCheckedChangeListener() {
@@ -96,7 +107,7 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
 
     private class DeviceLocation extends AsyncTask<String, Void, String> {
 
-        private ArrayList<String> weaponIpList;
+        private ArrayList<Weapon> weapons;
 
         @Override
         protected String doInBackground(String... params) {
@@ -104,11 +115,12 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
             try {
                 // Fetch ip / mac addresses from nearby devices
                 // Currently dummy data - use actual weapon DTO
-                this.weaponIpList = new ArrayList<>();
-                this.weaponIpList.add("123.123.123.123");
-                this.weaponIpList.add("234.234.234.234");
-                this.weaponIpList.add("345.345.345.345");
-                this.weaponIpList.add("456.456.456.456");
+                this.weapons = new ArrayList<>();
+                this.weapons.add(new Weapon(1, ConnectionStatus.FULL, "127.0.0.1", "00:00:00:00:00:00"));
+                this.weapons.add(new Weapon(1, ConnectionStatus.BAR_1, "127.0.0.2", "00:00:00:00:00:01"));
+                this.weapons.add(new Weapon(1, ConnectionStatus.BAR_3, "127.0.0.3", "00:00:00:00:00:02"));
+                this.weapons.add(new Weapon(1, ConnectionStatus.FULL, "127.0.0.4", "00:00:00:00:00:04"));
+                this.weapons.add(new Weapon(1, ConnectionStatus.FULL, "127.0.0.4", "00:00:00:00:00:05"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -118,23 +130,23 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
         @Override
         protected void onPostExecute(String result) {
             // Setup radio button view with found weapons
-            int rgHalf = (weaponIpList.size()) / 2;
-            final RadioButton[] rb = new RadioButton[weaponIpList.size()];
-            for (int i = 0; i < weaponIpList.size(); i++) {
+            int rgHalf = (weapons.size()) / 2;
+            final RadioButton[] rb = new RadioButton[weapons.size()];
+            for (int i = 0; i < weapons.size(); i++) {
                 if (i <= rgHalf - 1) {
                     rb[i] = new RadioButton(getContext());
-                    rb[i].setText(weaponIpList.get(i));
-                    rb[i].setId(i + 100);
-                    rgLeft.addView(rb[i]);
-                } else {
-                    rb[i] = new RadioButton(getContext());
-                    rb[i].setText(weaponIpList.get(i));
+                    rb[i].setText(weapons.get(i).getMac());
                     rb[i].setId(i + 100);
                     rgRight.addView(rb[i]);
+                } else {
+                    rb[i] = new RadioButton(getContext());
+                    rb[i].setText(weapons.get(i).getMac());
+                    rb[i].setId(i + 100);
+                    rgLeft.addView(rb[i]);
                 }
                 radioButtons.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
-                Log.d(TAG, "onPostExecute: " + weaponIpList.get(i));
+                Log.d(TAG, "onPostExecute: " + weapons.get(i).getMac());
             }
         }
 

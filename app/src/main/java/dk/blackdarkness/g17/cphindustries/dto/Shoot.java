@@ -1,8 +1,5 @@
 package dk.blackdarkness.g17.cphindustries.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Shoot extends Item {
     private int sceneId;
 

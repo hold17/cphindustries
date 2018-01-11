@@ -124,10 +124,9 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
         final Weapon chosenWeapon = (Weapon) this.weapons.get(position);
 
         Bundle bundle = new Bundle();
-        bundle.putInt("SCENE_ID", this.sceneId);
-        bundle.putInt("SHOOT_ID", this.shootId);
-        bundle.putInt("WEAPON_ID", chosenWeapon.getId());
-
+        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.shootId);
+        bundle.putInt(ViewSceneActivity.WEAPON_ID_KEY, chosenWeapon.getId());
         detailWeaponFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()
@@ -139,6 +138,12 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
     public void goToEditWeaponFragment() {
         Log.d(TAG, "goToEditWeaponFragment: Returning");
         Fragment editWeaponFragment = new EditWeaponFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.shootId);
+        editWeaponFragment.setArguments(bundle);
+
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, editWeaponFragment)
                 .addToBackStack(null)

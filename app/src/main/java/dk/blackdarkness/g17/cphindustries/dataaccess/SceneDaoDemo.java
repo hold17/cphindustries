@@ -3,39 +3,37 @@ package dk.blackdarkness.g17.cphindustries.dataaccess;
 import java.util.List;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
+import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
-public class SceneDaoDemo implements SceneDao {
+class SceneDaoDemo implements SceneDao {
     private List<Scene> allScenes;
     private final IDaoFactory factory;
 
-
-    public SceneDaoDemo(IDaoFactory factory) {
+    SceneDaoDemo(IDaoFactory factory) {
         this.factory = factory;
     }
 
     @Override
     public List<Scene> get() {
-
         return DemoDataRepository.loadListOfScenes();
     }
 
     @Override
     public Scene get(int sceneId) {
         this.allScenes = DemoDataRepository.loadListOfScenes();
+
         for (Scene s : allScenes) {
             if (s.getId() == sceneId) {
                 return s;
             }
         }
-
         return null;
     }
 
     @Override
     public void create(Scene scene) {
-        scene.setId(1);
-
         this.allScenes = DemoDataRepository.loadListOfScenes();
+        scene.setId(1);
 
         // Finds new sceneId
         for (Scene s : allScenes) {
@@ -43,17 +41,15 @@ public class SceneDaoDemo implements SceneDao {
                 scene.setId(s.getId() + 1);
             } else break;
         }
-
         allScenes.add(scene);
         DemoDataRepository.saveListOfScenes(allScenes);
     }
 
     @Override
     public void update(Scene updatedScene) {
-
         this.allScenes = DemoDataRepository.loadListOfScenes();
-        for (Scene s : allScenes) {
 
+        for (Scene s : allScenes) {
             if (s.getId() == updatedScene.getId()) {
                 s.setName(updatedScene.getName());
             }
@@ -71,7 +67,6 @@ public class SceneDaoDemo implements SceneDao {
                 allScenes.remove(s);
             }
         }
-
         List<Shoot> shoots = factory.getShootDao().get();
 
         for (Shoot shoot : shoots){
@@ -79,7 +74,6 @@ public class SceneDaoDemo implements SceneDao {
                 factory.getShootDao().delete(shoot.getId());
             }
         }
-
         DemoDataRepository.saveListOfScenes(allScenes);
     }
 }

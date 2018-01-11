@@ -7,9 +7,8 @@ import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
-public class WeaponDaoDemo implements WeaponDao {
+class WeaponDaoDemo implements WeaponDao {
     private List<Weapon> allWeapons;
-
     private final IDaoFactory factory;
 
     WeaponDaoDemo(IDaoFactory factory) {
@@ -23,7 +22,6 @@ public class WeaponDaoDemo implements WeaponDao {
 
     @Override
     public Weapon get(int weaponId) {
-
         this.allWeapons = DemoDataRepository.loadListOfWeapons();
 
         for (Weapon w : allWeapons) {
@@ -31,29 +29,25 @@ public class WeaponDaoDemo implements WeaponDao {
                 return w;
             }
         }
-
         return null;
     }
 
     @Override
     public void create(Weapon weapon) {
-        weapon.setId(1);
-
         this.allWeapons = DemoDataRepository.loadListOfWeapons();
+        weapon.setId(1);
 
         for (Weapon w : allWeapons) {
             if (w.getId() == weapon.getId()) {
                 weapon.setId(w.getId() + 1);
             } else break;
         }
-
         this.allWeapons.add(weapon);
         DemoDataRepository.saveListOfWeapons(allWeapons);
     }
 
     @Override
     public void update(int weaponId, Weapon newWeapon) {
-
         this.allWeapons = DemoDataRepository.loadListOfWeapons();
 
         for (Weapon w : allWeapons) {
@@ -71,7 +65,6 @@ public class WeaponDaoDemo implements WeaponDao {
 
     @Override
     public void delete(int weaponId) {
-//
         this.allWeapons = DemoDataRepository.loadListOfWeapons();
 
         for (Weapon w : allWeapons) {
@@ -79,7 +72,6 @@ public class WeaponDaoDemo implements WeaponDao {
                 allWeapons.remove(w);
             }
         }
-
         List<ShootWeapon> shootWeapons = factory.getShootWeaponDao().get();
 
         for (ShootWeapon sw : shootWeapons) {
@@ -87,7 +79,6 @@ public class WeaponDaoDemo implements WeaponDao {
                 factory.getShootWeaponDao().delete(sw.getShootWeaponId());
             }
         }
-
         DemoDataRepository.saveListOfWeapons(allWeapons);
     }
 
@@ -102,7 +93,6 @@ public class WeaponDaoDemo implements WeaponDao {
                 shoots.add(shoot);
             }
         }
-
         return shoots;
     }
 

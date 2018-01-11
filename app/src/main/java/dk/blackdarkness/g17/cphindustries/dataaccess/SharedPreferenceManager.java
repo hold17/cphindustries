@@ -58,7 +58,7 @@ public class SharedPreferenceManager {
 
         final String jsonObj = gson.toJson(object);
 
-        this.prefs.edit().putString(storeLocation, jsonObj).commit();
+        this.prefs.edit().putString(storeLocation, jsonObj).apply();
     }
 
     /**
@@ -76,7 +76,18 @@ public class SharedPreferenceManager {
         return obj;
     }
 
+    /**
+     * Clears value stored at a specific location
+     * @param storeLocation What to delete
+     */
+    public void clear(String storeLocation) {
+        this.prefs.edit().remove(storeLocation).apply();
+    }
+
+    /**
+     * WARNING: This clears everything stored in SharedPreferences. Use with caution...
+     */
     public void clear() {
-        this.prefs.edit().clear().commit();
+        this.prefs.edit().clear().apply();
     }
 }
