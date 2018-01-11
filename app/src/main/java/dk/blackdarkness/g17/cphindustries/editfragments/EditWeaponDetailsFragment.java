@@ -119,6 +119,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.edit_weapon_details_popup, null);
+        System.out.println("Et egentligt ord 111" );
 
         // create the popup window
         createRecycler(popupView);
@@ -126,7 +127,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true; // lets taps outside the popup also dismiss it
-        popupWindow = new PopupWindow(popupView, width, height, focusable);
+        popupWindow = new PopupWindow(popupView, 300, 470, focusable);
 
 
 
@@ -140,6 +141,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     }
 
     public void createRecycler(View view){
+        System.out.println("Et egentligt ord 222" );
         RecyclerView recyclerView = view.findViewById(R.id.fr_editWeaponDetails_recyclerView);
         PopupRecListAdapter adapter = new PopupRecListAdapter(getContext(), getListOfShoots(sceneId));
         recyclerView.setAdapter(adapter);

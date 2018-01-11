@@ -21,7 +21,6 @@ import dk.blackdarkness.g17.cphindustries.dto.Item;
 
 public class PopupRecListAdapter extends RecyclerView.Adapter<PopupRecListAdapter.popupViewHolder> {
 
-    private LayoutInflater inflater;
 
     private final List<Item> mItems = new ArrayList<>();
     private final Context context;
@@ -52,7 +51,8 @@ public class PopupRecListAdapter extends RecyclerView.Adapter<PopupRecListAdapte
 
     @Override
     public int getItemCount() {
-        return 0;
+
+        return mItems.size();
     }
 
     class popupViewHolder extends RecyclerView.ViewHolder{
