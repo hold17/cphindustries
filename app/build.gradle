@@ -9,8 +9,8 @@ android {
         applicationId "dk.blackdarkness.g17.cphindustries"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 230000400
-        versionName "v0.4.0"
+        versionCode 230000401
+        versionName "v0.4.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
