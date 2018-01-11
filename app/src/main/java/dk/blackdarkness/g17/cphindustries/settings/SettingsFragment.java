@@ -11,12 +11,7 @@ import dk.blackdarkness.g17.cphindustries.R;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by Thoma on 01/10/2018.
- */
-
 public class SettingsFragment extends PreferenceFragmentCompat implements android.support.v7.preference.Preference.OnPreferenceClickListener {
-
     public static final String KEY_PREF_CLEAR_SETTINGS = "clearSettings";
     public static final String KEY_PREF_CLEAR_CACHE = "clearCache";
     public static final String KEY_PREF_DEMO_DATA = "demoDataSwitch";
