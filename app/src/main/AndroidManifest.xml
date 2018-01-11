@@ -26,10 +26,10 @@
             android:name=".settings.SettingsActivity"
             android:label="Settings"
             android:theme="@style/SettingsTheme"
-            android:parentActivityName=".activities.SceneViewActivity">
+            android:parentActivityName=".activities.ViewSceneActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.SceneViewActivity">
+                android:value=".activities.ViewSceneActivity">
             </meta-data>
         </activity>
 
