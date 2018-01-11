@@ -1,9 +1,5 @@
 package dk.blackdarkness.g17.cphindustries.dto;
 
-/**
- * Created by jonaslarsen on 09/01/2018.
- */
-
 public class ShootWeapon {
     private int shootWeaponId;
     private int shootId;

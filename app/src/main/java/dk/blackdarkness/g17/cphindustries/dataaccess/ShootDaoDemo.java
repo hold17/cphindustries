@@ -8,7 +8,7 @@ import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
-public class ShootDaoDemo implements ShootDao {
+class ShootDaoDemo implements ShootDao {
     private final IDaoFactory factory;
     private List<Shoot> allShoots;
 
@@ -22,9 +22,7 @@ public class ShootDaoDemo implements ShootDao {
     }
 
     public List<Shoot> getShoots(int sceneID){
-
         this.allShoots = DemoDataRepository.loadListOfShoots();
-
         List<Shoot> shoots = new ArrayList<>();
 
         for (Shoot s : this.allShoots){
@@ -46,13 +44,11 @@ public class ShootDaoDemo implements ShootDao {
                 weapons.add(weapon);
             }
         }
-
         return weapons;
     }
 
     @Override
     public Shoot get(int shootId) {
-
        this.allShoots = DemoDataRepository.loadListOfShoots();
 
         for (Shoot s : allShoots) {
@@ -60,24 +56,20 @@ public class ShootDaoDemo implements ShootDao {
                 return s;
             }
         }
-
         return null;
     }
 
     @Override
     public void create(Shoot shoot) {
-        shoot.setId(1);
-
         this.allShoots = DemoDataRepository.loadListOfShoots();
+        shoot.setId(1);
 
         for (Shoot s : allShoots) {
             if (s.getId() == shoot.getId()) {
                 shoot.setId(s.getId() + 1);
             } else break;
         }
-
         System.out.println("Created this shoot: " + shoot.toString());
-
         this.allShoots.add(shoot);
         DemoDataRepository.saveListOfShoots(allShoots);
     }
@@ -103,7 +95,6 @@ public class ShootDaoDemo implements ShootDao {
                 allShoots.remove(s);
             }
         }
-
         List<ShootWeapon> shootWeapons = factory.getShootWeaponDao().get();
 
         for (ShootWeapon sw : shootWeapons){
@@ -111,7 +102,6 @@ public class ShootDaoDemo implements ShootDao {
                 factory.getShootWeaponDao().delete(sw.getShootWeaponId());
             }
         }
-
         DemoDataRepository.saveListOfShoots(allShoots);
     }
 }

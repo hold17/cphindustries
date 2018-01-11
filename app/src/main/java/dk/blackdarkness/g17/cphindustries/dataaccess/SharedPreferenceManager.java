@@ -29,7 +29,7 @@ public class SharedPreferenceManager {
      * Coded as a singleton. The singleton might be cleaned up by android, but does not matter too much since a global application context is used
      * @return Returns the current initialized instance
      */
-    public static SharedPreferenceManager getInstance() {
+    static SharedPreferenceManager getInstance() {
         if (instance == null) return null;
 
         return instance;
@@ -53,7 +53,7 @@ public class SharedPreferenceManager {
      * @param storeLocation Where to store the object - should be a string from "strings.xml"
      * @param object The object to be stored
      */
-    public void saveObject(String storeLocation, Object object) {
+    void saveObject(String storeLocation, Object object) {
         if (instance == null) return;
 
         final String jsonObj = gson.toJson(object);
@@ -66,7 +66,7 @@ public class SharedPreferenceManager {
      * @param storeLocation Where the object is stored - should be a string from "strings.xml"
      * @return Returns the wanted object if it exists, null if it does not
      */
-    public Object getObject(String storeLocation, Type returnType) {
+    Object getObject(String storeLocation, Type returnType) {
         if (instance == null) return null;
 
         final String jsonObj = this.prefs.getString(storeLocation, null);
@@ -76,7 +76,7 @@ public class SharedPreferenceManager {
         return obj;
     }
 
-    public void clear() {
+    void clear() {
         this.prefs.edit().clear().commit();
     }
 }

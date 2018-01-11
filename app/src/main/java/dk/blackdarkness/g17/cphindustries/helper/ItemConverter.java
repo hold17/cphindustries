@@ -8,10 +8,6 @@ import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
-/**
- * Created by awo on 09/01/2018.
- */
-
 public class ItemConverter {
     public static List<Item> sceneToItem(List<Scene> scenes) {
         final List<Item> items = new ArrayList<>();

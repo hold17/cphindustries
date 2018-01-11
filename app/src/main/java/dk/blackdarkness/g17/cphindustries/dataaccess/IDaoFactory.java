@@ -1,6 +1,6 @@
 package dk.blackdarkness.g17.cphindustries.dataaccess;
 
-public interface IDaoFactory {
+interface IDaoFactory {
     SceneDao getSceneDao();
     ShootDao getShootDao();
     WeaponDao getWeaponDao();

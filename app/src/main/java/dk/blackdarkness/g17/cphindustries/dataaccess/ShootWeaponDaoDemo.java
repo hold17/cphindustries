@@ -4,17 +4,11 @@ import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 
-/**
- * Created by jonaslarsen on 10/01/2018.
- */
-
-public class ShootWeaponDaoDemo implements ShootWeaponDao {
-
+class ShootWeaponDaoDemo implements ShootWeaponDao {
     private final IDaoFactory factory;
     private List<ShootWeapon> allShootWeapon;
 
-
-    public ShootWeaponDaoDemo(IDaoFactory factory) {
+    ShootWeaponDaoDemo(IDaoFactory factory) {
         this.factory = factory;
     }
 
@@ -32,30 +26,25 @@ public class ShootWeaponDaoDemo implements ShootWeaponDao {
                 return sw;
             }
         }
-
         return null;
     }
 
     @Override
     public void create(ShootWeapon shootWeapon) {
-        shootWeapon.setShootWeaponId(1);
-
         this.allShootWeapon = DemoDataRepository.loadListOfShootWeapon();
+        shootWeapon.setShootWeaponId(1);
 
         for (ShootWeapon sw :allShootWeapon){
             if (sw.getShootWeaponId() == shootWeapon.getShootWeaponId()) {
                 shootWeapon.setShootWeaponId(shootWeapon.getShootWeaponId()+1);
             } else break;
         }
-
         this.allShootWeapon.add(shootWeapon);
         DemoDataRepository.saveListOfShootWeapon(allShootWeapon);
-
     }
 
     @Override
     public void update(int shootWeaponId, ShootWeapon newWeapon) {
-
         this.allShootWeapon = DemoDataRepository.loadListOfShootWeapon();
 
         for (ShootWeapon sw : allShootWeapon){
@@ -66,7 +55,6 @@ public class ShootWeaponDaoDemo implements ShootWeaponDao {
             }
         }
         DemoDataRepository.saveListOfShootWeapon(allShootWeapon);
-
     }
 
     @Override
@@ -78,8 +66,6 @@ public class ShootWeaponDaoDemo implements ShootWeaponDao {
                 allShootWeapon.remove(sw);
             }
         }
-
         DemoDataRepository.saveListOfShootWeapon(allShootWeapon);
-
     }
 }
