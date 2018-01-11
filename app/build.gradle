@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+ext.versionMajor = 0
+ext.versionMinor = 4
+ext.versionPatch = 1
+ext.versionClassifier = null
+ext.isSnapshot = true
+ext.minimumSdkVersion = 21
+
 android {
     signingConfigs {
     }
@@ -7,10 +14,10 @@ android {
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "dk.blackdarkness.g17.cphindustries"
-        minSdkVersion 21
+        minSdkVersion project.ext.minimumSdkVersion
         targetSdkVersion 26
-        versionCode 230000400
-        versionName "v0.4.0"
+        versionCode generateVersionCode() // 150010203
+        versionName generateVersionName() // 1.2.3-SNAPSHOT
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -25,6 +32,24 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+}
+
+private Integer generateVersionCode() {
+    return ext.minimumSdkVersion * 10000000 + ext.versionMajor * 10000 + ext.versionMinor * 100 + ext.versionPatch
+}
+
+private String generateVersionName() {
+    String versionName = "${ext.versionMajor}.${ext.versionMinor}.${ext.versionPatch}"
+    if (ext.versionClassifier == null) {
+        if (ext.isSnapshot) {
+            ext.versionClassifier = "SNAPSHOT"
+        }
+    }
+
+    if (ext.versionClassifier != null) {
+        versionName += "-" + ext.versionClassifier
+    }
+    return versionName;
 }
 
 
