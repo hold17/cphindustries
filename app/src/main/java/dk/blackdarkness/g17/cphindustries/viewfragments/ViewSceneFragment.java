@@ -34,6 +34,8 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
     private SceneDao sceneDao;
     private StdRecListAdapter adapter;
 
+    private List<Item> scenes;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,7 +61,9 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
 
         final RecyclerViewClickListener listener = (v, position) -> goToViewShotFragment(position);
 
-        adapter = new StdRecListAdapter(getActivity(), getListOfScenes(), listener);
+        this.scenes = getListOfScenes();
+
+        adapter = new StdRecListAdapter(getActivity(), this.scenes, listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -101,11 +105,14 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
     }
 
     public void goToViewShotFragment(int position) {
+        Scene chosenScene = (Scene) this.scenes.get(position);
+
         Log.d(TAG, "goToShotViewFragment: Returning");
         ((ViewSceneActivity)getActivity()).enableActionBar(true);
         Fragment shotViewFragment = new ViewShotFragment();
 
-        final Scene chosenScene = this.sceneDao.get().get(position);
+        //final Scene chosenScene = this.sceneDao.get().get(this.scenes.get(position).getId());
+        System.out.println("SceneID: " + chosenScene.getId());
         Bundle bundle = new Bundle();
         bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, chosenScene.getId());
         shotViewFragment.setArguments(bundle);

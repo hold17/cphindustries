@@ -4,23 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Scene  extends Item {
-    private List<Shoot> shoots;
+   // private List<Shoot> shoots;
 
-    public Scene(int id, String name) {
-        super(id, name);
-        this.shoots = new ArrayList<>();
+    public Scene(int sceneId, String name) {
+        super(sceneId, name);
     }
 
-    public Scene(int id, String name, List<Shoot> shoots) {
-        super(id, name);
-        this.shoots = shoots;
-    }
-
-    public List<Shoot> getShoots() {
-        return shoots;
-    }
-
-    public void setShoots(List<Shoot> shoots) {
-        this.shoots = shoots;
-    }
 }

@@ -38,6 +38,8 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
     private SceneDao sceneDao;
     private StdRecListAdapter adapter;
 
+    private List<Item> shoots;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,9 +64,10 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_shot_recyclerView);
 
+        this.shoots = getListOfShoots(this.sceneId);
         final RecyclerViewClickListener listener = (v, position) -> goToViewWeaponFragment(position);
 
-        adapter = new StdRecListAdapter(getActivity(), getListOfShoots(this.sceneId), listener);
+        adapter = new StdRecListAdapter(getActivity(), shoots, listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -82,7 +85,7 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
 
     private static List<Item> getListOfShoots(int sceneId) {
         final List<Item> itemShoots = new ArrayList<>();
-        final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().get(sceneId);
+        final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().getShoots(sceneId);
 
         itemShoots.addAll(shoots);
 
@@ -111,7 +114,7 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
 //        Toast.makeText(getContext().getApplicationContext(), "Index: " + position + ", ID = " + ApplicationConfig.getDaoFactory().getShootDao().get(this.sceneId).get(position).getId(), Toast.LENGTH_LONG).show();
 
         // Add shoot ID to arguments
-        final Shoot chosenShoot = this.shootDao.get(this.sceneId).get(position);
+        final Shoot chosenShoot = (Shoot) this.shoots.get(position);
         Bundle bundle = new Bundle();
         bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
         bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, chosenShoot.getId());

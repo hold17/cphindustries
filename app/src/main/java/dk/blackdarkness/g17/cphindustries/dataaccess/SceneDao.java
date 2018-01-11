@@ -6,8 +6,8 @@ import dk.blackdarkness.g17.cphindustries.dto.Scene;
 
 public interface SceneDao {
     List<Scene> get();
-    Scene get(int id);
+    Scene get(int sceneId);
     void create(Scene scene);
     void update(Scene newScene);
-    void delete(int id);
+    void delete(int sceneId);
 }
