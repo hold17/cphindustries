@@ -1,15 +1,11 @@
 package dk.blackdarkness.g17.cphindustries.dataaccess;
 
-/**
- * Created by awo on 06-12-2017.
- */
-
 public class DaoFactory implements IDaoFactory {
     @Override
     public SceneDao getSceneDao() {
         if (!ApplicationConfig.useDemoData()) return null;
 
-        return new SceneDaoDemo();
+        return new SceneDaoDemo(this);
     }
 
     @Override
@@ -24,5 +20,12 @@ public class DaoFactory implements IDaoFactory {
         if (!ApplicationConfig.useDemoData()) return null;
 
         return new WeaponDaoDemo(this);
+    }
+
+    @Override
+    public ShootWeaponDao getShootWeaponDao() {
+        if (!ApplicationConfig.useDemoData()) return null;
+
+        return new ShootWeaponDaoDemo(this);
     }
 }

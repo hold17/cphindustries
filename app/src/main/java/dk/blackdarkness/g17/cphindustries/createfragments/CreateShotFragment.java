@@ -14,10 +14,6 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 
-/**
- * Created by Thoma on 11/03/2017.
- */
-
 public class CreateShotFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "CreateShotFragment";
     private TextView submitSave, submitCancel;

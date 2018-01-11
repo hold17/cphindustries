@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
+import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateSceneFragment;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
@@ -27,10 +27,6 @@ import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
-
-/**
- * Created by Thoma on 11/02/2017.
- */
 
 public class EditSceneFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
     private View view;
@@ -51,7 +47,7 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((SceneViewActivity)getActivity()).setActionBarTitle("Edit Scenes");
+        ((ViewSceneActivity)getActivity()).setActionBarTitle("Edit Scenes");
         this.add.setVisibility(View.VISIBLE);
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
@@ -78,7 +74,7 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ((SceneViewActivity)getActivity()).enableActionBar(false);
+        ((ViewSceneActivity)getActivity()).enableActionBar(false);
     }
 
     @Override

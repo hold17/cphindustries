@@ -20,10 +20,6 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
-/**
- * Created by Thoma on 11/03/2017.
- */
-
 public class CreateWeaponFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "CreateWeaponFragment";
     private View view;

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
+import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateWeaponFragment;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
@@ -30,10 +30,6 @@ import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
-
-/**
- * Created by Thoma on 11/02/2017.
- */
 
 public class EditWeaponFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
     private View view;
@@ -59,7 +55,7 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((SceneViewActivity)getActivity()).setActionBarTitle("Edit Weapons");
+        ((ViewSceneActivity)getActivity()).setActionBarTitle("Edit Weapons");
         this.add.setVisibility(View.VISIBLE);
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
