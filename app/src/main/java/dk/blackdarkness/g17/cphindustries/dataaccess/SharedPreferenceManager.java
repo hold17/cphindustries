@@ -76,11 +76,18 @@ public class SharedPreferenceManager {
         return obj;
     }
 
-    public void clear() {
-        this.prefs.edit().clear().apply();
-    }
-
+    /**
+     * Clears value stored at a specific location
+     * @param storeLocation What to delete
+     */
     public void clear(String storeLocation) {
         this.prefs.edit().remove(storeLocation).apply();
+    }
+
+    /**
+     * WARNING: This clears everything stored in SharedPreferences. Use with caution...
+     */
+    public void clear() {
+        this.prefs.edit().clear().apply();
     }
 }
