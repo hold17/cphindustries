@@ -58,7 +58,7 @@ public class EditRecListAdapter extends RecyclerView.Adapter<ItemViewHolderCommo
         System.out.println("Iraq: Deleting scene " + deletedItem.getId() + "(" + deletedItem.getName() + ")");
 
         // TODO: Only works for scenes, crashes for shoots and weapons - See issue #xx on GH
-        ApplicationConfig.getDaoFactory().getSceneDao().delete(deletedItem.getId());
+//        ApplicationConfig.getDaoFactory().getSceneDao().delete(deletedItem.getId());
 
         mItems.remove(position);
         notifyItemRemoved(position);
