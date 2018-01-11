@@ -37,7 +37,7 @@ public class CreateSceneFragment extends android.support.v4.app.Fragment impleme
     }
 
     public void initLayout() {
-        getActivity().setTitle("Edit Scene");
+        getActivity().setTitle("Create Scene");
 
         //Save textView
         submitSave.setOnClickListener(this);
