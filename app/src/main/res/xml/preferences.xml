@@ -6,26 +6,25 @@
     <SwitchPreferenceCompat
         android:defaultValue="false"
         android:key="demoDataSwitch"
-        android:summary="Turn demo data on/off"
-        android:title="Demo data" />
+        android:title="@string/demo_data_title"
+        android:summary="@string/demo_data_summary"/>
     <SwitchPreferenceCompat
         android:defaultValue="false"
         android:key="orientationSwitch"
-        android:summary="Turn screen orientation switch on/off"
-        android:title="Screen orientation" />
-
+        android:title="@string/orientation_title"
+        android:summary="@string/orientation_summary"/>
     <ListPreference
         android:defaultValue="false"
         android:entries="@array/array_updatePreferences"
         android:entryValues="@array/array_updateValues"
         android:key="updateRate"
-        android:summary="Choose weapon information update interval"
-        android:title="Update rate" />
+        android:title="@string/update_rate_title"
+        android:summary="@string/update_rate_summary"/>
     <Preference
-        android:title="Clear app settings"
+        android:title="@string/clear_app_settings_title"
         android:key="clearSettings"/>
     <Preference
-        android:title="Clear cache"
+        android:title="@string/clear_app_cache"
         android:key="clearCache" />
 
 </PreferenceScreen>
