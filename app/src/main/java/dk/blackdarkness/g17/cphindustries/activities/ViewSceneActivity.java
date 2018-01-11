@@ -47,7 +47,7 @@ public class ViewSceneActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch(id) {
-            case R.id.home:
+            case android.R.id.home:
                 onBackPressed();
                 return true;
             case R.id.action_settings:
@@ -56,10 +56,6 @@ public class ViewSceneActivity extends AppCompatActivity {
                 return true;
             case R.id.action_about:
                 Toast.makeText(this, getAppVersion(), Toast.LENGTH_SHORT).show();
-        }
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
