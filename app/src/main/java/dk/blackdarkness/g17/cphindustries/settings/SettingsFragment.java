@@ -23,8 +23,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
     public static final String KEY_PREF_ORIENTATION = "orientationSwitch";
     public static final String KEY_PREF_UPDATE_RATE= "updateRate";
 
-
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
