@@ -9,8 +9,8 @@ android {
         applicationId "dk.blackdarkness.g17.cphindustries"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 230000300
-        versionName "v0.3.0"
+        versionCode 230000400
+        versionName "v0.4.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -28,6 +28,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support:support-v4:26.1.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -36,5 +37,8 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:26.1.0'
     compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'com.android.support:preference-v7:26.1.0'
+    compile 'com.google.code.gson:gson:2.8.2'
+
     testCompile 'junit:junit:4.12'
 }

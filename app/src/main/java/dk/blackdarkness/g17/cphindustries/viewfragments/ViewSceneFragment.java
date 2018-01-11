@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,28 +15,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.SceneViewActivity;
+import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
+import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 
-import dk.blackdarkness.g17.cphindustries.recyclerview.NavListItem;
-import dk.blackdarkness.g17.cphindustries.recyclerview.RecyclerListAdapter;
-import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
+import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
 
-/**
- * Created by Thoma on 11/02/2017.
- */
-
-public class SceneViewFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
+public class ViewSceneFragment extends Fragment implements View.OnClickListener {
     private View view;
-    private static final String TAG = "SceneViewFragment";
+    private static final String TAG = "ViewSceneFragment";
     private FloatingActionButton lock;
-    private ItemTouchHelper mItemTouchHelper;
     private SceneDao sceneDao;
+    private StdRecListAdapter adapter;
+
+    private List<Item> scenes;
 
     @Nullable
     @Override
@@ -46,30 +43,27 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
 
+        SharedPreferenceManager.init(getContext());
+
         this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
 
         return view;
-//        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
-//        getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Scenes");
+        ((ViewSceneActivity)getActivity()).setActionBarTitle("Scenes");
+        ((ViewSceneActivity)getActivity()).setActionBarSubtitle("");
         lock.setOnClickListener(this);
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_scene_recyclerView);
 
-//        List<NavListItem> scenes = new ArrayList<>();
-//        scenes.add(new NavListItem(new Scene(1, "1 - The shooting scene"), false));
-//        scenes.add(new NavListItem(new Scene(22, "22 - Robbing the Bank"), false));
-//        scenes.add(new NavListItem(new Scene(53, "54 - The escape"), false));
+        final RecyclerViewClickListener listener = (v, position) -> goToViewShotFragment(position);
 
-        final RecyclerViewClickListener listener = (v, position) -> goToShotViewFragment(position);
+        this.scenes = getListOfScenes();
 
-//        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, scenes, listener);
-        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this, getListOfNavListItemsWithScenes(), listener);
+        adapter = new StdRecListAdapter(getActivity(), this.scenes, listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -77,20 +71,21 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
         SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
         SITHCallback.setDragEnabled(false);
         SITHCallback.setSwipeEnabled(false);
-
-        mItemTouchHelper = new ItemTouchHelper(SITHCallback);
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private static List<NavListItem> getListOfNavListItemsWithScenes() {
-        final List<NavListItem> navListScenes = new ArrayList<>();
-        final List<Scene> scenes = ApplicationConfig.getDaoFactory().getSceneDao().get();
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
 
-        for (Scene s : scenes) {
-            navListScenes.add(new NavListItem(s, false));
-        }
+    public static List<Item> getListOfScenes() {
+        final List<Item> itemScenes = new ArrayList<>();
+        final List<Scene> scenes =  ApplicationConfig.getDaoFactory().getSceneDao().get();
 
-        return navListScenes;
+        itemScenes.addAll(scenes);
+
+        return itemScenes;
     }
 
     @Override
@@ -101,7 +96,7 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
 
     public void goToEditSceneFragment() {
         Log.d(TAG, "goToEditSceneFragment: Returning");
-        ((SceneViewActivity)getActivity()).enableActionBar(true);
+        ((ViewSceneActivity)getActivity()).enableActionBar(true);
         Fragment editSceneFragment = new EditSceneFragment();
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, editSceneFragment)
@@ -109,24 +104,22 @@ public class SceneViewFragment extends Fragment implements View.OnClickListener,
                 .commit();
     }
 
-    public void goToShotViewFragment(int position) {
-        Log.d(TAG, "goToShotViewFragment: Returning");
-        ((SceneViewActivity)getActivity()).enableActionBar(true);
-        Fragment shotViewFragment = new ShotViewFragment();
+    public void goToViewShotFragment(int position) {
+        Scene chosenScene = (Scene) this.scenes.get(position);
 
-        final Scene chosenScene = this.sceneDao.get().get(position);
+        Log.d(TAG, "goToShotViewFragment: Returning");
+        ((ViewSceneActivity)getActivity()).enableActionBar(true);
+        Fragment shotViewFragment = new ViewShotFragment();
+
+        //final Scene chosenScene = this.sceneDao.get().get(this.scenes.get(position).getId());
+        System.out.println("SceneID: " + chosenScene.getId());
         Bundle bundle = new Bundle();
-        bundle.putInt(SceneViewActivity.SCENE_ID_KEY, chosenScene.getId());
+        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, chosenScene.getId());
         shotViewFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, shotViewFragment)
                 .addToBackStack(null)
                 .commit();
-    }
-
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        mItemTouchHelper.startDrag(viewHolder);
     }
 }
