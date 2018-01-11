@@ -1,25 +1,14 @@
 package dk.blackdarkness.g17.cphindustries.dataaccess;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-
-import dk.blackdarkness.g17.cphindustries.dto.Item;
-import dk.blackdarkness.g17.cphindustries.dto.Scene;
-
-/**
- * Created by awo on 06-12-2017.
- */
 
 public class SharedPreferenceManager {
     private final SharedPreferences prefs;
-    private final SharedPreferences.Editor prefsEditor;
     private final Context context;
     private final Gson gson;
 
@@ -34,7 +23,6 @@ public class SharedPreferenceManager {
         this.gson = new Gson();
 
         this.prefs = this.context.getSharedPreferences("GlobalState", Context.MODE_PRIVATE);
-        this.prefsEditor = this.prefs.edit();
     }
 
     /**
@@ -70,7 +58,7 @@ public class SharedPreferenceManager {
 
         final String jsonObj = gson.toJson(object);
 
-        this.prefsEditor.putString(storeLocation, jsonObj).commit();
+        this.prefs.edit().putString(storeLocation, jsonObj).apply();
     }
 
     /**
@@ -88,7 +76,18 @@ public class SharedPreferenceManager {
         return obj;
     }
 
+    /**
+     * Clears value stored at a specific location
+     * @param storeLocation What to delete
+     */
+    public void clear(String storeLocation) {
+        this.prefs.edit().remove(storeLocation).apply();
+    }
+
+    /**
+     * WARNING: This clears everything stored in SharedPreferences. Use with caution...
+     */
     public void clear() {
-        this.prefsEditor.clear().commit();
+        this.prefs.edit().clear().apply();
     }
 }

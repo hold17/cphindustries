@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/CPHIndustriesTheme">
         <activity
-            android:name=".activities.SceneViewActivity"
+            android:name=".activities.ViewSceneActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/CPHIndustriesTheme">

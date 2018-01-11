@@ -14,14 +14,14 @@ import android.widget.Toast;
 import dk.blackdarkness.g17.cphindustries.BuildConfig;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.settings.SettingsActivity;
-import dk.blackdarkness.g17.cphindustries.viewfragments.SceneViewFragment;
+import dk.blackdarkness.g17.cphindustries.viewfragments.ViewSceneFragment;
 
-public class SceneViewActivity extends AppCompatActivity {
+public class ViewSceneActivity extends AppCompatActivity {
     public static final String SCENE_ID_KEY = "SCENE_ID";
     public static final String SHOOT_ID_KEY = "SHOOT_ID";
     public static final String WEAPON_ID_KEY = "WEAPON_ID";
 
-    private static final String TAG = "SceneViewActivity";
+    private static final String TAG = "ViewSceneActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +35,10 @@ public class SceneViewActivity extends AppCompatActivity {
         setActionBarTitle("Scenes");
         enableActionBar(false);
 
+        //TODO: Check if this causes issues when returning to app after android has killed off it's process.
         // only ADD the fragment if starting after app has been completely killed off
         if (savedInstanceState == null) {
-            initSceneViewFragment();
+            goToSceneViewFragment();
         }
     }
 
@@ -55,7 +56,6 @@ public class SceneViewActivity extends AppCompatActivity {
                 return true;
             case R.id.action_about:
                 Toast.makeText(this, getAppVersion(), Toast.LENGTH_SHORT).show();
-
         }
         if (id == android.R.id.home) {
             onBackPressed();
@@ -66,20 +66,11 @@ public class SceneViewActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        // if we're not yet back at sceneViewFragment, pop stack
-        if (fragmentManager.getBackStackEntryCount() > 1) {
-            //fragmentManager.popBackStack();
-            //TODO: find better method than immediate
-            fragmentManager.popBackStackImmediate();
-            // if after popping stack we're back at sceneViewFragment, disable 'up' button
-            Fragment f = fragmentManager.findFragmentById(R.id.fragment_container);
-            if (f instanceof SceneViewFragment) {
-                enableActionBar(false);
-            }
-        } else {
-            // if we're on sceneViewFragment, finish activity and go to dashboard
-            finish();
+        // if we're back at sceneViewFragment, disable 'up' button
+        if (fragmentManager.getBackStackEntryCount() == 0) {
+            enableActionBar(false);
         }
     }
 
@@ -104,11 +95,10 @@ public class SceneViewActivity extends AppCompatActivity {
         getSupportActionBar().setSubtitle(title);
     }
 
-    public void initSceneViewFragment() {
-        Fragment sceneViewFragment = new SceneViewFragment();
+    public void goToSceneViewFragment() {
+        Fragment sceneViewFragment = new ViewSceneFragment();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, sceneViewFragment)
-                .addToBackStack(null)
                 .commit();
     }
 

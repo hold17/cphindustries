@@ -2,10 +2,6 @@ package dk.blackdarkness.g17.cphindustries.dataaccess;
 
 import android.app.Application;
 
-/**
- * Created by awo on 06-12-2017.
- */
-
 public class ApplicationConfig extends Application {
     @Override
     public void onCreate() {

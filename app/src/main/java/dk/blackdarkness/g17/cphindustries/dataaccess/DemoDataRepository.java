@@ -12,49 +12,109 @@ import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
 import dk.blackdarkness.g17.cphindustries.dto.FireMode;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
+import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
-/**
- * Created by jonaslarsen on 04/01/2018.
- */
-
-public class DemoDataRepository {
+class DemoDataRepository {
     private static final String SAVED_SCENES_LOCATION = "SAVED_SCENES_LIST";
+    private static final String SAVED_SHOOTS_LOCATION = "SAVED_SHOOTS_LIST";
+    private static final String SAVED_WEAPONS_LOCATION = "SAVED_WEAPONS_LIST";
+    private static final String SAVED_SHOOTWEAPON_LOCATION = "SAVED_SHOOTWEAPON_LIST";
 
-    public static void save(List<Scene> allScenes){
-        if (SharedPreferenceManager.getInstance() == null) throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
-        SharedPreferenceManager.getInstance().saveObject(SAVED_SCENES_LOCATION, allScenes);
+    private static List<Scene> listOfScenes;
+    private static List<Shoot> listOfShoot;
+    private static List<Weapon> listOfWeapon;
+    private static List<ShootWeapon> listOfShootWeapon;
+
+
+    static void saveListOfScenes(List<Scene> listOfScenes) {
+        if (SharedPreferenceManager.getInstance() == null)
+            throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
+        SharedPreferenceManager.getInstance().saveObject(SAVED_SCENES_LOCATION, listOfScenes);
     }
 
-    public static List<Scene> load(){
-        if (SharedPreferenceManager.getInstance() == null) throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
+    static List<Scene> loadListOfScenes() {
+        if (SharedPreferenceManager.getInstance() == null)
+            throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
 
-        if (loadFromPrefs() == null) {
-            save(generateDemoData());
+
+        Type returnType = new TypeToken<ArrayList<Scene>>() {
+        }.getType();
+
+        listOfScenes = (ArrayList<Scene>) SharedPreferenceManager.getInstance().getObject(SAVED_SCENES_LOCATION, returnType);
+
+        if (listOfScenes == null) {
+            generateDemoData();
         }
-
-        return (ArrayList<Scene>) loadFromPrefs();
+        return listOfScenes;
     }
 
-    private static Object loadFromPrefs() {
-        Type returnType = new TypeToken<ArrayList<Scene>>(){}.getType();
-        return SharedPreferenceManager.getInstance().getObject(SAVED_SCENES_LOCATION,returnType);
+    static void saveListOfShoots(List<Shoot> listOfShoots) {
+        if (SharedPreferenceManager.getInstance() == null)
+            throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
+        SharedPreferenceManager.getInstance().saveObject(SAVED_SHOOTS_LOCATION, listOfShoots);
+
     }
 
-    private static List<Scene> generateDemoData() {
-        Scene scene1;
-        Scene scene2;
-        Scene scene3;
+    static List<Shoot> loadListOfShoots() {
+        if (SharedPreferenceManager.getInstance() == null)
+            throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
 
-        // Scene 1
-        Shoot shoot1;
-        Shoot shoot2;
-        Shoot shoot3;
-        // Scene 2
-        Shoot shoot4;
-        // Scene 3
-        Shoot shoot5;
-        Shoot shoot6;
+        Type returnType = new TypeToken<ArrayList<Shoot>>() {
+        }.getType();
+
+        listOfShoot = (ArrayList<Shoot>) SharedPreferenceManager.getInstance().getObject(SAVED_SHOOTS_LOCATION, returnType);
+
+        if (listOfShoot == null) {
+            generateDemoData();
+        }
+        return listOfShoot;
+    }
+
+    static void saveListOfWeapons(List<Weapon> listOfWeapons) {
+        if (SharedPreferenceManager.getInstance() == null)
+            throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
+        SharedPreferenceManager.getInstance().saveObject(SAVED_WEAPONS_LOCATION, listOfWeapons);
+    }
+
+    static List<Weapon> loadListOfWeapons() {
+        if (SharedPreferenceManager.getInstance() == null)
+            throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
+
+        Type returnType = new TypeToken<ArrayList<Weapon>>() {
+        }.getType();
+
+        listOfWeapon = (ArrayList<Weapon>) SharedPreferenceManager.getInstance().getObject(SAVED_WEAPONS_LOCATION, returnType);
+
+        if (listOfWeapon == null) {
+            generateDemoData();
+        }
+        return listOfWeapon;
+    }
+
+    static void saveListOfShootWeapon(List<ShootWeapon> listOfShootWeapon) {
+        if (SharedPreferenceManager.getInstance() == null)
+            throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
+        SharedPreferenceManager.getInstance().saveObject(SAVED_SHOOTWEAPON_LOCATION, listOfShootWeapon);
+    }
+
+    static List<ShootWeapon> loadListOfShootWeapon() {
+
+        if (SharedPreferenceManager.getInstance() == null)
+            throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
+
+        Type returnType = new TypeToken<ArrayList<ShootWeapon>>() {
+        }.getType();
+
+        listOfShootWeapon = (ArrayList<ShootWeapon>) SharedPreferenceManager.getInstance().getObject(SAVED_SHOOTWEAPON_LOCATION, returnType);
+
+        if (listOfShootWeapon == null) {
+            generateDemoData();
+        }
+        return listOfShootWeapon;
+    }
+
+    private static void generateDemoData() {
 
         // Demo Warnings
         final List<String> warnings = new ArrayList<>();
@@ -62,72 +122,55 @@ public class DemoDataRepository {
         warnings.add("This is a secondary warning!");
 
         // Demo Weapons
-        final Weapon weapon1 = new Weapon(1337, "Weapon 1", warnings, FireMode.BURST, ConnectionStatus.NO_CONNECTION);
-        final Weapon weapon2 = new Weapon(1, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.FULL);
-        final Weapon weapon3 = new Weapon(2, "Weapon 3", ConnectionStatus.NO_CONNECTION);
-        final Weapon weapon4 = new Weapon(3, "Weapon 4", FireMode.SINGLE, ConnectionStatus.BAR_2);
-        final Weapon weapon5 = new Weapon(4, "weapon 5", warnings, FireMode.SINGLE, ConnectionStatus.BAR_3);
-        final Weapon weapon6 = new Weapon(5, "weapon 6", warnings, FireMode.BURST, ConnectionStatus.BAR_1);
-        final Weapon weapon7 = new Weapon(6, "weapon 7", FireMode.SINGLE, ConnectionStatus.BAR_2);
-        final Weapon weapon8 = new Weapon(7, "weapon 8", FireMode.FULL_AUTO, ConnectionStatus.BAR_1);
+        listOfWeapon = new ArrayList<>();
+        listOfWeapon.add(new Weapon(1, "Weapon 1", warnings, FireMode.BURST, ConnectionStatus.NO_CONNECTION));
+        listOfWeapon.add(new Weapon(2, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.FULL));
+        listOfWeapon.add(new Weapon(3, "Weapon 3", ConnectionStatus.NO_CONNECTION));
+        listOfWeapon.add(new Weapon(4, "Weapon 4", FireMode.SINGLE, ConnectionStatus.BAR_2));
+        listOfWeapon.add(new Weapon(5, "weapon 5", warnings, FireMode.SINGLE, ConnectionStatus.BAR_3));
+        listOfWeapon.add(new Weapon(6, "weapon 6", warnings, FireMode.BURST, ConnectionStatus.BAR_1));
+        listOfWeapon.add(new Weapon(7, "weapon 7", FireMode.SINGLE, ConnectionStatus.BAR_2));
+        listOfWeapon.add(new Weapon(8, "weapon 8", FireMode.FULL_AUTO, ConnectionStatus.BAR_1));
+        saveListOfWeapons(listOfWeapon);
 
-        // Demo Shoot weapon lists
-        final List<Weapon> s1weapons = new ArrayList<>();
-        s1weapons.add(weapon1);
-        s1weapons.add(weapon2);
-        s1weapons.add(weapon3);
-        s1weapons.add(weapon4);
-        s1weapons.add(weapon5);
+        // Demo shoots
+        listOfShoot = new ArrayList<>();
+        listOfShoot.add(new Shoot(1, "Shoot 1", 1));
+        listOfShoot.add(new Shoot(2, "Shoot 2", 1));
+        listOfShoot.add(new Shoot(3, "Shoot 3", 1));
+        listOfShoot.add(new Shoot(4, "Shoot 4", 2));
+        listOfShoot.add(new Shoot(5, "Shoot 5", 3));
+        listOfShoot.add(new Shoot(6, "Shoot 6", 3));
+        saveListOfShoots(listOfShoot);
 
-        final Map<Integer,Weapon> s1weapons1 = new HashMap<>();
-        s1weapons1.put(weapon1.getId(),weapon1);
+        // Demo scenes
+        listOfScenes = new ArrayList<>();
+        listOfScenes.add(new Scene(1, "1 - Ze Zjuting sihn"));
+        listOfScenes.add(new Scene(2, "22 - Robbing the bank"));
+        listOfScenes.add(new Scene(3, "54 - The escape"));
+        saveListOfScenes(listOfScenes);
 
-        final List<Weapon> s2weapons = new ArrayList<>();
-        s2weapons.add(weapon2);
-        s2weapons.add(weapon7);
-        final List<Weapon> s3weapons = new ArrayList<>();
-        s3weapons.add(weapon1);
-        s3weapons.add(weapon2);
-        s3weapons.add(weapon4);
-        final List<Weapon> s4weapons = new ArrayList<>();
-        s4weapons.add(weapon6);
-        s4weapons.add(weapon7);
-        s4weapons.add(weapon1);
-        final List<Weapon> s5weapons = new ArrayList<>();
-        s5weapons.add(weapon2);
-        final List<Weapon> s6weapons = new ArrayList<>();
-        s6weapons.add(weapon1);
-        s6weapons.add(weapon2);
-        s6weapons.add(weapon5);
-        s6weapons.add(weapon6);
-        s6weapons.add(weapon8);
-
-        shoot1 = new Shoot(1337, "Shoot 1", s1weapons);
-        shoot2 = new Shoot(1, "Shoot 2", s2weapons);
-        shoot3 = new Shoot(2, "Shoot 3", s3weapons);
-        shoot4 = new Shoot(3, "Shoot 4", s4weapons);
-        shoot5 = new Shoot(4, "Shoot 5", s5weapons);
-        shoot6 = new Shoot(5, "Shoot 6", s6weapons);
-
-        final List<Shoot> scene1Shoots = new ArrayList<>();
-        scene1Shoots.add(shoot1);
-        scene1Shoots.add(shoot2);
-        scene1Shoots.add(shoot3);
-        final List<Shoot> scene2Shoots = new ArrayList<>();
-        scene2Shoots.add(shoot4);
-        final List<Shoot> scene3Shoots = new ArrayList<>();
-        scene3Shoots.add(shoot5);
-        scene3Shoots.add(shoot6);
-
-        scene1 = new Scene(1337, "1 - Ze Zjuting sihn", scene1Shoots);
-        scene2 = new Scene(1, "22 - Robbing the bank", scene2Shoots);
-        scene3 = new Scene(2, "54 - The escape", scene3Shoots);
-
-        final List<Scene> scenes = new ArrayList<>();
-        scenes.add(scene1);
-        scenes.add(scene2);
-        scenes.add(scene3);
-
-        return scenes;
+        // Demo Shootweapon
+        listOfShootWeapon = new ArrayList<>();
+        listOfShootWeapon.add(new ShootWeapon(1,1, 1));
+        listOfShootWeapon.add(new ShootWeapon(2,1, 2));
+        listOfShootWeapon.add(new ShootWeapon(3,1, 3));
+        listOfShootWeapon.add(new ShootWeapon(4,1, 4));
+        listOfShootWeapon.add(new ShootWeapon(5,1, 5));
+        listOfShootWeapon.add(new ShootWeapon(6,2, 2));
+        listOfShootWeapon.add(new ShootWeapon(7,2, 7));
+        listOfShootWeapon.add(new ShootWeapon(8,3, 1));
+        listOfShootWeapon.add(new ShootWeapon(9,3, 2));
+        listOfShootWeapon.add(new ShootWeapon(10,3, 4));
+        listOfShootWeapon.add(new ShootWeapon(11,4, 6));
+        listOfShootWeapon.add(new ShootWeapon(12,4, 7));
+        listOfShootWeapon.add(new ShootWeapon(13,4, 1));
+        listOfShootWeapon.add(new ShootWeapon(14,5, 2));
+        listOfShootWeapon.add(new ShootWeapon(15,6, 1));
+        listOfShootWeapon.add(new ShootWeapon(16,6, 2));
+        listOfShootWeapon.add(new ShootWeapon(17,6, 5));
+        listOfShootWeapon.add(new ShootWeapon(18,6, 6));
+        listOfShootWeapon.add(new ShootWeapon(19,6, 8));
+        saveListOfShootWeapon(listOfShootWeapon);
     }
 }
