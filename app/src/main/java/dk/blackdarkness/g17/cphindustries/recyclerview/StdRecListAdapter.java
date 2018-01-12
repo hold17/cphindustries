@@ -2,6 +2,7 @@ package dk.blackdarkness.g17.cphindustries.recyclerview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 
 public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.ItemViewHolder> {
-    private final List<Item> mItems = new ArrayList<>();
+    private List<Item> mItems = new ArrayList<>();
     private final RecyclerViewClickListener listener;
     private final Context context;
 
@@ -60,6 +61,11 @@ public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.It
             // Set go button image to the connection status
             holder.imageBack.setImageResource(((Weapon) curItem).getConnectionStatus().getDrawableId());
         }
+    }
+
+    public void updateItems(List<Item> items) {
+        this.mItems = items;
+        Log.d("updateItems", "updated item list!" + this.mItems.toString());
     }
 
     @Override

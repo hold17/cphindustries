@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
+import dk.blackdarkness.g17.cphindustries.settings.SettingsFragment;
 
 public class ViewSceneFragment extends Fragment implements View.OnClickListener {
     private View view;
@@ -59,34 +61,28 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
 
         final RecyclerViewClickListener listener = (v, position) -> goToViewShotFragment(position);
 
-        this.scenes = ItemConverter.sceneToItem(ApplicationConfig.getDaoFactory().getSceneDao().getList());
-
-        //this.scenes = getListOfScenes();
+        this.scenes = ItemConverter.sceneToItem(this.sceneDao.getList());
 
         adapter = new StdRecListAdapter(getActivity(), this.scenes, listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-//        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
-//        SITHCallback.setDragEnabled(false);
-//        SITHCallback.setSwipeEnabled(false);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        //Check if cache is cleared TODO: Work around empty lists!!!
+        if(SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED)) {
+            Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
+            SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
+            this.scenes = ItemConverter.sceneToItem(this.sceneDao.getList());
+            adapter.updateItems(this.scenes);
+        }
         adapter.notifyDataSetChanged();
+        System.out.println("Items onResume: " + adapter.getItemCount());
     }
-
-//    public static List<Item> getListOfScenes() {
-//        final List<Item> itemScenes = new ArrayList<>();
-//        final List<Scene> scenes =  ApplicationConfig.getDaoFactory().getSceneDao().getList();
-//
-//        itemScenes.addAll(scenes);
-//
-//        return itemScenes;
-//    }
 
     @Override
     public void onClick(View view) {
