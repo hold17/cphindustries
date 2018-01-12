@@ -1,6 +1,7 @@
 package dk.blackdarkness.g17.cphindustries.entityfragments;
 
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -8,20 +9,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
+import dk.blackdarkness.g17.cphindustries.dataaccess.DaoFactory;
+import dk.blackdarkness.g17.cphindustries.dto.FireMode;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponFragment;
+
+import static dk.blackdarkness.g17.cphindustries.dto.FireMode.BURST;
+import static dk.blackdarkness.g17.cphindustries.dto.FireMode.FULL_AUTO;
+import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SAFE;
+import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SINGLE;
 
 public class DetailWeaponFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "DetailWeaponFragment";
     private TextView weaponNameTitle, weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
     private FloatingActionButton lock;
+    private Button fullAutoButton, safeButton;
+    ImageButton singleButton, burstButton;
     private int sceneId;
     private int shootId;
     private Weapon weapon;
@@ -46,13 +58,18 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         final int weaponId = getArguments().getInt(ViewSceneActivity.WEAPON_ID_KEY);
         this.weapon = ApplicationConfig.getDaoFactory().getWeaponDao().getWeapon(weaponId);
 
+        this.singleButton = view.findViewById(R.id.fr_weapon_details_ibtn_single);
+        this.burstButton = view.findViewById(R.id.fr_weapon_details_ibtn_burst);
+        this.fullAutoButton = view.findViewById(R.id.fr_weapon_details_btn_full_auto);
+        this.safeButton = view.findViewById(R.id.fr_weapon_details_btn_safe);
+
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewSceneActivity)getActivity()).setActionBarTitle(weapon.getName() + " " + "Details");
+        ((ViewSceneActivity) getActivity()).setActionBarTitle(weapon.getName() + " " + "Details");
 //        this.statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
         this.weaponNameTitle.setText(this.weapon.getName());
         this.weaponNameText.setText(this.weapon.getName());
@@ -72,6 +89,14 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
             this.statusText.setText("No warnings.");
         }
         this.lock.setOnClickListener(this);
+
+        updateGuiButtonsFiremode();
+
+        this.singleButton.setOnClickListener(this);
+        this.burstButton.setOnClickListener(this);
+        this.fullAutoButton.setOnClickListener(this);
+        this.safeButton.setOnClickListener(this);
+
     }
 
     @Override
@@ -82,6 +107,15 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
                 //from ViewWeaponFragment. Edit this one weapon only?
                 Log.d(TAG, "onClick: Trying to open edit weapon fragment.");
                 goToEditWeaponFragment();
+            case R.id.fr_weapon_details_ibtn_single:
+                setWeaponFiremode(SINGLE);
+            case R.id.fr_weapon_details_ibtn_burst:
+                setWeaponFiremode(BURST);
+            case R.id.fr_weapon_details_btn_full_auto:
+                setWeaponFiremode(FULL_AUTO);
+            case R.id.fr_weapon_details_btn_safe:
+                setWeaponFiremode(SAFE);
+
         }
     }
 
@@ -89,5 +123,36 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         Log.d(TAG, "goToEditWeaponFragment: Returning");
 
         Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_LONG).show();
+    }
+
+    public void setWeaponFiremode(FireMode theEnum) {
+        this.weapon.setFireMode(theEnum);
+        ApplicationConfig.getDaoFactory().getWeaponDao().update(this.weapon.getId(),this.weapon);
+        updateGuiButtonsFiremode();
+    }
+
+    public void updateGuiButtonsFiremode() {
+
+        //Resets buttons
+        singleButton.setBackground(getResources().getDrawable(R.drawable.buttonshape_left));
+        burstButton.setBackground(getResources().getDrawable(R.drawable.buttonshape_center));
+        fullAutoButton.setBackground(getResources().getDrawable(R.drawable.buttonshape_center));
+        safeButton.setBackground(getResources().getDrawable(R.drawable.buttonshape_right));
+
+        //Sets pressed button
+        switch (this.weapon.getFireMode()) {
+            case SINGLE:
+                singleButton.setBackground(getResources().getDrawable(R.drawable.buttonshape_pressed_left));
+                break;
+            case BURST:
+                burstButton.setBackground(getResources().getDrawable(R.drawable.buttonshape_pressed_center));
+                break;
+            case FULL_AUTO:
+                fullAutoButton.setBackground(getResources().getDrawable(R.drawable.buttonshape_pressed_center));
+                break;
+            case SAFE:
+                safeButton.setBackground(getResources().getDrawable(R.drawable.buttonshape_pressed_rigth));
+                break;
+        }
     }
 }
