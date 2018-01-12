@@ -6,11 +6,11 @@ import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
 public interface ShootDao {
-    List<Shoot> get();
-    Shoot get(int shootId);
+    List<Shoot> getList();
+    Shoot getShoot(int shootId);
     void create( Shoot shoot);
     void update(int shootId, Shoot newShoot);
     void delete(int shootId);
-    List<Shoot> getShoots(int sceneId);
-    List<Weapon> getWeapons(int shootId);
+    List<Shoot> getListByScene(int sceneId);
+    List<Weapon> getWeaponsByShoot(int shootId);
 }
