@@ -15,4 +15,5 @@
     <color name="colorButton">#D8D8D8</color>
     <color name="colorButtonStroke">#979797</color>
     <color name="colorPressedButton">#F1F1F1</color>
+    <color name="addFabColor">#FF4081</color>
 </resources>
