@@ -1,14 +1,20 @@
 package dk.blackdarkness.g17.cphindustries.settings;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    private static final String TAG = "AppCompatActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,5 +41,19 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.d(TAG, "onConfigurationChanged: Configuration change.");
+
+        boolean allowLandScapeMode = SharedPreferenceManager.getInstance().getBoolean("orientationSwitch");
+        if (allowLandScapeMode) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+            Log.d(TAG, "onConfigurationChanged: Orientation allowed.");
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 }

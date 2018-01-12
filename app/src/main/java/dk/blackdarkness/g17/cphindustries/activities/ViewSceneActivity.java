@@ -1,6 +1,8 @@
 package dk.blackdarkness.g17.cphindustries.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +15,8 @@ import android.widget.Toast;
 
 //crashlytics
 import com.crashlytics.android.Crashlytics;
+
+import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import io.fabric.sdk.android.Fabric;
 
 import dk.blackdarkness.g17.cphindustries.BuildConfig;
@@ -73,6 +77,20 @@ public class ViewSceneActivity extends AppCompatActivity {
         // if we're back at sceneViewFragment, disable 'up' button
         if (fragmentManager.getBackStackEntryCount() == 0) {
             enableActionBar(false);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.d(TAG, "onConfigurationChanged: Configuration change.");
+
+        boolean allowLandScapeMode = SharedPreferenceManager.getInstance().getBoolean("orientationSwitch");
+        if (allowLandScapeMode) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+            Log.d(TAG, "onConfigurationChanged: Orientation allowed.");
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
 

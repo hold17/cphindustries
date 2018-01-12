@@ -13,7 +13,8 @@
         android:defaultValue="false"
         android:key="@string/orientation_key"
         android:title="@string/orientation_title"
-        android:summary="@string/orientation_summary"/>
+        android:summary="@string/orientation_summary"
+        android:enabled="false"/>
     <ListPreference
         android:defaultValue="false"
         android:entries="@array/array_updatePreferences"
