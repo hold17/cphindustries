@@ -28,5 +28,8 @@
     <Preference
         android:title="@string/clear_app_cache"
         android:key="@string/clear_app_cache_key" />
+    <Preference
+        android:title="Build number"
+        android:key="buildNumber"/>
 
 </PreferenceScreen>
