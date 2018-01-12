@@ -12,4 +12,7 @@
     <color name="colorPositive">#13CE66</color>
     <color name="colorDanger">#FF4949</color>
     <color name="colorEdit">#DE6305</color>
+    <color name="colorButton">#D8D8D8</color>
+    <color name="colorButtonStroke">#979797</color>
+    <color name="colorPressedButton">#F1F1F1</color>
 </resources>
