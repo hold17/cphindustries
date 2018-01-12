@@ -1,7 +1,6 @@
 package dk.blackdarkness.g17.cphindustries.entityfragments;
 
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -17,10 +16,9 @@ import android.widget.Toast;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
-import dk.blackdarkness.g17.cphindustries.dataaccess.DaoFactory;
+import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.FireMode;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
-import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponFragment;
 
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.BURST;
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.FULL_AUTO;
@@ -34,9 +32,10 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     private FloatingActionButton lock;
     private Button fullAutoButton, safeButton;
     ImageButton singleButton, burstButton;
-    private int sceneId;
-    private int shootId;
+//    private int sceneId;
+//    private int shootId;
     private Weapon weapon;
+    private WeaponDao weaponDao;
 
     @Nullable
     @Override
@@ -53,10 +52,11 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         this.lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
 
-        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
-        this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
+//        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
+//        this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
         final int weaponId = getArguments().getInt(ViewSceneActivity.WEAPON_ID_KEY);
-        this.weapon = ApplicationConfig.getDaoFactory().getWeaponDao().get(weaponId);
+        this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
+        this.weapon = this.weaponDao.get(weaponId);
 
         this.singleButton = view.findViewById(R.id.fr_weapon_details_ibtn_single);
         this.burstButton = view.findViewById(R.id.fr_weapon_details_ibtn_burst);
@@ -131,8 +131,10 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     }
 
     public void setWeaponFiremode(FireMode theEnum) {
+        Log.d(TAG, "setWeaponFiremode: selected firemode: " + theEnum);
         this.weapon.setFireMode(theEnum);
-        ApplicationConfig.getDaoFactory().getWeaponDao().update(this.weapon.getId(),this.weapon);
+        this.weaponDao.update(this.weapon.getId(),this.weapon);
+        Log.d(TAG, "setWeaponFiremode: applied firemode: " + this.weaponDao.get(this.weapon.getId()).getFireMode());
         updateGuiButtonsFiremode();
     }
 
