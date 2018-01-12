@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
@@ -86,10 +87,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
 
     public void goToEditWeaponFragment() {
         Log.d(TAG, "goToEditWeaponFragment: Returning");
-        Fragment editWeaponFragment = new EditWeaponFragment();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, editWeaponFragment)
-                .addToBackStack(null)
-                .commit();
+
+        Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_LONG).show();
     }
 }

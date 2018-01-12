@@ -5,23 +5,33 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:logo="@drawable/ic_ci_logo_small_trans"
         android:label="@string/app_name"
+        android:logo="@drawable/ic_ci_logo_small_trans"
         android:roundIcon="@drawable/ic_ci_logo_small_trans"
         android:supportsRtl="true"
         android:theme="@style/CPHIndustriesTheme">
         <activity
             android:name=".activities.ViewSceneActivity"
             android:label="@string/app_name"
-            android:theme="@style/CPHIndustriesTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/CPHIndustriesTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-    </application>
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".activities.ViewSceneActivity"
+            android:theme="@style/SettingsTheme">
+        </activity>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="3880ff607ba8029ca6386dcb8788d10d9151e29d" />
+
+    </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

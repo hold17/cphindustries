@@ -29,7 +29,7 @@ public class SharedPreferenceManager {
      * Coded as a singleton. The singleton might be cleaned up by android, but does not matter too much since a global application context is used
      * @return Returns the current initialized instance
      */
-    static SharedPreferenceManager getInstance() {
+    public static SharedPreferenceManager getInstance() {
         if (instance == null) return null;
 
         return instance;
@@ -53,12 +53,12 @@ public class SharedPreferenceManager {
      * @param storeLocation Where to store the object - should be a string from "strings.xml"
      * @param object The object to be stored
      */
-    void saveObject(String storeLocation, Object object) {
+    public void saveObject(String storeLocation, Object object) {
         if (instance == null) return;
 
         final String jsonObj = gson.toJson(object);
 
-        this.prefs.edit().putString(storeLocation, jsonObj).commit();
+        this.prefs.edit().putString(storeLocation, jsonObj).apply();
     }
 
     /**
@@ -66,7 +66,7 @@ public class SharedPreferenceManager {
      * @param storeLocation Where the object is stored - should be a string from "strings.xml"
      * @return Returns the wanted object if it exists, null if it does not
      */
-    Object getObject(String storeLocation, Type returnType) {
+    public Object getObject(String storeLocation, Type returnType) {
         if (instance == null) return null;
 
         final String jsonObj = this.prefs.getString(storeLocation, null);
@@ -76,7 +76,18 @@ public class SharedPreferenceManager {
         return obj;
     }
 
-    void clear() {
-        this.prefs.edit().clear().commit();
+    /**
+     * Clears value stored at a specific location
+     * @param storeLocation What to delete
+     */
+    public void clear(String storeLocation) {
+        this.prefs.edit().remove(storeLocation).apply();
+    }
+
+    /**
+     * WARNING: This clears everything stored in SharedPreferences. Use with caution...
+     */
+    public void clear() {
+        this.prefs.edit().clear().apply();
     }
 }

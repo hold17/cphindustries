@@ -1,5 +1,6 @@
 package dk.blackdarkness.g17.cphindustries.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,8 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+//crashlytics
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
+
 import dk.blackdarkness.g17.cphindustries.BuildConfig;
 import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.settings.SettingsActivity;
 import dk.blackdarkness.g17.cphindustries.viewfragments.ViewSceneFragment;
 
 public class ViewSceneActivity extends AppCompatActivity {
@@ -38,6 +44,8 @@ public class ViewSceneActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             goToSceneViewFragment();
         }
+        //crashlyics
+        Fabric.with(this, new Crashlytics());
     }
 
     @Override
@@ -45,18 +53,15 @@ public class ViewSceneActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch(id) {
-            case R.id.home:
+            case android.R.id.home:
                 onBackPressed();
                 return true;
             case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_about:
                 Toast.makeText(this, getAppVersion(), Toast.LENGTH_SHORT).show();
-        }
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }

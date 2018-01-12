@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:layout="@layout/custom_toolbar_layout"></PreferenceCategory>
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="demoDataSwitch"
+        android:title="@string/demo_data_title"
+        android:summary="@string/demo_data_summary"/>
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="orientationSwitch"
+        android:title="@string/orientation_title"
+        android:summary="@string/orientation_summary"/>
+    <ListPreference
+        android:defaultValue="false"
+        android:entries="@array/array_updatePreferences"
+        android:entryValues="@array/array_updateValues"
+        android:key="updateRate"
+        android:title="@string/update_rate_title"
+        android:summary="@string/update_rate_summary"/>
+    <Preference
+        android:title="@string/clear_app_settings_title"
+        android:key="clearSettings"/>
+    <Preference
+        android:title="@string/clear_app_cache"
+        android:key="clearCache" />
+
+</PreferenceScreen>
