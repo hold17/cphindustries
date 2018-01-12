@@ -20,7 +20,6 @@ import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
-import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
@@ -32,6 +31,7 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
     private View view;
     private static final String TAG = "ViewSceneFragment";
     private FloatingActionButton lock;
+    private RecyclerView recyclerView;
     private StdRecListAdapter adapter;
     private SceneDao sceneDao;
     private List<Item> scenes;
@@ -40,8 +40,10 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_scene_view_layout, container, false);
-        lock = view.findViewById(R.id.lockFab);
+        this.lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
+
+        this.recyclerView = this.view.findViewById(R.id.fr_scene_recyclerView);
 
         SharedPreferenceManager.init(getContext());
 
@@ -55,15 +57,14 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
         super.onViewCreated(view, savedInstanceState);
         ((ViewSceneActivity)getActivity()).setActionBarTitle("Scenes");
         ((ViewSceneActivity)getActivity()).setActionBarSubtitle("");
-        lock.setOnClickListener(this);
-
-        RecyclerView recyclerView = this.view.findViewById(R.id.fr_scene_recyclerView);
+        this.lock.setOnClickListener(this);
 
         final RecyclerViewClickListener listener = (v, position) -> goToViewShotFragment(position);
 
         this.scenes = ItemConverter.sceneToItem(this.sceneDao.getList());
 
-        adapter = new StdRecListAdapter(getActivity(), this.scenes, listener);
+        this.adapter = new StdRecListAdapter(getActivity(), this.scenes, listener);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -81,7 +82,7 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
             adapter.updateItems(this.scenes);
         }
         adapter.notifyDataSetChanged();
-        System.out.println("Items onResume: " + adapter.getItemCount());
+        Log.d(TAG, "Items onResume: " + adapter.getItemCount());
     }
 
     @Override
@@ -105,10 +106,9 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
         ((ViewSceneActivity)getActivity()).enableActionBar(true);
         Fragment shotViewFragment = new ViewShotFragment();
 
-        final Scene chosenScene = this.sceneDao.getScene(this.scenes.get(position).getId());
-        System.out.println("SceneID: " + chosenScene.getId());
+        final int chosenScene = this.scenes.get(position).getId();
         Bundle bundle = new Bundle();
-        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, chosenScene.getId());
+        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, chosenScene);
         shotViewFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

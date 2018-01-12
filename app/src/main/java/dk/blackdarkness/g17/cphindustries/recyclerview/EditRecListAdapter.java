@@ -3,6 +3,7 @@ package dk.blackdarkness.g17.cphindustries.recyclerview;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,7 +25,7 @@ import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListen
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 
 public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.ItemViewHolder> implements ItemTouchHelperAdapter {
-    private final List<Item> mItems = new ArrayList<>();
+    private List<Item> mItems = new ArrayList<>();
     private final OnStartDragListener mDragStartListener;
     private final RecyclerViewClickListener listener;
     private final Context context;
@@ -70,6 +71,11 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
                 }
             }
         });
+    }
+
+    public void updateItems(List<Item> items) {
+        this.mItems = items;
+        Log.d("updateItems", "updated item list!" + this.mItems.toString());
     }
 
     @Override
