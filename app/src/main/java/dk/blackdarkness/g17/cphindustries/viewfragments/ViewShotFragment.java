@@ -81,6 +81,10 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+
+        //Update list
+        this.shoots = ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getShoots(sceneId));
+        adapter.updateItems(this.shoots);
         adapter.notifyDataSetChanged();
     }
 

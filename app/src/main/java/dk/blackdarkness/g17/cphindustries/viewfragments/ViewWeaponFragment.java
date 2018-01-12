@@ -99,6 +99,10 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
+
+        //Update list
+        this.weapons = getListOfWeapons(sceneId, shootId);
+        adapter.updateItems(this.weapons);
         adapter.notifyDataSetChanged();
     }
 

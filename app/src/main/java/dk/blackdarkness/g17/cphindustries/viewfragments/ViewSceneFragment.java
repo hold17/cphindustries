@@ -78,13 +78,10 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
-        //Check if cache is cleared TODO: Work around empty lists!!!
-        if(SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED)) {
-            Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
-            SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
-            this.scenes = getListOfScenes();
-            adapter.updateItems(this.scenes);
-        }
+
+        //Update list
+        this.scenes = getListOfScenes();
+        adapter.updateItems(this.scenes);
         adapter.notifyDataSetChanged();
         System.out.println("Items onResume: " + adapter.getItemCount());
     }

@@ -20,7 +20,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
 
     public static final String CACHE_CLEARED = "cacheCleared";
 
-    private static final String KEY_PREF_CLEAR_SETTINGS = "clearSettings";
+    private static final String KEY_PREF_RESET_APP= "resetApp";
     private static final String KEY_PREF_CLEAR_CACHE = "clearCache";
     private static final String KEY_PREF_DEMO_DATA = "demoDataSwitch";
     private static final String KEY_PREF_ORIENTATION = "orientationSwitch";
@@ -36,7 +36,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
 
-        android.support.v7.preference.Preference clearSettings = findPreference(KEY_PREF_CLEAR_SETTINGS);
+        android.support.v7.preference.Preference clearSettings = findPreference(KEY_PREF_RESET_APP);
         clearSettings.setOnPreferenceClickListener(this);
 
         android.support.v7.preference.Preference clearCache = findPreference(KEY_PREF_CLEAR_CACHE);
@@ -68,14 +68,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
 
         //Test preferences, creates toast onClick. Implement methods here.
         switch(preference.getKey()) {
-            case KEY_PREF_CLEAR_SETTINGS:
+            case KEY_PREF_RESET_APP:
                 AlertDialog.Builder a_builder = new AlertDialog.Builder(getContext());
-                a_builder.setMessage("Resetting the application settings will reset.... Do you still want to....")
+                a_builder.setMessage("Resetting the application will remove all data and preferences. Do you still want to reset?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                //TODO: Clear settings here. We need to find out exactly what settings to clear!
-                                Toast.makeText(getContext(), "Settings reset", Toast.LENGTH_SHORT).show();
+                                SharedPreferenceManager.getInstance().clear();
+                                Toast.makeText(getContext(), "Application reset", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

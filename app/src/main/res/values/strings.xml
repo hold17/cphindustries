@@ -29,8 +29,8 @@
     <string name="update_rate_summary">Choose weapon information update interval</string>
     <string name="update_rate_key">updateRate</string>
 
-    <string name="clear_app_settings_title">Clear app settings</string>
-    <string name="clear_app_settings_key">clearSettings</string>
+    <string name="reset_app__title">Reset application</string>
+    <string name="reset_app__key">resetApp</string>
 
     <string name="clear_app_cache">Clear cache</string>
     <string name="clear_app_cache_key">clearCache</string>

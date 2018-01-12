@@ -6,14 +6,15 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/createFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_above="@+id/lockFab"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="24dp"
+        android:scaleType="center"
         android:visibility="gone"
-        app:backgroundTint="@color/colorPrimarySmoke"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:backgroundTint="@color/addFabColor"
+        app:srcCompat="@drawable/ic_add_white_24dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/lockFab"
