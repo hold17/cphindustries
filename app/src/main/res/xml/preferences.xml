@@ -4,7 +4,7 @@
     <PreferenceCategory android:layout="@layout/custom_toolbar_layout"></PreferenceCategory>
 
     <SwitchPreferenceCompat
-        android:defaultValue="false"
+        android:defaultValue="true"
         android:key="@string/demo_data_key"
         android:title="@string/demo_data_title"
         android:summary="@string/demo_data_summary"

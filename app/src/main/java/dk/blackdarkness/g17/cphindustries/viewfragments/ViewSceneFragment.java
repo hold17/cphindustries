@@ -83,8 +83,10 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
             Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
             SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
             this.scenes = getListOfScenes();
+            adapter.updateItems(this.scenes);
         }
         adapter.notifyDataSetChanged();
+        System.out.println("Items onResume: " + adapter.getItemCount());
     }
 
     public static List<Item> getListOfScenes() {
