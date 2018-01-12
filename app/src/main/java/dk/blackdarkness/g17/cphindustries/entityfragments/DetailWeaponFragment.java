@@ -26,42 +26,43 @@ import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SAFE;
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SINGLE;
 
 public class DetailWeaponFragment extends Fragment implements View.OnClickListener {
-
+    private View view;
     private static final String TAG = "DetailWeaponFragment";
     private TextView weaponNameTitle, weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
     private FloatingActionButton lock;
     private Button fullAutoButton, safeButton;
     ImageButton singleButton, burstButton;
-//    private int sceneId;
-//    private int shootId;
+    private int sceneId;
+    private int shootId;
+    private int weaponId;
     private Weapon weapon;
     private WeaponDao weaponDao;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_weapon_details_layout, container, false);
+        this.view = inflater.inflate(R.layout.fragment_weapon_details_layout, container, false);
+        Log.d(TAG, "onCreateView: Returning.");
 
+        this.lock = view.findViewById(R.id.lockFab);
         this.weaponNameTitle = view.findViewById(R.id.fr_weapon_details_title);
         this.weaponNameText = view.findViewById(R.id.fr_weapon_details_tvName_description);
         this.weaponIdText = view.findViewById(R.id.fr_weapon_details_tvId_description);
         this.weaponFiremodeText = view.findViewById(R.id.fr_weapon_details_tvFire_mode_description);
         this.weaponShootsText = view.findViewById(R.id.fr_weapon_details_tvShoot_description);
-
         this.statusText = view.findViewById(R.id.fr_weapon_details_status_text);
-        this.lock = view.findViewById(R.id.lockFab);
-        Log.d(TAG, "onCreateView: Returning.");
-
-//        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
-//        this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
-        final int weaponId = getArguments().getInt(ViewSceneActivity.WEAPON_ID_KEY);
-        this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
-        this.weapon = this.weaponDao.get(weaponId);
 
         this.singleButton = view.findViewById(R.id.fr_weapon_details_ibtn_single);
         this.burstButton = view.findViewById(R.id.fr_weapon_details_ibtn_burst);
         this.fullAutoButton = view.findViewById(R.id.fr_weapon_details_btn_full_auto);
         this.safeButton = view.findViewById(R.id.fr_weapon_details_btn_safe);
+
+        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
+        this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
+        this.weaponId = getArguments().getInt(ViewSceneActivity.WEAPON_ID_KEY);
+
+        this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
+        this.weapon = this.weaponDao.getWeapon(weaponId);
 
         return view;
     }
@@ -70,6 +71,9 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((ViewSceneActivity) getActivity()).setActionBarTitle(weapon.getName() + " " + "Details");
+
+        this.lock.setOnClickListener(this);
+
 //        this.statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
         this.weaponNameTitle.setText(this.weapon.getName());
         this.weaponNameText.setText(this.weapon.getName());
@@ -88,7 +92,6 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         } else {
             this.statusText.setText("No warnings.");
         }
-        this.lock.setOnClickListener(this);
 
         updateGuiButtonsFiremode();
 
@@ -96,7 +99,6 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         this.burstButton.setOnClickListener(this);
         this.fullAutoButton.setOnClickListener(this);
         this.safeButton.setOnClickListener(this);
-
     }
 
     @Override
@@ -120,21 +122,19 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
             case R.id.fr_weapon_details_btn_safe:
                 setWeaponFiremode(SAFE);
                 break;
-
         }
     }
 
     public void goToEditWeaponFragment() {
         Log.d(TAG, "goToEditWeaponFragment: Returning");
-
         Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_LONG).show();
     }
 
-    public void setWeaponFiremode(FireMode theEnum) {
-        Log.d(TAG, "setWeaponFiremode: selected firemode: " + theEnum);
-        this.weapon.setFireMode(theEnum);
+    public void setWeaponFiremode(FireMode firemode) {
+        Log.d(TAG, "setWeaponFiremode: selected firemode: " + firemode);
+        this.weapon.setFireMode(firemode);
         this.weaponDao.update(this.weapon.getId(),this.weapon);
-        Log.d(TAG, "setWeaponFiremode: applied firemode: " + this.weaponDao.get(this.weapon.getId()).getFireMode());
+        Log.d(TAG, "setWeaponFiremode: applied firemode: " + this.weaponDao.getWeapon(this.weapon.getId()).getFireMode());
         updateGuiButtonsFiremode();
     }
 

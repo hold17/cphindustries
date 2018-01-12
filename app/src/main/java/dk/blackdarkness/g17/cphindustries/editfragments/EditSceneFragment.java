@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateSceneFragment;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
@@ -25,12 +28,17 @@ import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
+import dk.blackdarkness.g17.cphindustries.settings.SettingsFragment;
 
 public class EditSceneFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
     private View view;
     private static final String TAG = "EditSceneFragment";
     private FloatingActionButton add, lock;
     private ItemTouchHelper mItemTouchHelper;
+    private RecyclerView recyclerView;
+    private EditRecListAdapter adapter;
+    private SceneDao sceneDao;
+    private List<Item> scenes;
 
     @Nullable
     @Override
@@ -39,6 +47,13 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
         this.add = view.findViewById(R.id.createFab);
         this.lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
+
+        this.recyclerView = this.view.findViewById(R.id.fr_editScene_recyclerView);
+
+        SharedPreferenceManager.init(getContext());
+
+        this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
+
         return view;
     }
 
@@ -50,13 +65,12 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
 
-        RecyclerView recyclerView = this.view.findViewById(R.id.fr_editScene_recyclerView);
-
-        List<Item> scenes = ItemConverter.sceneToItem(ApplicationConfig.getDaoFactory().getSceneDao().get());
+        this.scenes = ItemConverter.sceneToItem(this.sceneDao.getList());
 
         final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
 
-        EditRecListAdapter adapter = new EditRecListAdapter(getActivity(), this, scenes, listener);
+        this.adapter = new EditRecListAdapter(getActivity(), this, scenes, listener);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -67,6 +81,20 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
 
         mItemTouchHelper = new ItemTouchHelper(SITHCallback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Check if cache is cleared TODO: Work around empty lists!!!
+        if(SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED)) {
+            Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
+            SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
+            this.scenes = ItemConverter.sceneToItem(this.sceneDao.getList());
+            adapter.updateItems(this.scenes);
+        }
+        adapter.notifyDataSetChanged();
+        Log.d(TAG, "Items onResume: " + adapter.getItemCount());
     }
 
     @Override
