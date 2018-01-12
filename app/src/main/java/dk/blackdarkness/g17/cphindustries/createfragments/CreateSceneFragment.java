@@ -2,7 +2,6 @@ package dk.blackdarkness.g17.cphindustries.createfragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +14,7 @@ import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 
-/**
- * Created by Thoma on 11/03/2017.
- */
-
-public class CreateSceneFragment extends Fragment implements View.OnClickListener {
+public class CreateSceneFragment extends android.support.v4.app.Fragment implements View.OnClickListener {
     private static final String TAG = "CreateSceneFragment";
     private TextView submitSave, submitCancel;
     private EditText sceneNameText;
@@ -42,7 +37,7 @@ public class CreateSceneFragment extends Fragment implements View.OnClickListene
     }
 
     public void initLayout() {
-        getActivity().setTitle("Edit Scene");
+        getActivity().setTitle("Create Scene");
 
         //Save textView
         submitSave.setOnClickListener(this);

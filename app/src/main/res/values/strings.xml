@@ -14,7 +14,16 @@
     <string name="oxygen_level_icon">Oxygen level icon</string>
     <string name="battery_level_icon">Battery level icon</string>
     <string name="propane_level_icon">Propane level icon</string>
+    <string name="title_activity_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--Settings-->
+    <string name="demo_data_title">Demo data</string>
+    <string name="demo_data_summary">Turn demo data on/off</string>
+    <string name="orientation_title">Screen orientation</string>
+    <string name="orientation_summary">Turn screen orientation switch on/off</string>
+    <string name="update_rate_title">Update rate</string>
+    <string name="update_rate_summary">Choose weapon information update interval</string>
+    <string name="clear_app_settings_title">Clear app settings</string>
+    <string name="clear_app_cache">Clear cache</string>
+
 </resources>
