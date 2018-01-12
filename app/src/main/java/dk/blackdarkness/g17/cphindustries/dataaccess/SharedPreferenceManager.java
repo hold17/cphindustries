@@ -71,9 +71,11 @@ public class SharedPreferenceManager {
 
         final String jsonObj = this.prefs.getString(storeLocation, null);
 
-        final Object obj = this.gson.fromJson(jsonObj, returnType);
-
-        return obj;
+        if(jsonObj != null) {
+            final Object object = this.gson.fromJson(jsonObj, returnType);
+            return object;
+        }
+        return null;
     }
 
     /**
