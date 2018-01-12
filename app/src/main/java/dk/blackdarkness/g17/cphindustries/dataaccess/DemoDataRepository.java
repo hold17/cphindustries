@@ -42,7 +42,7 @@ class DemoDataRepository {
         }.getType();
 
         listOfScenes = (ArrayList<Scene>) SharedPreferenceManager.getInstance().getObject(SAVED_SCENES_LOCATION, returnType);
-
+        generateDemoData();
         if (listOfScenes == null) {
             generateDemoData();
         }
@@ -62,7 +62,7 @@ class DemoDataRepository {
 
         Type returnType = new TypeToken<ArrayList<Shoot>>() {
         }.getType();
-
+        generateDemoData();
         listOfShoot = (ArrayList<Shoot>) SharedPreferenceManager.getInstance().getObject(SAVED_SHOOTS_LOCATION, returnType);
 
         if (listOfShoot == null) {
@@ -80,7 +80,7 @@ class DemoDataRepository {
     static List<Weapon> loadListOfWeapons() {
         if (SharedPreferenceManager.getInstance() == null)
             throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
-
+        generateDemoData();
         Type returnType = new TypeToken<ArrayList<Weapon>>() {
         }.getType();
 
@@ -103,6 +103,7 @@ class DemoDataRepository {
         if (SharedPreferenceManager.getInstance() == null)
             throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
 
+        generateDemoData();
         Type returnType = new TypeToken<ArrayList<ShootWeapon>>() {
         }.getType();
 

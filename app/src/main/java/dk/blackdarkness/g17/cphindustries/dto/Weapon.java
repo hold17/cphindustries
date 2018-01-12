@@ -19,14 +19,17 @@ public class Weapon extends Item {
         this.warnings = warnings;
         this.fireMode = fireMode;
         this.connectionStatus = connectionStatus;
+        this.ip =ip;
+        this.mac = mac;
     }
 
-    public Weapon(int id, String name, FireMode fireMode, ConnectionStatus connectionStatus,String ip, String mac) {
+    public Weapon(int id, String name, FireMode fireMode, ConnectionStatus connectionStatus, String ip, String mac) {
         super(id, name);
         this.fireMode = fireMode;
         this.connectionStatus = connectionStatus;
+        this.ip =ip;
+        this.mac = mac;
 
-        this.warnings = new ArrayList<>();
     }
 
     /**
@@ -35,20 +38,24 @@ public class Weapon extends Item {
      * @param name
      * @param connectionStatus
      */
-    public Weapon(int id, String name, ConnectionStatus connectionStatus) {
+    public Weapon(int id, String name, ConnectionStatus connectionStatus,String ip, String mac) {
         super(id, name);
         this.connectionStatus = connectionStatus;
 
         this.fireMode = FireMode.SAFE;
-        this.warnings = new ArrayList<>();
+        this.ip =ip;
+        this.mac = mac;
+
     }
 
-    public Weapon(int id, String name) {
+    public Weapon(int id, String name,String ip, String mac) {
         super(id, name);
 
         this.connectionStatus = ConnectionStatus.NO_CONNECTION;
         this.fireMode = FireMode.SAFE;
-        this.warnings = new ArrayList<>();
+        this.ip =ip;
+        this.mac = mac;
+
     }
 
     /**
