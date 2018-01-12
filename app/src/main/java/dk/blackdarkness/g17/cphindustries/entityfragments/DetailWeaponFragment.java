@@ -107,14 +107,19 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
                 //from ViewWeaponFragment. Edit this one weapon only?
                 Log.d(TAG, "onClick: Trying to open edit weapon fragment.");
                 goToEditWeaponFragment();
+                break;
             case R.id.fr_weapon_details_ibtn_single:
                 setWeaponFiremode(SINGLE);
+                break;
             case R.id.fr_weapon_details_ibtn_burst:
                 setWeaponFiremode(BURST);
+                break;
             case R.id.fr_weapon_details_btn_full_auto:
                 setWeaponFiremode(FULL_AUTO);
+                break;
             case R.id.fr_weapon_details_btn_safe:
                 setWeaponFiremode(SAFE);
+                break;
 
         }
     }

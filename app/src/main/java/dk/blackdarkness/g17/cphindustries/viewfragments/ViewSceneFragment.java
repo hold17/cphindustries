@@ -81,6 +81,7 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
 
     public static List<Item> getListOfScenes() {
         final List<Item> itemScenes = new ArrayList<>();
+
         final List<Scene> scenes =  ApplicationConfig.getDaoFactory().getSceneDao().get();
 
         itemScenes.addAll(scenes);
