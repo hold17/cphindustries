@@ -12,14 +12,16 @@ public class Weapon extends Item {
     private String ip;
     private String mac;
 
-    public Weapon(int id, String name, List<String> warnings, FireMode fireMode, ConnectionStatus connectionStatus) {
+    public Weapon() {}
+
+    public Weapon(int id, String name, List<String> warnings, FireMode fireMode, ConnectionStatus connectionStatus,String ip, String mac) {
         super(id, name);
         this.warnings = warnings;
         this.fireMode = fireMode;
         this.connectionStatus = connectionStatus;
     }
 
-    public Weapon(int id, String name, FireMode fireMode, ConnectionStatus connectionStatus) {
+    public Weapon(int id, String name, FireMode fireMode, ConnectionStatus connectionStatus,String ip, String mac) {
         super(id, name);
         this.fireMode = fireMode;
         this.connectionStatus = connectionStatus;
@@ -111,6 +113,10 @@ public class Weapon extends Item {
     }
 
     private static boolean verifyIp(String ip) {
+        if (ip == null){
+            throw new NullPointerException("IP has not yet been initialized.");
+        }
+
         final String ipv4Regex = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
                 + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
                 + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."

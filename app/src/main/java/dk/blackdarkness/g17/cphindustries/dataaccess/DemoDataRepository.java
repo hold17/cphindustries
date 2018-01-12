@@ -123,14 +123,14 @@ class DemoDataRepository {
 
         // Demo Weapons
         listOfWeapon = new ArrayList<>();
-        listOfWeapon.add(new Weapon(1, "Weapon 1", warnings, FireMode.BURST, ConnectionStatus.NO_CONNECTION));
-        listOfWeapon.add(new Weapon(2, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.FULL));
-        listOfWeapon.add(new Weapon(3, "Weapon 3", ConnectionStatus.NO_CONNECTION));
-        listOfWeapon.add(new Weapon(4, "Weapon 4", FireMode.SINGLE, ConnectionStatus.BAR_2));
-        listOfWeapon.add(new Weapon(5, "weapon 5", warnings, FireMode.SINGLE, ConnectionStatus.BAR_3));
-        listOfWeapon.add(new Weapon(6, "weapon 6", warnings, FireMode.BURST, ConnectionStatus.BAR_1));
-        listOfWeapon.add(new Weapon(7, "weapon 7", FireMode.SINGLE, ConnectionStatus.BAR_2));
-        listOfWeapon.add(new Weapon(8, "weapon 8", FireMode.FULL_AUTO, ConnectionStatus.BAR_1));
+        listOfWeapon.add(new Weapon(1, "Weapon 1", warnings, FireMode.BURST, ConnectionStatus.NO_CONNECTION,"175.216.74.202","44-0E-1E-FA-58-0E"));
+        listOfWeapon.add(new Weapon(2, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.FULL,"128.39.196.59","59-3B-7B-89-29-4E"));
+        listOfWeapon.add(new Weapon(3, "Weapon 3",warnings , FireMode.SAFE, ConnectionStatus.NO_CONNECTION,"211.233.131.106","1F-D6-15-92-6B-4B"));
+        listOfWeapon.add(new Weapon(4, "Weapon 4", FireMode.SINGLE, ConnectionStatus.BAR_2,"174.208.237.9","A9-78-15-DA-DF-1D"));
+        listOfWeapon.add(new Weapon(5, "weapon 5", warnings, FireMode.SINGLE, ConnectionStatus.BAR_3,"51.207.19.164","A2-19-02-EF-CA-6D"));
+        listOfWeapon.add(new Weapon(6, "weapon 6", warnings, FireMode.BURST, ConnectionStatus.BAR_1,"3.40.199.232","99-50-FD-6F-67-C4"));
+        listOfWeapon.add(new Weapon(7, "weapon 7", FireMode.SINGLE, ConnectionStatus.BAR_2,"104.84.93.11","9C-28-EC-44-E5-57"));
+        listOfWeapon.add(new Weapon(8, "weapon 8", FireMode.FULL_AUTO, ConnectionStatus.BAR_1,"135.123.55.219","6F-5E-D6-D1-A3-39"));
         saveListOfWeapons(listOfWeapon);
 
         // Demo shoots
