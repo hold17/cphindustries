@@ -59,12 +59,12 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((ViewSceneActivity)getActivity()).setActionBarTitle("Shoots");
-        ((ViewSceneActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.get(sceneId)));
+        ((ViewSceneActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.getScene(sceneId)));
         lock.setOnClickListener(this);
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_shot_recyclerView);
 
-        shoots = ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getShoots(sceneId));
+        shoots = ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getListByScene(sceneId));
 
         final RecyclerViewClickListener listener = (v, position) -> goToViewWeaponFragment(position);
 
@@ -72,10 +72,6 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
-        SITHCallback.setDragEnabled(false);
-        SITHCallback.setSwipeEnabled(false);
     }
 
     @Override
@@ -86,7 +82,7 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
 
     /*private static List<Item> getListOfShoots(int sceneId) {
         final List<Item> itemShoots = new ArrayList<>();
-        final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().getShoots(sceneId);
+        final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().getListByScene(sceneId);
 
         itemShoots.addAll(shoots);
 
@@ -117,7 +113,7 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
         Log.d(TAG, "goToWeaponViewFragment: Returning");
         Fragment weaponViewFragment = new ViewWeaponFragment();
 
-//        Toast.makeText(getContext().getApplicationContext(), "Index: " + position + ", ID = " + ApplicationConfig.getDaoFactory().getShootDao().get(this.sceneId).get(position).getId(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext().getApplicationContext(), "Index: " + position + ", ID = " + ApplicationConfig.getDaoFactory().getShootDao().getList(this.sceneId).getList(position).getId(), Toast.LENGTH_LONG).show();
 
         // Add shoot ID to arguments
         final Shoot chosenShoot = (Shoot) this.shoots.get(position);

@@ -43,7 +43,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
         this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
         final int weaponId = getArguments().getInt(ViewSceneActivity.WEAPON_ID_KEY);
-        this.weapon = ApplicationConfig.getDaoFactory().getWeaponDao().get(weaponId);
+        this.weapon = ApplicationConfig.getDaoFactory().getWeaponDao().getWeapon(weaponId);
 
         return view;
     }

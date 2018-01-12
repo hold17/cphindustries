@@ -57,7 +57,7 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_editWeapon_recyclerView);
 
-        List<Item> weapons = ItemConverter.weaponToItem(ApplicationConfig.getDaoFactory().getWeaponDao().getWeapons(shootId));
+        List<Item> weapons = ItemConverter.weaponToItem(ApplicationConfig.getDaoFactory().getWeaponDao().getListByShoot(shootId));
 
         final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
 

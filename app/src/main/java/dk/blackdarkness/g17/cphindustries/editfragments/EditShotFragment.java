@@ -59,7 +59,7 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
 
         final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
 
-        final List<Item> shoots = ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getShoots(sceneId));
+        final List<Item> shoots = ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getListByScene(sceneId));
 
         EditRecListAdapter adapter = new EditRecListAdapter(getActivity(), this, shoots, listener);
         recyclerView.setAdapter(adapter);

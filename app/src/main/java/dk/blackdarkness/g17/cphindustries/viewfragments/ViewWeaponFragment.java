@@ -64,7 +64,7 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((ViewSceneActivity)getActivity()).setActionBarTitle("Weapons");
-        ((ViewSceneActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.get(sceneId), shootDao.get(shootId)));
+        ((ViewSceneActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.getScene(sceneId), shootDao.getShoot(shootId)));
         lock.setOnClickListener(this);
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_weapon_recyclerView);
@@ -90,10 +90,6 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
-        SITHCallback.setDragEnabled(false);
-        SITHCallback.setSwipeEnabled(false);
     }
 
     @Override
@@ -104,7 +100,7 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
 
     private static List<Item> getListOfWeapons(int sceneId, int shootId) {
         final List<Item> itemWeapons = new ArrayList<>();
-        final List<Weapon> weapons = ApplicationConfig.getDaoFactory().getWeaponDao().getWeapons(shootId);
+        final List<Weapon> weapons = ApplicationConfig.getDaoFactory().getWeaponDao().getListByShoot(shootId);
 
         itemWeapons.addAll(weapons);
 

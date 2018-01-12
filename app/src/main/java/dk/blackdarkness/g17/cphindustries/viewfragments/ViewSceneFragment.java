@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
@@ -23,17 +22,16 @@ import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 
+import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
-import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
 
 public class ViewSceneFragment extends Fragment implements View.OnClickListener {
     private View view;
     private static final String TAG = "ViewSceneFragment";
     private FloatingActionButton lock;
-    private SceneDao sceneDao;
     private StdRecListAdapter adapter;
-
+    private SceneDao sceneDao;
     private List<Item> scenes;
 
     @Nullable
@@ -61,16 +59,18 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
 
         final RecyclerViewClickListener listener = (v, position) -> goToViewShotFragment(position);
 
-        this.scenes = getListOfScenes();
+        this.scenes = ItemConverter.sceneToItem(ApplicationConfig.getDaoFactory().getSceneDao().getList());
+
+        //this.scenes = getListOfScenes();
 
         adapter = new StdRecListAdapter(getActivity(), this.scenes, listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
-        SITHCallback.setDragEnabled(false);
-        SITHCallback.setSwipeEnabled(false);
+//        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
+//        SITHCallback.setDragEnabled(false);
+//        SITHCallback.setSwipeEnabled(false);
     }
 
     @Override
@@ -79,14 +79,14 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
         adapter.notifyDataSetChanged();
     }
 
-    public static List<Item> getListOfScenes() {
-        final List<Item> itemScenes = new ArrayList<>();
-        final List<Scene> scenes =  ApplicationConfig.getDaoFactory().getSceneDao().get();
-
-        itemScenes.addAll(scenes);
-
-        return itemScenes;
-    }
+//    public static List<Item> getListOfScenes() {
+//        final List<Item> itemScenes = new ArrayList<>();
+//        final List<Scene> scenes =  ApplicationConfig.getDaoFactory().getSceneDao().getList();
+//
+//        itemScenes.addAll(scenes);
+//
+//        return itemScenes;
+//    }
 
     @Override
     public void onClick(View view) {
@@ -105,13 +105,11 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
     }
 
     public void goToViewShotFragment(int position) {
-        Scene chosenScene = (Scene) this.scenes.get(position);
-
         Log.d(TAG, "goToShotViewFragment: Returning");
         ((ViewSceneActivity)getActivity()).enableActionBar(true);
         Fragment shotViewFragment = new ViewShotFragment();
 
-        //final Scene chosenScene = this.sceneDao.get().get(this.scenes.get(position).getId());
+        final Scene chosenScene = this.sceneDao.getScene(this.scenes.get(position).getId());
         System.out.println("SceneID: " + chosenScene.getId());
         Bundle bundle = new Bundle();
         bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, chosenScene.getId());

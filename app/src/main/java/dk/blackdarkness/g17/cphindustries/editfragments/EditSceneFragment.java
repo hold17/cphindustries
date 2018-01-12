@@ -18,6 +18,8 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateSceneFragment;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
@@ -31,6 +33,9 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
     private static final String TAG = "EditSceneFragment";
     private FloatingActionButton add, lock;
     private ItemTouchHelper mItemTouchHelper;
+    private EditRecListAdapter adapter;
+    private SceneDao sceneDao;
+    private List<Item> scenes;
 
     @Nullable
     @Override
@@ -39,6 +44,11 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
         this.add = view.findViewById(R.id.createFab);
         this.lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
+
+        SharedPreferenceManager.init(getContext());
+
+        this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
+
         return view;
     }
 
@@ -52,11 +62,11 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
 
         RecyclerView recyclerView = this.view.findViewById(R.id.fr_editScene_recyclerView);
 
-        List<Item> scenes = ItemConverter.sceneToItem(ApplicationConfig.getDaoFactory().getSceneDao().get());
+        this.scenes = ItemConverter.sceneToItem(ApplicationConfig.getDaoFactory().getSceneDao().getList());
 
         final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
 
-        EditRecListAdapter adapter = new EditRecListAdapter(getActivity(), this, scenes, listener);
+        adapter = new EditRecListAdapter(getActivity(), this, scenes, listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -67,6 +77,12 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
 
         mItemTouchHelper = new ItemTouchHelper(SITHCallback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
