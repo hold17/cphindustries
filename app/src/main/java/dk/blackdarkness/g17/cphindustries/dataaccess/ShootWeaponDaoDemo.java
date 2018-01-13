@@ -13,12 +13,12 @@ class ShootWeaponDaoDemo implements ShootWeaponDao {
     }
 
     @Override
-    public List<ShootWeapon> get() {
+    public List<ShootWeapon> getList() {
         return DemoDataRepository.loadListOfShootWeapon();
     }
 
     @Override
-    public ShootWeapon get(int shootWeaponId) {
+    public ShootWeapon getShootWeapon(int shootWeaponId) {
         this.allShootWeapon = DemoDataRepository.loadListOfShootWeapon();
 
         for (ShootWeapon sw : allShootWeapon){
