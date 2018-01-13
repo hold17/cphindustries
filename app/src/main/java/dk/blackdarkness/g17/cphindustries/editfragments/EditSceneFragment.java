@@ -64,6 +64,7 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
         this.add.setVisibility(View.VISIBLE);
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
+        this.lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
 
         this.scenes = ItemConverter.sceneToItem(this.sceneDao.getList());
 
