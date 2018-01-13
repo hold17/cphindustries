@@ -13,8 +13,7 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 
 public class SettingsActivity extends AppCompatActivity {
-
-    private static final String TAG = "AppCompatActivity";
+    private static final String TAG = "SettingsActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

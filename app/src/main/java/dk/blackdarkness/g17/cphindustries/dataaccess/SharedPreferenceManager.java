@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import java.lang.reflect.Type;
 
 public class SharedPreferenceManager {
+    private static final String TAG = "SharedPreferenceManager";
     private final SharedPreferences prefs;
     private final Context context;
     private final Gson gson;
@@ -102,7 +103,7 @@ public class SharedPreferenceManager {
     }
 
     public boolean getBoolean(String storeLocation) {
-        System.out.println("UseDemoData: " + this.prefs.getBoolean(storeLocation, true));
+        Log.d(TAG, "getBoolean: " + storeLocation + " = " + this.prefs.getBoolean(storeLocation, true));
         return this.prefs.getBoolean(storeLocation, true);
     }
 

@@ -1,32 +1,25 @@
 package dk.blackdarkness.g17.cphindustries.settings;
 
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import dk.blackdarkness.g17.cphindustries.BuildConfig;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 
-import static android.content.ContentValues.TAG;
-
 public class SettingsFragment extends PreferenceFragmentCompat implements android.support.v7.preference.Preference.OnPreferenceClickListener {
-
+    private static final String TAG = "SettingsFragment";
     public static final String CACHE_CLEARED = "cacheCleared";
-
     private static final String KEY_PREF_CLEAR_SETTINGS = "clearSettings";
     private static final String KEY_PREF_CLEAR_CACHE = "clearCache";
     private static final String KEY_PREF_DEMO_DATA = "demoDataSwitch";
     private static final String KEY_PREF_ORIENTATION = "orientationSwitch";
     private static final String KEY_PREF_UPDATE_RATE= "updateRate";
     private static final String KEY_PREF_BUILD_NUMBER = "buildNumber";
-
     private static final String SAVED_SCENES_LOCATION = "SAVED_SCENES_LIST";
     private static final String SAVED_SHOOTS_LOCATION = "SAVED_SHOOTS_LIST";
     private static final String SAVED_WEAPONS_LOCATION = "SAVED_WEAPONS_LIST";
@@ -41,7 +34,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
 
         android.support.v7.preference.Preference clearCache = findPreference(KEY_PREF_CLEAR_CACHE);
         clearCache.setOnPreferenceClickListener(this);
-
         android.support.v7.preference.Preference buildNumber = findPreference(KEY_PREF_BUILD_NUMBER);
         buildNumber.setSummary(BuildConfig.VERSION_NAME);
 
