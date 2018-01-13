@@ -95,8 +95,8 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
             SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
             this.weapons = ItemConverter.weaponToItem(this.weaponDao.getListByShoot(shootId));
             adapter.updateItems(this.weapons);
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
         Log.d(TAG, "Items onResume: " + adapter.getItemCount());
     }
 

@@ -84,8 +84,8 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
             SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
             this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(sceneId));
             adapter.updateItems(this.shoots);
+            adapter.updateItems(this.shoots);adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
         Log.d(TAG, "Items onResume: " + adapter.getItemCount());
     }
 

@@ -92,8 +92,8 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
             SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
             this.scenes = ItemConverter.sceneToItem(this.sceneDao.getList());
             adapter.updateItems(this.scenes);
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
         Log.d(TAG, "Items onResume: " + adapter.getItemCount());
     }
 

@@ -40,6 +40,7 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_scene_view_layout, container, false);
+        this.view.setTag(TAG);
         this.lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
 
@@ -80,8 +81,8 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
             SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
             this.scenes = ItemConverter.sceneToItem(this.sceneDao.getList());
             adapter.updateItems(this.scenes);
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
         Log.d(TAG, "Items onResume: " + adapter.getItemCount());
     }
 
