@@ -65,9 +65,11 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
                 if(holder.etHeading.getVisibility() == View.GONE) {
                     holder.tvHeading.setVisibility(View.GONE);
                     holder.etHeading.setVisibility(View.VISIBLE);
+                    holder.imageBack.setImageResource(R.drawable.ic_close_black_24dp);
                 } else {
                     holder.tvHeading.setVisibility(View.VISIBLE);
                     holder.etHeading.setVisibility(View.GONE);
+                    holder.imageBack.setImageResource(R.drawable.ic_edit_black_24dp);
                 }
             }
         });
