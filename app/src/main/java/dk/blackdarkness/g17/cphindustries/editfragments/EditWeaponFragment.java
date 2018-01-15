@@ -28,7 +28,7 @@ import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
-import dk.blackdarkness.g17.cphindustries.settings.SettingsFragment;
+import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
 
 public class EditWeaponFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
     private View view;

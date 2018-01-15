@@ -29,7 +29,7 @@ import dk.blackdarkness.g17.cphindustries.helper.BreadcrumbHelper;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
-import dk.blackdarkness.g17.cphindustries.settings.SettingsFragment;
+import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
 
 public class ViewWeaponFragment extends Fragment implements View.OnClickListener {
     private View view;

@@ -25,7 +25,7 @@ import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
-import dk.blackdarkness.g17.cphindustries.settings.SettingsFragment;
+import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
 
 public class ViewSceneFragment extends Fragment implements View.OnClickListener {
     private View view;
