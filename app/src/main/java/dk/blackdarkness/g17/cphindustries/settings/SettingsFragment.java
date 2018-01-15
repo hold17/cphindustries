@@ -1,13 +1,10 @@
 package dk.blackdarkness.g17.cphindustries.settings;
 
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import dk.blackdarkness.g17.cphindustries.BuildConfig;
@@ -25,7 +22,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
     private static final String KEY_PREF_DEMO_DATA = "demoDataSwitch";
     private static final String KEY_PREF_ORIENTATION = "orientationSwitch";
     private static final String KEY_PREF_UPDATE_RATE= "updateRate";
-    private static final String KEY_PREF_BUILD_NUMBER = "buildNumber";
+    private static final String KEY_PREF_BUILD_NUMBER = "buildVersion";
 
     private static final String SAVED_SCENES_LOCATION = "SAVED_SCENES_LIST";
     private static final String SAVED_SHOOTS_LOCATION = "SAVED_SHOOTS_LIST";
@@ -42,12 +39,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
         android.support.v7.preference.Preference clearCache = findPreference(KEY_PREF_CLEAR_CACHE);
         clearCache.setOnPreferenceClickListener(this);
 
-        android.support.v7.preference.Preference buildNumber = findPreference(KEY_PREF_BUILD_NUMBER);
-        buildNumber.setSummary(BuildConfig.VERSION_NAME);
+        android.support.v7.preference.Preference buildVersion = findPreference(KEY_PREF_BUILD_NUMBER);
+        buildVersion.setSummary(BuildConfig.VERSION_NAME);
 
 
         /****************************************************
-        BELOW CODE IN onCreate() IS FOR TESTING PURPOSES ONLY
+        BELOW CODE IN onCreate() IS FOR TEST PURPOSES ONLY
         ****************************************************/
 
         SharedPreferenceManager sharedPref = SharedPreferenceManager.getInstance();
@@ -66,11 +63,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
     @Override
     public boolean onPreferenceClick(android.support.v7.preference.Preference preference) {
 
-        //Test preferences, creates toast onClick. Implement methods here.
         switch(preference.getKey()) {
             case KEY_PREF_RESET_APP:
-                AlertDialog.Builder a_builder = new AlertDialog.Builder(getContext());
-                a_builder.setMessage("Resetting the application will remove all data and preferences. Do you still want to reset?")
+                AlertDialog.Builder a_builderSettings = new AlertDialog.Builder(getContext());
+                a_builderSettings.setMessage(R.string.reset_app__alert)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -85,18 +81,34 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
                                 dialogInterface.cancel();
                             }
                         });
-                AlertDialog alert = a_builder.create();
-                alert.setTitle("Warning");
-                alert.show();
+                AlertDialog alertSettings = a_builderSettings.create();
+                alertSettings.setTitle(R.string.warning);
+                alertSettings.show();
                 return true;
             case KEY_PREF_CLEAR_CACHE:
-                SharedPreferenceManager.getInstance().clear(SAVED_SCENES_LOCATION);
-                SharedPreferenceManager.getInstance().clear(SAVED_SHOOTS_LOCATION);
-                SharedPreferenceManager.getInstance().clear(SAVED_WEAPONS_LOCATION);
-                SharedPreferenceManager.getInstance().clear(SAVED_SHOOTWEAPON_LOCATION);
-                SharedPreferenceManager.getInstance().saveBoolean(true, CACHE_CLEARED);
-
-                Toast.makeText(getContext(), "Cache cleared", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder a_builderCache = new AlertDialog.Builder(getContext());
+                a_builderCache.setMessage(R.string.clear_cache_alert)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                SharedPreferenceManager.getInstance().clear(SAVED_SCENES_LOCATION);
+                                SharedPreferenceManager.getInstance().clear(SAVED_SHOOTS_LOCATION);
+                                SharedPreferenceManager.getInstance().clear(SAVED_WEAPONS_LOCATION);
+                                SharedPreferenceManager.getInstance().clear(SAVED_SHOOTWEAPON_LOCATION);
+                                SharedPreferenceManager.getInstance().saveBoolean(true, CACHE_CLEARED);
+                                Toast.makeText(getContext(), "Cache cleared", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(getContext(), "Cache clear cancelled", Toast.LENGTH_SHORT).show();
+                                dialogInterface.cancel();
+                            }
+                        });
+                AlertDialog alertCache = a_builderCache.create();
+                alertCache.setTitle(R.string.warning);
+                alertCache.show();
                 return true;
         }
         return false;

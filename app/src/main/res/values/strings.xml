@@ -17,6 +17,7 @@
     <string name="title_activity_settings">Settings</string>
 
     <!--Settings-->
+    <string name="warning">Warning!</string>
     <string name="demo_data_title">Demo data</string>
     <string name="demo_data_summary">Turn demo data on/off</string>
     <string name="demo_data_key">demoDataSwitch</string>
@@ -31,9 +32,15 @@
 
     <string name="reset_app__title">Reset application</string>
     <string name="reset_app__key">resetApp</string>
+    <string name="reset_app__alert">Resetting the application will remove all data and preferences. Do you still want to reset?</string>
+
 
     <string name="clear_app_cache">Clear cache</string>
     <string name="clear_app_cache_key">clearCache</string>
+    <string name="clear_cache_alert">Clearing the cache will delete local data. You might not have any data until the next server sync. Do you want to continue?</string>
+
+
+    <string name="build_title">Build version</string>
 
     <!--Default Setting values-->
 

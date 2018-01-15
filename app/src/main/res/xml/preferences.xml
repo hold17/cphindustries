@@ -29,7 +29,7 @@
         android:title="@string/reset_app__title"
         android:key="@string/reset_app__key"/>
     <Preference
-        android:title="Build number"
-        android:key="buildNumber"/>
+        android:title="@string/build_title"
+        android:key="buildVersion"/>
 
 </PreferenceScreen>
