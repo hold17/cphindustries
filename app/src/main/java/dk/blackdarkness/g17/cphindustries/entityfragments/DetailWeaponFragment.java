@@ -9,13 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
-import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponFragment;
+import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponDetailsFragment;
 
 public class DetailWeaponFragment extends Fragment implements View.OnClickListener {
 
@@ -87,7 +86,14 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
 
     public void goToEditWeaponFragment() {
         Log.d(TAG, "goToEditWeaponFragment: Returning");
+        Fragment editWeaponDetailsFragment = new EditWeaponDetailsFragment();
 
-        Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_LONG).show();
+        editWeaponDetailsFragment.setArguments(getArguments());
+
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, editWeaponDetailsFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

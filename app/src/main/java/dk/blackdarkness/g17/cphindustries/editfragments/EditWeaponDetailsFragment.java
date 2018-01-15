@@ -19,19 +19,19 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
-import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
+import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
+import dk.blackdarkness.g17.cphindustries.recyclerview.CallbackPopup;
 import dk.blackdarkness.g17.cphindustries.recyclerview.PopupRecListAdapter;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
-public class EditWeaponDetailsFragment extends Fragment implements View.OnClickListener {
+public class EditWeaponDetailsFragment extends Fragment implements View.OnClickListener, CallbackPopup {
 
     private static final String TAG = "DetailWeaponFragment";
     private TextView weaponNameTitle, weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
@@ -41,6 +41,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     private Weapon weapon;
     private Button popupButton;
     private PopupWindow popupWindow;
+
     //private PopupRecListAdapter adapter;
 
 
@@ -62,7 +63,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         this.sceneId = getArguments().getInt("SCENE_ID");
         this.shootId = getArguments().getInt("SHOOT_ID");
         final int weaponId = getArguments().getInt("WEAPON_ID");
-        this.weapon = ApplicationConfig.getDaoFactory().getWeaponDao().get(sceneId, shootId, weaponId);
+        this.weapon = ApplicationConfig.getDaoFactory().getWeaponDao().get(weaponId);
         //this.popupWindow = popupWindow;
 
 
@@ -96,6 +97,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         this.popupButton.setOnClickListener(this);
 
 
+
     }
 
 
@@ -104,6 +106,9 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         switch (view.getId()) {
             case R.id.fr_weapon_details_edit_popup:
                 onButtonShowPopup(getView());
+                break;
+            case R.id.popupCancel:
+                popupWindow.dismiss();
                 break;
         }
 
@@ -121,6 +126,10 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         View popupView = inflater.inflate(R.layout.edit_weapon_details_popup, null);
         System.out.println("Et egentligt ord 111" );
 
+        TextView textTitle = popupView.findViewById(R.id.popupTitle);
+        textTitle.setText(this.weapon.getName());
+
+
         // create the popup window
         createRecycler(popupView);
 
@@ -134,22 +143,29 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         // show the popup window
         popupWindow.showAtLocation(relativeLayout, Gravity.CENTER, 0, 0);
 
-        // dismiss the popup window
-
+        // TODO: button cancel
+        //popupWindow.dismiss();
 
 
     }
 
+
     public void createRecycler(View view){
         System.out.println("Et egentligt ord 222" );
+        ArrayList<Item> shoots = new ArrayList<>(ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getShoots(sceneId)));
         RecyclerView recyclerView = view.findViewById(R.id.fr_editWeaponDetails_recyclerView);
-        PopupRecListAdapter adapter = new PopupRecListAdapter(getContext(), getListOfShoots(sceneId));
+        PopupRecListAdapter adapter = new PopupRecListAdapter(getContext(), shoots, this, this.weapon.getId());
         recyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
     }
-    private static List<Item> getListOfShoots(int sceneId) {
+
+    @Override
+    public void onCheckClickSend(int shootId) {
+        // DO ALL WITH THE SCENEID HER...
+    }
+   /* private static List<Item> getListOfShoots(int sceneId) {
         final List<Item> itemShoots = new ArrayList<>();
         final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().get(sceneId);
 
@@ -158,5 +174,5 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         }
         System.out.println("Et egentligt ord" + itemShoots.toString());
         return itemShoots;
-    }
+    }*/
 }
