@@ -54,7 +54,7 @@ public class PopupRecListAdapter extends RecyclerView.Adapter<PopupRecListAdapte
         holder.listTv.setText(curItem.getName());
 
         //marks already existing weapons in shoot
-        if (ApplicationConfig.getDaoFactory().getShootWeaponDao().get().contains(curItem.getId())){
+        if (ApplicationConfig.getDaoFactory().getShootWeaponDao().getShootWeapon(mItems.get(position).getId(), this.weaponId) != null){
             holder.listCb.setChecked(true);
         } else {
             holder.listCb.setChecked(false);
@@ -69,12 +69,13 @@ public class PopupRecListAdapter extends RecyclerView.Adapter<PopupRecListAdapte
 
                 //Check if checked
                 if (cb.isChecked()){
-                    callbackPopup.onCheckClickSend(curItem.getId());
+                    callbackPopup.onCheckClickSend(curItem.getId(), true);
 
                 }
                 else if (!cb.isChecked()){
-                    ApplicationConfig.getDaoFactory().getShootWeaponDao().delete(mItems.get(pos).getId());
+//                    ApplicationConfig.getDaoFactory().getShootWeaponDao().delete(mItems.get(pos).getId());
                     //Snak den her med de andre
+                    callbackPopup.onCheckClickSend(curItem.getId(), false);
 
                 }
             }

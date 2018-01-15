@@ -5,5 +5,5 @@ package dk.blackdarkness.g17.cphindustries.recyclerview;
  */
 
 public interface CallbackPopup {
-    public void onCheckClickSend(int shootId);
+    public void onCheckClickSend(int shootId, boolean isChecked);
 }

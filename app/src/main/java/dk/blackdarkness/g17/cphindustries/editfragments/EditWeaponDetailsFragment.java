@@ -63,7 +63,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         this.sceneId = getArguments().getInt("SCENE_ID");
         this.shootId = getArguments().getInt("SHOOT_ID");
         final int weaponId = getArguments().getInt("WEAPON_ID");
-        this.weapon = ApplicationConfig.getDaoFactory().getWeaponDao().get(weaponId);
+        this.weapon = ApplicationConfig.getDaoFactory().getWeaponDao().getWeapon(weaponId);
         //this.popupWindow = popupWindow;
 
 
@@ -152,7 +152,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
 
     public void createRecycler(View view){
         System.out.println("Et egentligt ord 222" );
-        ArrayList<Item> shoots = new ArrayList<>(ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getShoots(sceneId)));
+        ArrayList<Item> shoots = new ArrayList<>(ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getListByScene(sceneId)));
         RecyclerView recyclerView = view.findViewById(R.id.fr_editWeaponDetails_recyclerView);
         PopupRecListAdapter adapter = new PopupRecListAdapter(getContext(), shoots, this, this.weapon.getId());
         recyclerView.setAdapter(adapter);
@@ -162,8 +162,10 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     }
 
     @Override
-    public void onCheckClickSend(int shootId) {
+    public void onCheckClickSend(int shootId, boolean isChecked) {
         // DO ALL WITH THE SCENEID HER...
+
+
     }
    /* private static List<Item> getListOfShoots(int sceneId) {
         final List<Item> itemShoots = new ArrayList<>();
