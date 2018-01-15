@@ -46,11 +46,11 @@ public class AboutFragment extends Fragment implements View.OnClickListener{
         switch(view.getId()) {
             case R.id.link_source:
                 goToURI(linkSourceString);
-                Log.d(TAG, "onClick: Ran goToURI(" + linkSourceString +")");
+                Log.d(TAG, "onClick: R.id.link_source - Ran goToURI(" + linkSourceString +")");
                 break;
             case R.id.link_api:
                 goToURI(getString(R.string.link_api));
-                Log.d(TAG, "onClick: Ran goToURI(" + linkApiString +")");
+                Log.d(TAG, "onClick: R.id.link_api - Ran goToURI(" + linkApiString +")");
                 break;
         }
     }
