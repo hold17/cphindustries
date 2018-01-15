@@ -53,6 +53,8 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
 
         this.recyclerView = this.view.findViewById(R.id.fr_weapon_recyclerView);
 
+        SharedPreferenceManager.init(getContext());
+
         this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
         this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
 

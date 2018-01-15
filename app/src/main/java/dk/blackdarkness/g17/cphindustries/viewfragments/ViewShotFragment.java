@@ -52,12 +52,14 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
         SharedPreferenceManager.init(getContext());
 
         this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
+
         this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
         this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
 
         return view;
     }
 
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((ViewSceneActivity)getActivity()).setActionBarTitle("Shoots");
