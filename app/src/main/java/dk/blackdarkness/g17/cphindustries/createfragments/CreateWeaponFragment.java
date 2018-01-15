@@ -17,45 +17,67 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
+import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
+import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
+import dk.blackdarkness.g17.cphindustries.dataaccess.ShootWeaponDao;
+import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
+import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
+import static android.widget.RadioGroup.*;
+
 public class CreateWeaponFragment extends Fragment implements View.OnClickListener {
-    private static final String TAG = "CreateWeaponFragment";
     private View view;
+    private static final String TAG = "CreateWeaponFragment";
     private TextView submitSave, submitCancel;
     private RadioGroup rgLeft, rgRight;
     private ConstraintLayout radioButtons, loading;
     private EditText weaponNameText;
+    private int sceneId;
+    private int shootId;
+    private int selectedWeapon;
+    private WeaponDao weaponDao;
+    private ShootWeaponDao shootWeaponDao;
+    private final int buttonTextDisabled = 0x4CDE6305;
+    private final int buttonTextEnabled = 0xFFDE6305;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_create_weapon_layout, container, false);
+        this.view = inflater.inflate(R.layout.fragment_create_weapon_layout, container, false);
+        Log.d(TAG, "onCreateView: Returning");
 
-        submitSave = view.findViewById(R.id.fr_create_weapon_tvSave);
-        submitCancel = view.findViewById(R.id.fr_create_weapon_tvCancel);
-
-        rgLeft = view.findViewById(R.id.fr_create_weapon_radioGroup_left);
-        rgRight = view.findViewById(R.id.fr_create_weapon_radioGroup_right);
+        weaponNameText = view.findViewById(R.id.fr_create_weapon_editText);
 
         radioButtons = view.findViewById(R.id.fr_create_weapon_constraintLayout_bottom);
         loading = view.findViewById(R.id.fr_create_weapon_constraintLayout_loading);
 
-        this.weaponNameText = view.findViewById(R.id.fr_create_weapon_editText);
+        rgLeft = view.findViewById(R.id.fr_create_weapon_radioGroup_left);
+        rgRight = view.findViewById(R.id.fr_create_weapon_radioGroup_right);
 
-        initLayout();
-        Log.d(TAG, "onCreateView: Returning");
+        submitSave = view.findViewById(R.id.fr_create_weapon_tvSave);
+        submitCancel = view.findViewById(R.id.fr_create_weapon_tvCancel);
+
+        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
+        this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
+
+        this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
+        this.shootWeaponDao = ApplicationConfig.getDaoFactory().getShootWeaponDao();
+
         return view;
     }
 
-    public void initLayout() {
-        getActivity().setTitle("Create Weapon");
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ((ViewSceneActivity)getActivity()).setActionBarTitle("Create Weapon");
 
         radioButtons.setVisibility(View.GONE);
 
         submitSave.setOnClickListener(this);
         submitSave.setText("Submit");
+        submitSave.setEnabled(false);
+        submitSave.setTextColor(buttonTextDisabled);
 
         submitCancel.setOnClickListener(this);
         submitCancel.setText("Cancel");
@@ -63,15 +85,19 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
         rgLeft.setOnCheckedChangeListener(lis1);
         rgRight.setOnCheckedChangeListener(lis2);
 
-        new DeviceLocation().execute();
+        new getKnownDevice().execute();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fr_create_weapon_tvSave:
-                getActivity().onBackPressed();
+                //TODO: Figure out a good way to check if a name has been written and enable/disable submit accordingly
+                Log.d(TAG, "onClick: submit clicked - weaponNameText: " + weaponNameText.getText().toString());
+                if (weaponNameText.getText().toString().equals(""))
+                    break;
                 saveClicked();
+                getActivity().onBackPressed();
                 break;
             case R.id.fr_create_weapon_tvCancel:
                 getActivity().onBackPressed();
@@ -79,52 +105,83 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    private void saveClicked() {
+    private void setSelectedWeapon() {
+        if (rgLeft.getCheckedRadioButtonId() != -1) {
+            this.selectedWeapon =  rgLeft.getCheckedRadioButtonId();
+            Log.d(TAG, "saveClicked: weapon selected: " + this.weaponDao.getWeapon(selectedWeapon).getMac());
+            submitSave.setEnabled(true);
+            submitSave.setTextColor(buttonTextEnabled);
+        }
+        else if (rgRight.getCheckedRadioButtonId() != -1) {
+            this.selectedWeapon =  rgRight.getCheckedRadioButtonId();
+            Log.d(TAG, "saveClicked: weapon selected: " + this.weaponDao.getWeapon(selectedWeapon).getMac());
+            submitSave.setEnabled(true);
+            submitSave.setTextColor(buttonTextEnabled);
+        }}
 
+    private void saveClicked() {
+        Weapon selectedWep = this.weaponDao.getWeapon(this.selectedWeapon);
+
+        final Weapon newWeapon = new Weapon(-1, this.weaponNameText.getText().toString(), selectedWep.getIp(), selectedWep.getMac());
+        Log.d(TAG, "saveClicked: creating weapon: " + newWeapon.toString());
+        this.weaponDao.create(newWeapon);
+
+        final ShootWeapon newShootWeapon = new ShootWeapon(-1, this.shootId, newWeapon.getId());
+        Log.d(TAG, "saveClicked: creating shootWeapon: " + newShootWeapon.toString());
+        this.shootWeaponDao.create(newShootWeapon);
     }
 
-    private RadioGroup.OnCheckedChangeListener lis1 = new RadioGroup.OnCheckedChangeListener() {
+    // swaps listeners when unchecking radiobutton as you'd otherwise be able to check items in both groups
+    private OnCheckedChangeListener lis1 = new OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
+            Log.d(TAG, "rgLeft 1: child checked: " + rgLeft.getCheckedRadioButtonId());
+            Log.d(TAG, "rgRight 1: child checked: " + rgRight.getCheckedRadioButtonId());
             if (checkedId != -1) {
                 rgRight.setOnCheckedChangeListener(null);
                 rgRight.clearCheck();
                 rgRight.setOnCheckedChangeListener(lis2);
+                setSelectedWeapon();
             }
         }
     };
 
-    private RadioGroup.OnCheckedChangeListener lis2 = new RadioGroup.OnCheckedChangeListener() {
+    // see comment above
+    private OnCheckedChangeListener lis2 = new OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
+            Log.d(TAG, "rgLeft 2: child checked: " + rgLeft.getCheckedRadioButtonId());
+            Log.d(TAG, "rgRight 2: child checked: " + rgRight.getCheckedRadioButtonId());
             if (checkedId != -1) {
                 rgLeft.setOnCheckedChangeListener(null);
                 rgLeft.clearCheck();
                 rgLeft.setOnCheckedChangeListener(lis1);
+                setSelectedWeapon();
             }
         }
     };
 
-    private class DeviceLocation extends AsyncTask<String, Void, String> {
-
+    private class getKnownDevice extends AsyncTask<String, Void, String> {
         private ArrayList<Weapon> weapons;
 
         @Override
-        protected String doInBackground(String... params) {
+        protected void onPreExecute() {
+        }
 
+        @Override
+        protected String doInBackground(String... params) {
             try {
-                // Fetch ip / mac addresses from nearby devices
-                // Currently dummy data - use actual weapon DTO
+                // Fetch ip / mac addresses from known devices
                 this.weapons = new ArrayList<>();
-                this.weapons.add(new Weapon(1, ConnectionStatus.FULL, "127.0.0.1", "00:00:00:00:00:00"));
-                this.weapons.add(new Weapon(1, ConnectionStatus.BAR_1, "127.0.0.2", "00:00:00:00:00:01"));
-                this.weapons.add(new Weapon(1, ConnectionStatus.BAR_3, "127.0.0.3", "00:00:00:00:00:02"));
-                this.weapons.add(new Weapon(1, ConnectionStatus.FULL, "127.0.0.4", "00:00:00:00:00:04"));
-                this.weapons.add(new Weapon(1, ConnectionStatus.FULL, "127.0.0.4", "00:00:00:00:00:05"));
+                this.weapons.addAll(weaponDao.getList());
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return "Executed";
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
         }
 
         @Override
@@ -136,26 +193,18 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
                 if (i <= rgHalf - 1) {
                     rb[i] = new RadioButton(getContext());
                     rb[i].setText(weapons.get(i).getMac());
-                    rb[i].setId(i + 100);
+                    rb[i].setId(weapons.get(i).getId());
                     rgRight.addView(rb[i]);
                 } else {
                     rb[i] = new RadioButton(getContext());
                     rb[i].setText(weapons.get(i).getMac());
-                    rb[i].setId(i + 100);
+                    rb[i].setId(weapons.get(i).getId());
                     rgLeft.addView(rb[i]);
                 }
                 radioButtons.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
-                Log.d(TAG, "onPostExecute: " + weapons.get(i).getMac());
+                Log.d(TAG, "onPostExecute: added weapon with MAC: "  + weapons.get(i).getMac());
             }
-        }
-
-        @Override
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
         }
     }
 

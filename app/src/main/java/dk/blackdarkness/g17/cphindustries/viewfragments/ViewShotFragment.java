@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -20,32 +21,33 @@ import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
-import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditShotFragment;
 
 import dk.blackdarkness.g17.cphindustries.helper.BreadcrumbHelper;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
-import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
+import dk.blackdarkness.g17.cphindustries.settings.SettingsFragment;
 
 public class ViewShotFragment extends Fragment implements View.OnClickListener {
     private View view;
     private static final String TAG = "ViewShotFragment";
     private FloatingActionButton lock;
     private int sceneId;
+    private RecyclerView recyclerView;
+    private StdRecListAdapter adapter;
     private ShootDao shootDao;
     private SceneDao sceneDao;
-    private StdRecListAdapter adapter;
-
     private List<Item> shoots;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_shot_view_layout, container, false);
-        lock = view.findViewById(R.id.lockFab);
+        this.lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
+
+        this.recyclerView = this.view.findViewById(R.id.fr_shot_recyclerView);
 
         SharedPreferenceManager.init(getContext());
 
@@ -59,43 +61,33 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((ViewSceneActivity)getActivity()).setActionBarTitle("Shoots");
-        ((ViewSceneActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.get(sceneId)));
-        lock.setOnClickListener(this);
+        ((ViewSceneActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.getScene(sceneId)));
+        this.lock.setOnClickListener(this);
 
-        RecyclerView recyclerView = this.view.findViewById(R.id.fr_shot_recyclerView);
-
-        shoots = ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getShoots(sceneId));
+        this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(sceneId));
 
         final RecyclerViewClickListener listener = (v, position) -> goToViewWeaponFragment(position);
 
-        adapter = new StdRecListAdapter(getActivity(), shoots, listener);
+        this.adapter = new StdRecListAdapter(getActivity(), shoots, listener);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
-        SITHCallback.setDragEnabled(false);
-        SITHCallback.setSwipeEnabled(false);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        //Update list
-        this.shoots = ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getShoots(sceneId));
-        adapter.updateItems(this.shoots);
-        adapter.notifyDataSetChanged();
+        //Check if cache is cleared TODO: Work around empty lists!!!
+        if(SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED)) {
+            Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
+            SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
+            this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(sceneId));
+            adapter.updateItems(this.shoots);
+            adapter.updateItems(this.shoots);adapter.notifyDataSetChanged();
+        }
+        Log.d(TAG, "Items onResume: " + adapter.getItemCount());
     }
-
-    /*private static List<Item> getListOfShoots(int sceneId) {
-        final List<Item> itemShoots = new ArrayList<>();
-        final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().getShoots(sceneId);
-
-        itemShoots.addAll(shoots);
-
-        return itemShoots;
-    }*/
 
     @Override
     public void onClick(View view) {
@@ -121,13 +113,13 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
         Log.d(TAG, "goToWeaponViewFragment: Returning");
         Fragment weaponViewFragment = new ViewWeaponFragment();
 
-//        Toast.makeText(getContext().getApplicationContext(), "Index: " + position + ", ID = " + ApplicationConfig.getDaoFactory().getShootDao().get(this.sceneId).get(position).getId(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext().getApplicationContext(), "Index: " + position + ", ID = " + ApplicationConfig.getDaoFactory().getShootDao().getList(this.sceneId).getList(position).getId(), Toast.LENGTH_LONG).show();
 
         // Add shoot ID to arguments
-        final Shoot chosenShoot = (Shoot) this.shoots.get(position);
+        final int chosenShoot = this.shoots.get(position).getId();
         Bundle bundle = new Bundle();
         bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
-        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, chosenShoot.getId());
+        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, chosenShoot);
         weaponViewFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

@@ -10,11 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 
 public class CreateSceneFragment extends android.support.v4.app.Fragment implements View.OnClickListener {
+    private View view;
     private static final String TAG = "CreateSceneFragment";
     private TextView submitSave, submitCancel;
     private EditText sceneNameText;
@@ -23,28 +25,27 @@ public class CreateSceneFragment extends android.support.v4.app.Fragment impleme
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_create_scene_layout, container, false);
-
-        this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
+        this.view = inflater.inflate(R.layout.fragment_create_scene_layout, container, false);
+        Log.d(TAG, "onCreateView: Returning.");
 
         submitSave = view.findViewById(R.id.fr_create_shot_tvSave);
         submitCancel = view.findViewById(R.id.fr_create_shot_tvCancel);
         sceneNameText = view.findViewById(R.id.fr_create_scene_editText_Scene);
 
-        initLayout();
-        Log.d(TAG, "onCreateView: Returning.");
+        this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
+
         return view;
     }
 
-    public void initLayout() {
-        getActivity().setTitle("Create Scene");
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ((ViewSceneActivity)getActivity()).setActionBarTitle("Create Scene");
 
-        //Save textView
         submitSave.setOnClickListener(this);
-
-        //cancel textview
         submitCancel.setOnClickListener(this);
     }
+
 
     @Override
     public void onClick(View view) {
@@ -61,6 +62,7 @@ public class CreateSceneFragment extends android.support.v4.app.Fragment impleme
 
     private void saveClicked() {
         final Scene newScene = new Scene(-1, this.sceneNameText.getText().toString());
+        Log.d(TAG, "saveClicked: creating scene: " + newScene.toString());
         this.sceneDao.create(newScene);
     }
 }

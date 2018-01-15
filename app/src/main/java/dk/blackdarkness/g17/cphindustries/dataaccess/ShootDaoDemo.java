@@ -3,7 +3,6 @@ package dk.blackdarkness.g17.cphindustries.dataaccess;
 import java.util.ArrayList;
 import java.util.List;
 
-import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
@@ -17,11 +16,11 @@ class ShootDaoDemo implements ShootDao {
     }
 
     @Override
-    public List<Shoot> get() {
+    public List<Shoot> getList() {
         return DemoDataRepository.loadListOfShoots();
     }
 
-    public List<Shoot> getShoots(int sceneID){
+    public List<Shoot> getListByScene(int sceneID){
         this.allShoots = DemoDataRepository.loadListOfShoots();
         List<Shoot> shoots = new ArrayList<>();
 
@@ -34,13 +33,13 @@ class ShootDaoDemo implements ShootDao {
     }
 
     @Override
-    public List<Weapon> getWeapons(int shootId) {
-        List<ShootWeapon> shootWeapons = factory.getShootWeaponDao().get();
+    public List<Weapon> getWeaponsByShoot(int shootId) {
+        List<ShootWeapon> shootWeapons = factory.getShootWeaponDao().getList();
         List<Weapon> weapons = new ArrayList<>();
 
         for (ShootWeapon sw : shootWeapons){
             if(sw.getShootId()==shootId){
-                Weapon weapon = factory.getWeaponDao().get(sw.getWeaponId());
+                Weapon weapon = factory.getWeaponDao().getWeapon(sw.getWeaponId());
                 weapons.add(weapon);
             }
         }
@@ -48,7 +47,7 @@ class ShootDaoDemo implements ShootDao {
     }
 
     @Override
-    public Shoot get(int shootId) {
+    public Shoot getShoot(int shootId) {
        this.allShoots = DemoDataRepository.loadListOfShoots();
 
         for (Shoot s : allShoots) {
@@ -75,12 +74,14 @@ class ShootDaoDemo implements ShootDao {
     }
 
     @Override
-    public void update(int shootId, Shoot newShoot) {
+    public void update( Shoot newShoot) {
         this.allShoots = DemoDataRepository.loadListOfShoots();
 
         for (Shoot s : allShoots) {
-            if (s.getId() == shootId) {
+            if (s.getId() == newShoot.getId()) {
                 s.setName(newShoot.getName());
+                s.setSceneId(newShoot.getSceneId());
+                break;
             }
         }
         DemoDataRepository.saveListOfShoots(allShoots);
@@ -93,13 +94,14 @@ class ShootDaoDemo implements ShootDao {
         for (Shoot s : allShoots) {
             if (s.getId() == shootId) {
                 allShoots.remove(s);
+                break;
             }
         }
-        List<ShootWeapon> shootWeapons = factory.getShootWeaponDao().get();
+        List<ShootWeapon> shootWeapons = factory.getShootWeaponDao().getList();
 
         for (ShootWeapon sw : shootWeapons){
             if(sw.getShootId() == shootId){
-                factory.getShootWeaponDao().delete(sw.getShootWeaponId());
+                factory.getShootWeaponDao().delete(sw.getShootId(),sw.getWeaponId());
             }
         }
         DemoDataRepository.saveListOfShoots(allShoots);

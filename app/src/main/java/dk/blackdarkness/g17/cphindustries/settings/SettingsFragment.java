@@ -21,7 +21,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
     private static final String KEY_PREF_DEMO_DATA = "demoDataSwitch";
     private static final String KEY_PREF_ORIENTATION = "orientationSwitch";
     private static final String KEY_PREF_UPDATE_RATE= "updateRate";
-    private static final String KEY_PREF_BUILD_NUMBER = "buildVersion";
+    private static final String KEY_PREF_BUILD_VERSION = "buildVersion";
 
     //SharedPreferences locations
     private static final String CACHE_CLEARED = "cacheCleared";
@@ -40,7 +40,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
         android.support.v7.preference.Preference clearCache = findPreference(KEY_PREF_CLEAR_CACHE);
         clearCache.setOnPreferenceClickListener(this);
 
-        android.support.v7.preference.Preference buildVersion = findPreference(KEY_PREF_BUILD_NUMBER);
+        android.support.v7.preference.Preference buildVersion = findPreference(KEY_PREF_BUILD_VERSION);
         buildVersion.setSummary(BuildConfig.VERSION_NAME);
 
 

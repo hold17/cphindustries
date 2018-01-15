@@ -2,9 +2,9 @@ package dk.blackdarkness.g17.cphindustries.dataaccess;
 
 import android.util.Log;
 
-import static android.content.ContentValues.TAG;
-
 public class DaoFactory implements IDaoFactory {
+    private static final String TAG = "DaoFactory";
+
     @Override
     public SceneDao getSceneDao() {
         if (!ApplicationConfig.useDemoData()) throw new NullPointerException("Demo data not enabled. SceneDao is null.");

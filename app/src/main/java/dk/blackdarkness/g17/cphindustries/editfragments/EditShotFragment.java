@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateShotFragment;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
+import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
@@ -25,13 +28,18 @@ import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
+import dk.blackdarkness.g17.cphindustries.settings.SettingsFragment;
 
 public class EditShotFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
     private View view;
     private static final String TAG = "EditShotFragment";
     private FloatingActionButton lock, add;
     private ItemTouchHelper mItemTouchHelper;
-    private int sceneId; // TODO: HARDCODED for now...
+    private RecyclerView recyclerView;
+    private EditRecListAdapter adapter;
+    private int sceneId;
+    private ShootDao shootDao;
+    private List<Item> shoots;
 
     @Nullable
     @Override
@@ -41,8 +49,11 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
         this.lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
 
+        this.recyclerView = this.view.findViewById(R.id.fr_editShot_recyclerView);
+
         this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
-        System.out.println("SCENE ID: " + this.sceneId);
+
+        this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
 
         return view;
     }
@@ -54,14 +65,14 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
         this.add.setVisibility(View.VISIBLE);
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
+        this.lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
 
-        RecyclerView recyclerView = this.view.findViewById(R.id.fr_editShot_recyclerView);
+        this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(sceneId));
 
         final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
 
-        final List<Item> shoots = ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getShoots(sceneId));
+        this.adapter = new EditRecListAdapter(getActivity(), this, shoots, listener);
 
-        EditRecListAdapter adapter = new EditRecListAdapter(getActivity(), this, shoots, listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -75,6 +86,19 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        //Check if cache is cleared TODO: Work around empty lists!!!
+        if(SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED)) {
+            Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
+            SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
+            this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(sceneId));
+            adapter.updateItems(this.shoots);
+            adapter.notifyDataSetChanged();
+        }
+        Log.d(TAG, "Items onResume: " + adapter.getItemCount());
+    }
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.lockFab:
@@ -87,15 +111,15 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
     }
 
     public void checkLock() {
-            Log.d(TAG, "checkLock: Should save input data.");
-            getActivity().onBackPressed();
+        Log.d(TAG, "checkLock: Should save input data.");
+        getActivity().onBackPressed();
     }
     public void goToCreateShotFragment() {
         Log.d(TAG, "goToCreateShotFragment: Returning.");
         Fragment createShotFragment = new CreateShotFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt("sceneId", this.sceneId);
+        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
         createShotFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()
