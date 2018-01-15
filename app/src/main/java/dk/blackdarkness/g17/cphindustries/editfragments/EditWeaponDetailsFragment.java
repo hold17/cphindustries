@@ -153,7 +153,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
 
     public void createRecycler(View view){
         System.out.println("Et egentligt ord 222" );
-        ArrayList<Item> shoots = new ArrayList<>(ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getListByScene(sceneId)));
+        ArrayList<Item> shoots = new ArrayList<>(ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getList()));
         RecyclerView recyclerView = view.findViewById(R.id.fr_editWeaponDetails_recyclerView);
         PopupRecListAdapter adapter = new PopupRecListAdapter(getContext(), shoots, this, this.weapon.getId());
         recyclerView.setAdapter(adapter);
