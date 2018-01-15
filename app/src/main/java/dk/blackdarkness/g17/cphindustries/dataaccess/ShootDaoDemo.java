@@ -1,5 +1,7 @@
 package dk.blackdarkness.g17.cphindustries.dataaccess;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
 class ShootDaoDemo implements ShootDao {
+    private static final String TAG = "ShootDaoDemo";
     private final IDaoFactory factory;
     private List<Shoot> allShoots;
 
@@ -25,7 +28,7 @@ class ShootDaoDemo implements ShootDao {
         List<Shoot> shoots = new ArrayList<>();
 
         for (Shoot s : this.allShoots){
-            if (s.getSceneId()==sceneID){
+            if (s.getSceneId() == sceneID){
                 shoots.add(s);
             }
         }
@@ -38,7 +41,7 @@ class ShootDaoDemo implements ShootDao {
         List<Weapon> weapons = new ArrayList<>();
 
         for (ShootWeapon sw : shootWeapons){
-            if(sw.getShootId()==shootId){
+            if(sw.getShootId() == shootId){
                 Weapon weapon = factory.getWeaponDao().getWeapon(sw.getWeaponId());
                 weapons.add(weapon);
             }
@@ -68,19 +71,20 @@ class ShootDaoDemo implements ShootDao {
                 shoot.setId(s.getId() + 1);
             } else break;
         }
-        System.out.println("Created this shoot: " + shoot.toString());
+        Log.d(TAG, "create: Created this shoot: " + shoot.toString());
         this.allShoots.add(shoot);
         DemoDataRepository.saveListOfShoots(allShoots);
     }
 
     @Override
-    public void update( Shoot newShoot) {
+    public void update(Shoot updatedShoot) {
         this.allShoots = DemoDataRepository.loadListOfShoots();
+        int id = updatedShoot.getId();
 
         for (Shoot s : allShoots) {
-            if (s.getId() == newShoot.getId()) {
-                s.setName(newShoot.getName());
-                s.setSceneId(newShoot.getSceneId());
+            if (s.getId() == id) {
+                s.setName(updatedShoot.getName());
+                s.setSceneId(updatedShoot.getSceneId());
                 break;
             }
         }
