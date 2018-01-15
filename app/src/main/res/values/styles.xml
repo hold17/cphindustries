@@ -16,8 +16,4 @@
         <item name ="android:background">@color/colorPrimary</item>
     </style>
 
-    <style name="SettingsTheme" parent="CPHIndustriesTheme">
-    </style>
-
-
 </resources>

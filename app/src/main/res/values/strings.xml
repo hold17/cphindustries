@@ -17,6 +17,7 @@
     <string name="title_activity_settings">Settings</string>
 
     <!--Settings-->
+    <string name="warning">Warning!</string>
     <string name="demo_data_title">Demo data</string>
     <string name="demo_data_summary">Turn demo data on/off</string>
     <string name="demo_data_key">demoDataSwitch</string>
@@ -29,13 +30,35 @@
     <string name="update_rate_summary">Choose weapon information update interval</string>
     <string name="update_rate_key">updateRate</string>
 
-    <string name="clear_app_settings_title">Clear app settings</string>
-    <string name="clear_app_settings_key">clearSettings</string>
+    <string name="reset_app__title">Reset application</string>
+    <string name="reset_app__key">resetApp</string>
+    <string name="reset_app__alert">Resetting the application will remove all data and preferences. Do you still want to reset?</string>
+
 
     <string name="clear_app_cache">Clear cache</string>
     <string name="clear_app_cache_key">clearCache</string>
+    <string name="clear_cache_alert">Clearing the cache will delete local data. You might not have any data until the next server sync. Do you want to continue?</string>
+
+
+    <string name="build_title">Build version</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="cache_clear_cancelled">Cache clear cancelled</string>
+    <string name="cache_cleared">Cache cleared</string>
+    <string name="reset_cancelled">Reset cancelled</string>
+    <string name="application_reset">Application reset</string>
+    <string name="yes">Yes</string>
 
     <!--Default Setting values-->
 
+    <!--About section-->
+    <string name="about_message1">The application is developed in collaboration with\n Copenhagen Industries as part of the course</string>
+    <string name="course_name">62550 Brugerinteraktion og udvikling på mobile enheder</string>
+    <string name="dtu">at Danmarks Tekniske Universitet (DTU).</string>
+    <string name="group">Developed by group 17</string>
+    <string name="members">Thomas Lien Christensen\nAnders Wiberg Olsen\nChristoffer Birk Puls\nJonas Larsen\nSebastian Tibor Bakony\n</string>
+    <string name="link_source_repo">https://github.com/hold17/cphindustries</string>
+    <string name="link_api">https://github.com/hold17/cphapi</string>
+    <string name="creation_date">January 2018</string>
 
 </resources>

@@ -11,18 +11,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 //crashlytics
 import com.crashlytics.android.Crashlytics;
 
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
+import dk.blackdarkness.g17.cphindustries.menuitems.AboutActivity;
 import io.fabric.sdk.android.Fabric;
 
-import dk.blackdarkness.g17.cphindustries.BuildConfig;
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.settings.SettingsActivity;
+import dk.blackdarkness.g17.cphindustries.menuitems.SettingsActivity;
 import dk.blackdarkness.g17.cphindustries.viewfragments.ViewSceneFragment;
 
 public class ViewSceneActivity extends AppCompatActivity {
@@ -63,10 +61,10 @@ public class ViewSceneActivity extends AppCompatActivity {
                 return true;
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_about:
-                Toast.makeText(this, getAppVersion(), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, AboutActivity.class));
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -122,9 +120,4 @@ public class ViewSceneActivity extends AppCompatActivity {
                 .add(R.id.fragment_container, sceneViewFragment)
                 .commit();
     }
-
-    public String getAppVersion() {
-            return "Current application version: " + BuildConfig.VERSION_NAME;
-    }
-
 }
