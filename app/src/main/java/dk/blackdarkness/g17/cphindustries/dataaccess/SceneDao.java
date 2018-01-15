@@ -8,6 +8,6 @@ public interface SceneDao {
     List<Scene> getList();
     Scene getScene(int sceneId);
     void create(Scene scene);
-    void update(Scene newScene);
+    void update(int sceneId, Scene newScene);
     void delete(int sceneId);
 }
