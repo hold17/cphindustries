@@ -10,8 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
@@ -20,28 +20,31 @@ import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
-import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 
+import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
-import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
+import dk.blackdarkness.g17.cphindustries.settings.SettingsFragment;
 
 public class ViewSceneFragment extends Fragment implements View.OnClickListener {
     private View view;
     private static final String TAG = "ViewSceneFragment";
     private FloatingActionButton lock;
-    private SceneDao sceneDao;
+    private RecyclerView recyclerView;
     private StdRecListAdapter adapter;
-
+    private SceneDao sceneDao;
     private List<Item> scenes;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_scene_view_layout, container, false);
-        lock = view.findViewById(R.id.lockFab);
+        this.view.setTag(TAG);
+        this.lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
+
+        this.recyclerView = this.view.findViewById(R.id.fr_scene_recyclerView);
 
         SharedPreferenceManager.init(getContext());
 
@@ -55,37 +58,32 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
         super.onViewCreated(view, savedInstanceState);
         ((ViewSceneActivity)getActivity()).setActionBarTitle("Scenes");
         ((ViewSceneActivity)getActivity()).setActionBarSubtitle("");
-        lock.setOnClickListener(this);
-
-        RecyclerView recyclerView = this.view.findViewById(R.id.fr_scene_recyclerView);
+        this.lock.setOnClickListener(this);
 
         final RecyclerViewClickListener listener = (v, position) -> goToViewShotFragment(position);
 
-        this.scenes = getListOfScenes();
+        this.scenes = ItemConverter.sceneToItem(this.sceneDao.getList());
 
-        adapter = new StdRecListAdapter(getActivity(), this.scenes, listener);
+        this.adapter = new StdRecListAdapter(getActivity(), this.scenes, listener);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
-        SITHCallback.setDragEnabled(false);
-        SITHCallback.setSwipeEnabled(false);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged();
-    }
-
-    public static List<Item> getListOfScenes() {
-        final List<Item> itemScenes = new ArrayList<>();
-        final List<Scene> scenes =  ApplicationConfig.getDaoFactory().getSceneDao().get();
-
-        itemScenes.addAll(scenes);
-
-        return itemScenes;
+        //Check if cache is cleared TODO: Work around empty lists!!!
+        if(SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED)) {
+            Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
+            SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
+            this.scenes = ItemConverter.sceneToItem(this.sceneDao.getList());
+            adapter.updateItems(this.scenes);
+            adapter.notifyDataSetChanged();
+        }
+        Log.d(TAG, "Items onResume: " + adapter.getItemCount());
     }
 
     @Override
@@ -105,16 +103,13 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
     }
 
     public void goToViewShotFragment(int position) {
-        Scene chosenScene = (Scene) this.scenes.get(position);
-
         Log.d(TAG, "goToShotViewFragment: Returning");
         ((ViewSceneActivity)getActivity()).enableActionBar(true);
         Fragment shotViewFragment = new ViewShotFragment();
 
-        //final Scene chosenScene = this.sceneDao.get().get(this.scenes.get(position).getId());
-        System.out.println("SceneID: " + chosenScene.getId());
+        final int chosenScene = this.scenes.get(position).getId();
         Bundle bundle = new Bundle();
-        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, chosenScene.getId());
+        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, chosenScene);
         shotViewFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

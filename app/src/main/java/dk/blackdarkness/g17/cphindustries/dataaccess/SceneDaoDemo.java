@@ -3,7 +3,6 @@ package dk.blackdarkness.g17.cphindustries.dataaccess;
 import java.util.List;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
-import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
 class SceneDaoDemo implements SceneDao {
     private List<Scene> allScenes;
@@ -14,12 +13,12 @@ class SceneDaoDemo implements SceneDao {
     }
 
     @Override
-    public List<Scene> get() {
+    public List<Scene> getList() {
         return DemoDataRepository.loadListOfScenes();
     }
 
     @Override
-    public Scene get(int sceneId) {
+    public Scene getScene(int sceneId) {
         this.allScenes = DemoDataRepository.loadListOfScenes();
 
         for (Scene s : allScenes) {
@@ -46,11 +45,11 @@ class SceneDaoDemo implements SceneDao {
     }
 
     @Override
-    public void update(Scene updatedScene) {
+    public void update(int sceneId, Scene updatedScene) {
         this.allScenes = DemoDataRepository.loadListOfScenes();
 
         for (Scene s : allScenes) {
-            if (s.getId() == updatedScene.getId()) {
+            if (s.getId() == sceneId) {
                 s.setName(updatedScene.getName());
             }
         }
@@ -67,7 +66,7 @@ class SceneDaoDemo implements SceneDao {
                 allScenes.remove(s);
             }
         }
-        List<Shoot> shoots = factory.getShootDao().get();
+        List<Shoot> shoots = factory.getShootDao().getList();
 
         for (Shoot shoot : shoots){
             if(shoot.getSceneId() == sceneId){

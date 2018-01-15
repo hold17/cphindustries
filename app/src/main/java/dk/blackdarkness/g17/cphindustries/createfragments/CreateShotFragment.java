@@ -11,11 +11,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
 
 public class CreateShotFragment extends Fragment implements View.OnClickListener {
+    private View view;
     private static final String TAG = "CreateShotFragment";
     private TextView submitSave, submitCancel;
     private EditText shootNameText;
@@ -25,28 +27,26 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_create_shot_layout, container, false);
+        this.view = inflater.inflate(R.layout.fragment_create_shot_layout, container, false);
+        Log.d(TAG, "onCreateView: Returning.");
 
         shootNameText = view.findViewById(R.id.fr_create_shot_editText);
         submitSave = view.findViewById(R.id.fr_create_shot_tvSave);
         submitCancel = view.findViewById(R.id.fr_create_shot_tvCancel);
 
+        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
+
         this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
 
-        this.sceneId = getArguments().getInt("sceneId");
-
-        initLayout();
-        Log.d(TAG, "onCreateView: Returning.");
         return view;
     }
 
-    public void initLayout() {
-        getActivity().setTitle("Create Shot");
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ((ViewSceneActivity)getActivity()).setActionBarTitle("Create Shoot");
 
-        //Save textView
         submitSave.setOnClickListener(this);
-
-        //cancel textview
         submitCancel.setOnClickListener(this);
     }
 
@@ -65,7 +65,7 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
 
     private void saveClicked() {
         final Shoot newShoot = new Shoot(-1, this.shootNameText.getText().toString(), this.sceneId);
-        System.out.println("Creating shoot: " + newShoot);
+        Log.d(TAG, "saveClicked: creating shoot: " + newShoot.toString());
         this.shootDao.create(newShoot);
     }
 

@@ -2,12 +2,15 @@ package dk.blackdarkness.g17.cphindustries.dataaccess;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.v7.preference.PreferenceManager;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
 
 public class SharedPreferenceManager {
+    private static final String TAG = "SharedPreferenceManager";
     private final SharedPreferences prefs;
     private final Context context;
     private final Gson gson;
@@ -22,7 +25,7 @@ public class SharedPreferenceManager {
         this.context = context.getApplicationContext();
         this.gson = new Gson();
 
-        this.prefs = this.context.getSharedPreferences("GlobalState", Context.MODE_PRIVATE);
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
     }
 
     /**
@@ -71,9 +74,37 @@ public class SharedPreferenceManager {
 
         final String jsonObj = this.prefs.getString(storeLocation, null);
 
-        final Object obj = this.gson.fromJson(jsonObj, returnType);
+        if(jsonObj != null) {
+            final Object obj = this.gson.fromJson(jsonObj, returnType);
+            return obj;
+        }
+        return null;
+    }
 
-        return obj;
+    public void saveString(String s, String storeLocation) {
+        if (instance == null) return;
+
+        final String string = s;
+
+        this.prefs.edit().putString(storeLocation, string).apply();
+    }
+
+    public void saveBoolean(boolean b, String storeLocation) {
+        if (instance == null) return;
+
+        final boolean bool = b;
+
+        this.prefs.edit().putBoolean(storeLocation, bool).apply();
+    }
+
+
+    public String getString(String storeLocation) {
+        return this.prefs.getString(storeLocation, null);
+    }
+
+    public boolean getBoolean(String storeLocation) {
+        Log.d(TAG, "getBoolean: " + storeLocation + " = " + this.prefs.getBoolean(storeLocation, true));
+        return this.prefs.getBoolean(storeLocation, true);
     }
 
     /**

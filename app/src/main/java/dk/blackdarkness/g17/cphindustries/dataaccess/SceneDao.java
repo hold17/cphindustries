@@ -5,9 +5,9 @@ import java.util.List;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 
 public interface SceneDao {
-    List<Scene> get();
-    Scene get(int sceneId);
+    List<Scene> getList();
+    Scene getScene(int sceneId);
     void create(Scene scene);
-    void update(Scene newScene);
+    void update(int sceneId, Scene newScene);
     void delete(int sceneId);
 }

@@ -16,12 +16,12 @@ class WeaponDaoDemo implements WeaponDao {
     }
 
     @Override
-    public List<Weapon> get() {
+    public List<Weapon> getList() {
         return DemoDataRepository.loadListOfWeapons();
     }
 
     @Override
-    public Weapon get(int weaponId) {
+    public Weapon getWeapon(int weaponId) {
         this.allWeapons = DemoDataRepository.loadListOfWeapons();
 
         for (Weapon w : allWeapons) {
@@ -72,24 +72,24 @@ class WeaponDaoDemo implements WeaponDao {
                 allWeapons.remove(w);
             }
         }
-        List<ShootWeapon> shootWeapons = factory.getShootWeaponDao().get();
+        List<ShootWeapon> shootWeapons = factory.getShootWeaponDao().getList();
 
         for (ShootWeapon sw : shootWeapons) {
             if (sw.getWeaponId() == weaponId) {
-                factory.getShootWeaponDao().delete(sw.getShootWeaponId());
+                factory.getShootWeaponDao().delete(sw.getShootId(),sw.getShootWeaponId());
             }
         }
         DemoDataRepository.saveListOfWeapons(allWeapons);
     }
 
     @Override
-    public List<Shoot> getShoots(int weaponId) {
-        List<ShootWeapon> shootWeapons = factory.getShootWeaponDao().get();
+    public List<Shoot> getShootsByWeapon(int weaponId) {
+        List<ShootWeapon> shootWeapons = factory.getShootWeaponDao().getList();
         List<Shoot> shoots = new ArrayList<>();
 
         for (ShootWeapon sw : shootWeapons){
             if (sw.getWeaponId()==weaponId){
-                Shoot shoot = factory.getShootDao().get(sw.getShootId());
+                Shoot shoot = factory.getShootDao().getShoot(sw.getShootId());
                 shoots.add(shoot);
             }
         }
@@ -97,13 +97,13 @@ class WeaponDaoDemo implements WeaponDao {
     }
 
     @Override
-    public List<Weapon> getWeapons(int shootId) {
-        List<ShootWeapon> shootWeapons = factory.getShootWeaponDao().get();
+    public List<Weapon> getListByShoot(int shootId) {
+        List<ShootWeapon> shootWeapons = factory.getShootWeaponDao().getList();
         List<Weapon> weapons = new ArrayList<>();
 
         for (ShootWeapon sw : shootWeapons){
             if (sw.getShootId()==shootId){
-                Weapon weapon = factory.getWeaponDao().get(sw.getWeaponId());
+                Weapon weapon = factory.getWeaponDao().getWeapon(sw.getWeaponId());
                 weapons.add(weapon);
             }
         }
