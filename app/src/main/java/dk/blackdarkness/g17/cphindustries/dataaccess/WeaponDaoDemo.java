@@ -47,7 +47,7 @@ class WeaponDaoDemo implements WeaponDao {
     }
 
     @Override
-    public void update(int weaponId, Weapon newWeapon) {
+    public void update(Weapon newWeapon) {
         this.allWeapons = DemoDataRepository.loadListOfWeapons();
 
         for (Weapon w : allWeapons) {
@@ -58,6 +58,7 @@ class WeaponDaoDemo implements WeaponDao {
                 w.setMac(newWeapon.getMac());
                 w.setWarnings(newWeapon.getWarnings());
                 w.setName(newWeapon.getName());
+                break;
             }
         }
         DemoDataRepository.saveListOfWeapons(allWeapons);
@@ -67,16 +68,17 @@ class WeaponDaoDemo implements WeaponDao {
     public void delete(int weaponId) {
         this.allWeapons = DemoDataRepository.loadListOfWeapons();
 
-        for (Weapon w : allWeapons) {
+        for (Weapon w : this.allWeapons) {
             if (w.getId() == weaponId) {
-                allWeapons.remove(w);
+                this.allWeapons.remove(w);
+                break;
             }
         }
         List<ShootWeapon> shootWeapons = factory.getShootWeaponDao().getList();
 
         for (ShootWeapon sw : shootWeapons) {
             if (sw.getWeaponId() == weaponId) {
-                factory.getShootWeaponDao().delete(sw.getShootWeaponId());
+                factory.getShootWeaponDao().delete(sw.getShootId(),sw.getShootWeaponId());
             }
         }
         DemoDataRepository.saveListOfWeapons(allWeapons);
