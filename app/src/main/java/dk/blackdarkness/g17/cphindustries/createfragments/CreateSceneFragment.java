@@ -14,6 +14,7 @@ import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
+import dk.blackdarkness.g17.cphindustries.helper.softInputHelper;
 
 public class CreateSceneFragment extends android.support.v4.app.Fragment implements View.OnClickListener {
     private View view;
@@ -42,6 +43,13 @@ public class CreateSceneFragment extends android.support.v4.app.Fragment impleme
         super.onViewCreated(view, savedInstanceState);
         ((ViewSceneActivity)getActivity()).setActionBarTitle("Create Scene");
 
+        // handle softInput and focus
+        sceneNameText.setFocusableInTouchMode(true);
+        sceneNameText.requestFocus();
+        softInputHelper.showSoftInput(getContext(), sceneNameText);
+        // click on view dismisses softInput
+        view.setOnClickListener(this);
+
         submitSave.setOnClickListener(this);
         submitCancel.setOnClickListener(this);
     }
@@ -57,10 +65,15 @@ public class CreateSceneFragment extends android.support.v4.app.Fragment impleme
             case R.id.fr_create_shot_tvCancel:
                 getActivity().onBackPressed();
                 break;
+                // handle click on view (layout)
+            case R.id.fr_create_scene_layout:
+                softInputHelper.hideSoftInput(getContext(), view);
+                break;
         }
     }
 
     private void saveClicked() {
+        softInputHelper.hideSoftInput(getContext(), view);
         final Scene newScene = new Scene(-1, this.sceneNameText.getText().toString());
         Log.d(TAG, "saveClicked: creating scene: " + newScene.toString());
         this.sceneDao.create(newScene);

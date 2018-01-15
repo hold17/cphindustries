@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +22,7 @@ import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
+import dk.blackdarkness.g17.cphindustries.helper.softInputHelper;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperViewHolder;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
@@ -154,24 +154,6 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
             itemView.setBackgroundColor(0);
         }
 
-        public void showSoftInput(View v) {
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-            // no idea why this would be null, better make sure...
-            if (imm == null) {
-                throw new NullPointerException("InputMethodManager is null");
-            }
-            imm.showSoftInput(etHeading, InputMethodManager.SHOW_IMPLICIT);
-        }
-
-        public void hideSoftInput(View v) {
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-            // no idea why this would be null, better make sure...
-            if (imm == null) {
-                throw new NullPointerException("InputMethodManager is null");
-            }
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }
-
         @Override
         public void onClick(View v) {
             //TODO: maybe do something about this insanity at some point
@@ -181,11 +163,11 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
                 etHeading.setVisibility(View.VISIBLE);
                 etHeading.setFocusableInTouchMode(true);
                 etHeading.requestFocus();
-                showSoftInput(v);
+                softInputHelper.showSoftInput(context, etHeading);
                 imageBack.setImageResource(R.drawable.ic_done_green_24dp);
             } else {
                 listener.onClick(v, getAdapterPosition());
-                hideSoftInput(v);
+                softInputHelper.hideSoftInput(context, v);
                 tvHeading.setText(etHeading.getText().toString());
                 tvHeading.setVisibility(View.VISIBLE);
                 etHeading.setVisibility(View.GONE);

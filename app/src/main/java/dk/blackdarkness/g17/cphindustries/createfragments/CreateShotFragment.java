@@ -15,6 +15,7 @@ import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
+import dk.blackdarkness.g17.cphindustries.helper.softInputHelper;
 
 public class CreateShotFragment extends Fragment implements View.OnClickListener {
     private View view;
@@ -46,6 +47,13 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
         ((ViewSceneActivity)getActivity()).setActionBarTitle("Create Shoot");
 
+        // handle softInput and focus
+        shootNameText.setFocusableInTouchMode(true);
+        shootNameText.requestFocus();
+        softInputHelper.showSoftInput(getContext(), shootNameText);
+        // click on view dismisses softInput
+        view.setOnClickListener(this);
+
         submitSave.setOnClickListener(this);
         submitCancel.setOnClickListener(this);
     }
@@ -60,10 +68,15 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
             case R.id.fr_create_shot_tvCancel:
                 getActivity().onBackPressed();
                 break;
+            // handle click on view (layout)
+            case R.id.fr_create_shot_layout:
+                softInputHelper.hideSoftInput(getContext(), view);
+                break;
         }
     }
 
     private void saveClicked() {
+        softInputHelper.hideSoftInput(getContext(), view);
         final Shoot newShoot = new Shoot(-1, this.shootNameText.getText().toString(), this.sceneId);
         Log.d(TAG, "saveClicked: creating shoot: " + newShoot.toString());
         this.shootDao.create(newShoot);
