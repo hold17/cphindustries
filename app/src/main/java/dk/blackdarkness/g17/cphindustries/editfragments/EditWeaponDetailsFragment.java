@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
+import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.CallbackPopup;
@@ -165,6 +166,13 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     public void onCheckClickSend(int shootId, boolean isChecked) {
         // DO ALL WITH THE SCENEID HER...
 
+        if(isChecked){
+            ShootWeapon sw = new ShootWeapon(shootId, this.weapon.getId());
+            ApplicationConfig.getDaoFactory().getShootWeaponDao().create(sw);
+        } else{
+            ApplicationConfig.getDaoFactory().getShootWeaponDao().delete(shootId, this.weapon.getId());
+
+        }
 
     }
    /* private static List<Item> getListOfShoots(int sceneId) {
