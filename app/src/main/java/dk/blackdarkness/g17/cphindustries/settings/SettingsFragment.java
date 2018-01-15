@@ -11,12 +11,11 @@ import dk.blackdarkness.g17.cphindustries.BuildConfig;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 
-import static android.content.ContentValues.TAG;
-
 public class SettingsFragment extends PreferenceFragmentCompat implements android.support.v7.preference.Preference.OnPreferenceClickListener {
 
-    public static final String CACHE_CLEARED = "cacheCleared";
+    private static final String TAG = "SettingsFragment";
 
+    //Settings keys
     private static final String KEY_PREF_RESET_APP= "resetApp";
     private static final String KEY_PREF_CLEAR_CACHE = "clearCache";
     private static final String KEY_PREF_DEMO_DATA = "demoDataSwitch";
@@ -24,6 +23,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
     private static final String KEY_PREF_UPDATE_RATE= "updateRate";
     private static final String KEY_PREF_BUILD_NUMBER = "buildVersion";
 
+    //SharedPreferences locations
+    private static final String CACHE_CLEARED = "cacheCleared";
     private static final String SAVED_SCENES_LOCATION = "SAVED_SCENES_LIST";
     private static final String SAVED_SHOOTS_LOCATION = "SAVED_SHOOTS_LIST";
     private static final String SAVED_WEAPONS_LOCATION = "SAVED_WEAPONS_LIST";
