@@ -84,21 +84,33 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        //Check if cache is cleared TODO: Work around empty lists!!!
         if(SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED)) {
             Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
             SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
             this.weapons = ItemConverter.weaponToItem(this.weaponDao.getListByShoot(shootId));
             adapter.updateItems(this.weapons);
-            adapter.notifyDataSetChanged();
         }
-        Log.d(TAG, "Items onResume: " + adapter.getItemCount());
     }
 
     @Override
     public void onClick(View view) {
         Log.d(TAG, "onClick: lockFab. Returning EditWeaponFragment.");
         goToEditWeaponFragment();
+    }
+
+    public void goToEditWeaponFragment() {
+        Log.d(TAG, "goToEditWeaponFragment: Returning");
+        Fragment editWeaponFragment = new EditWeaponFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.shootId);
+        editWeaponFragment.setArguments(bundle);
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, editWeaponFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     public void goToDetailWeaponFragment(int position) {
@@ -114,21 +126,6 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, detailWeaponFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    public void goToEditWeaponFragment() {
-        Log.d(TAG, "goToEditWeaponFragment: Returning");
-        Fragment editWeaponFragment = new EditWeaponFragment();
-
-        Bundle bundle = new Bundle();
-        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
-        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.shootId);
-        editWeaponFragment.setArguments(bundle);
-
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, editWeaponFragment)
                 .addToBackStack(null)
                 .commit();
     }

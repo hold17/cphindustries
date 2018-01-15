@@ -23,6 +23,7 @@ import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 
+import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
@@ -71,7 +72,16 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
 
         this.weapons = ItemConverter.weaponToItem(this.weaponDao.getListByShoot(shootId));
 
-        final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
+        final RecyclerViewClickListener listener = (v, position) -> {
+            String name = this.adapter.getEditTextString(position);
+            int id = this.weapons.get(position).getId();
+            Log.d(TAG, "onClick: local current name: " + this.weapons.get(position).getName());
+            Log.d(TAG, "onClick: dao current name: " + this.weaponDao.getWeapon(id).getName());
+            this.weapons.get(position).setName(name);
+            this.weaponDao.update((Weapon) this.weapons.get(position));
+            Log.d(TAG, "onClick: local new name: " + this.weapons.get(position).getName());
+            Log.d(TAG, "onClick: dao new name: " + this.weaponDao.getWeapon(id).getName());
+        };
 
         this.adapter = new EditRecListAdapter(getActivity(), this, weapons, listener);
 
@@ -90,15 +100,12 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        //Check if cache is cleared TODO: Work around empty lists!!!
         if(SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED)) {
             Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
             SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
             this.weapons = ItemConverter.weaponToItem(this.weaponDao.getListByShoot(shootId));
             adapter.updateItems(this.weapons);
-            adapter.notifyDataSetChanged();
         }
-        Log.d(TAG, "Items onResume: " + adapter.getItemCount());
     }
 
     @Override
