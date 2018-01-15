@@ -94,11 +94,9 @@ class ShootWeaponDaoDemo implements ShootWeaponDao {
         this.allShootWeapon = DemoDataRepository.loadListOfShootWeapon();
 
         for (ShootWeapon sw : this.allShootWeapon) {
-            if (sw.getShootId() == shootId) {
-                if (sw.getWeaponId() == weaponId) {
-                    this.allShootWeapon.remove(sw);
-                    break;
-                }
+            if (sw.getShootId() == shootId && sw.getWeaponId() == weaponId) {
+                this.allShootWeapon.remove(sw);
+                break;
             }
         }
 
