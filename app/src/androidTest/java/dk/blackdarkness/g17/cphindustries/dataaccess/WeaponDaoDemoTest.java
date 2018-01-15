@@ -37,8 +37,7 @@ public class WeaponDaoDemoTest {
 
         SharedPreferenceManager.init(context);
         this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
-
-
+        
         //Test data scenes and shoot
         this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
 

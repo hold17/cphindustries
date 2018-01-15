@@ -41,12 +41,12 @@ public class SceneDaoDemoTest {
     }
 
     @Test
-    public void getListTest(){
+    public void getListTest() {
         // DemoDataRepository sceneList.size = 3.
 
         int size = sceneDao.getList().size();
 
-        assertEquals(3,size);
+        assertEquals(3, size);
 
     }
 
@@ -55,10 +55,9 @@ public class SceneDaoDemoTest {
         Scene inputScene = new Scene("ThisIsScene11");
 
         int size = this.sceneDao.getList().size();
-        int expectedId = size +1;
+        int expectedId = size + 1;
 
         this.sceneDao.create(inputScene);
-
 
         Scene outputScene = this.sceneDao.getScene(expectedId);
 

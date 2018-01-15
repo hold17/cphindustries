@@ -37,7 +37,6 @@ public class ShootDaoDemoTest {
         SharedPreferenceManager.init(context);
         this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
 
-
         //Test scenes
         this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
 
@@ -126,8 +125,6 @@ public class ShootDaoDemoTest {
         expectedListOfShoots.add(new Shoot(3, "Shoot 3", 1));
 
         List<Shoot> actualListOfShoots = (ArrayList<Shoot>) this.shootDao.getListByScene(1);
-
-
 
         assertEquals(expectedListOfShoots.get(0).getId(),actualListOfShoots.get(0).getId());
         assertEquals(expectedListOfShoots.get(1).getId(),actualListOfShoots.get(1).getId());
