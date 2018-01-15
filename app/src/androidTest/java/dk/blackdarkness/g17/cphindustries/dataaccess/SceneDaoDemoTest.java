@@ -22,7 +22,6 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class SceneDaoDemoTest {
 
-    Scene scene;
     SceneDao sceneDao;
 
     @Before
@@ -43,19 +42,19 @@ public class SceneDaoDemoTest {
 
     @Test
     public void createAndGetSceneTest() throws Exception {
-        Scene inputScene = new Scene(11,"ThisIsScene11");
+        Scene inputScene = new Scene(11, "ThisIsScene11");
 
-       this.sceneDao.create(inputScene);
+        this.sceneDao.create(inputScene);
 
-       Scene outputScene = this.sceneDao.getScene(inputScene.getId());
+        Scene outputScene = this.sceneDao.getScene(inputScene.getId());
 
-       assertEquals(inputScene.getId(),outputScene.getId());
-
+        assertEquals(inputScene.getId(), outputScene.getId());
+        assertEquals(inputScene.getName(), outputScene.getName());
     }
 
     @Test
-    public void deleteScene() throws Exception{
-        Scene inputScene = new Scene(11,"ThisIsScene11");
+    public void deleteSceneTest() throws Exception {
+        Scene inputScene = new Scene(11, "ThisIsScene11");
         this.sceneDao.create(inputScene);
         int size = this.sceneDao.getList().size();
 
@@ -65,12 +64,12 @@ public class SceneDaoDemoTest {
         int newSize = this.sceneDao.getList().size();
 
         assertNull(outputScene);
-        assertEquals(size-1,newSize);
+        assertEquals(size - 1, newSize);
     }
 
     @Test
-    public void updateScene() throws Exception{
-        Scene inputScene = new Scene(11,"ThisIsScene11");
+    public void updateSceneTest() throws Exception {
+        Scene inputScene = new Scene(11, "ThisIsScene11");
         this.sceneDao.create(inputScene);
 
         //Update scene with ny name
@@ -80,7 +79,8 @@ public class SceneDaoDemoTest {
 
         Scene updatedScene = this.sceneDao.getScene(inputScene.getId());
 
-        assertEquals(inputScene.getName(),updatedScene.getName());
+        assertEquals(inputScene.getId(),updatedScene.getId());
+        assertEquals(inputScene.getName(), updatedScene.getName());
     }
 
 
