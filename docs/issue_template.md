@@ -1,3 +1,5 @@
+For a nice example of an issue, see #107.
+
 ### Description
 
 [Description of the issue]
