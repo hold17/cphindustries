@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
@@ -39,16 +40,29 @@ public class SceneDaoDemoTest {
         SharedPreferenceManager.getInstance().clear();
     }
 
+    @Test
+    public void getListTest(){
+        // DemoDataRepository sceneList.size = 3.
+
+        int size = sceneDao.getList().size();
+
+        assertEquals(3,size);
+
+    }
 
     @Test
     public void createAndGetSceneTest() throws Exception {
-        Scene inputScene = new Scene(11, "ThisIsScene11");
+        Scene inputScene = new Scene("ThisIsScene11");
+
+        int size = this.sceneDao.getList().size();
+        int expectedId = size +1;
 
         this.sceneDao.create(inputScene);
 
-        Scene outputScene = this.sceneDao.getScene(inputScene.getId());
 
-        assertEquals(inputScene.getId(), outputScene.getId());
+        Scene outputScene = this.sceneDao.getScene(expectedId);
+
+        assertEquals(expectedId, outputScene.getId());
         assertEquals(inputScene.getName(), outputScene.getName());
     }
 
@@ -75,11 +89,11 @@ public class SceneDaoDemoTest {
         //Update scene with ny name
         inputScene.setName("UpdatedScene");
 
-        //this.sceneDao.update(inputScene.getId(),inputScene);
+        this.sceneDao.update(inputScene);
 
         Scene updatedScene = this.sceneDao.getScene(inputScene.getId());
 
-        assertEquals(inputScene.getId(),updatedScene.getId());
+        assertEquals(inputScene.getId(), updatedScene.getId());
         assertEquals(inputScene.getName(), updatedScene.getName());
     }
 
