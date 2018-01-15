@@ -39,7 +39,7 @@
 
 
     <!--About section-->
-    <string name="about_message1">The application is developed in collaboration with Copenhagen Industries as part of the course</string>
+    <string name="about_message1">The application is developed in collaboration with\n Copenhagen Industries as part of the course</string>
     <string name="course_name">62550 Brugerinteraktion og udvikling på mobile enheder</string>
     <string name="dtu">at Danmarks Tekniske Universitet (DTU).</string>
     <string name="group">Developed by group 17</string>

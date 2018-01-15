@@ -22,11 +22,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name=".menuitems.SettingsActivity"
             android:label="Settings"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".activities.ViewSceneActivity"
-            android:theme="@style/SettingsTheme">
+            android:parentActivityName=".activities.ViewSceneActivity">
+        </activity>
+        <activity
+            android:name=".menuitems.AboutActivity"
+            android:label="About"
+            android:parentActivityName=".activities.ViewSceneActivity">
         </activity>
 
         <meta-data

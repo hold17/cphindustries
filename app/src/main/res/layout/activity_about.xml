@@ -5,6 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/custom_toolbar_layout"
+        android:id="@+id/action_bar"></include>
+
     <ImageView
         android:id="@+id/ci_logo"
         android:layout_width="wrap_content"
@@ -14,7 +17,7 @@
         android:src="@drawable/ic_ci_logo_title_300dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/action_bar"
         app:layout_constraintBottom_toTopOf="@+id/about_message1"/>
 
     <TextView

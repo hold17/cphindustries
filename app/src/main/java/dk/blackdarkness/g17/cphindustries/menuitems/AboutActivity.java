@@ -1,44 +1,57 @@
-package dk.blackdarkness.g17.cphindustries.viewfragments;
+package dk.blackdarkness.g17.cphindustries.menuitems;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 
-public class AboutFragment extends Fragment implements View.OnClickListener{
-    private static final String TAG = "AboutFragment";
+public class AboutActivity extends AppCompatActivity implements View.OnClickListener{
+    private static final String TAG = "AboutActivity";
     private TextView linkSource, linkApi;
     private String linkSourceString, linkApiString;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v =  inflater.inflate(R.layout.fragment_about, container, false);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_about);
 
         this.linkSourceString = getString(R.string.link_source_repo);
         this.linkApiString = getString(R.string.link_api);
 
-        this.linkSource = v.findViewById(R.id.link_source);
+        this.linkSource = findViewById(R.id.link_source);
         this.linkSource.setOnClickListener(this);
         this.linkSource.setText("Source: " + linkSourceString);
 
-        this.linkApi = v.findViewById(R.id.link_api);
+        this.linkApi = findViewById(R.id.link_api);
         this.linkApi.setText("API: " + linkApiString);
         this.linkApi.setOnClickListener(this);
 
-        ((ViewSceneActivity)getActivity()).enableActionBar(true);
-        ((ViewSceneActivity)getActivity()).setActionBarTitle("About");
+        getLayoutInflater().inflate(R.layout.custom_toolbar_layout, findViewById(android.R.id.content));
+        Toolbar toolbar = findViewById(R.id.customToolbar);
+        toolbar.setTitle("About");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-        return v;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
