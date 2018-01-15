@@ -1,6 +1,9 @@
 package dk.blackdarkness.g17.cphindustries.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -49,6 +52,19 @@ public class ViewSceneActivity extends AppCompatActivity {
         }
         //crashlyics
         Fabric.with(this, new Crashlytics());
+
+        //Broadcast receiver to finish activity from within Settings
+        BroadcastReceiver br = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context arg0, Intent intent) {
+                String action = intent.getAction();
+                if (action.equals("finish")) {
+                    finish();
+                }
+            }
+        };
+        registerReceiver(br, new IntentFilter("finish"));
+
     }
 
     @Override
@@ -120,4 +136,5 @@ public class ViewSceneActivity extends AppCompatActivity {
                 .add(R.id.fragment_container, sceneViewFragment)
                 .commit();
     }
+
 }

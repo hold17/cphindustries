@@ -89,9 +89,12 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
     public void onResume() {
         super.onResume();
         //Check if cache is cleared TODO: Work around empty lists!!!
-        if(SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED)) {
-            Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
+        boolean cacheIsCleared = SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED);
+        boolean appIsReset = SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.APP_RESET);
+
+        if(cacheIsCleared || appIsReset) {
             SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
+            SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.APP_RESET);
             this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(sceneId));
             adapter.updateItems(this.shoots);
             adapter.notifyDataSetChanged();

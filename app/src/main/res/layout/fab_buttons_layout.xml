@@ -13,7 +13,7 @@
         android:layout_marginRight="24dp"
         android:scaleType="center"
         android:visibility="gone"
-        app:backgroundTint="@color/addFabColor"
+        app:backgroundTint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_add_white_24dp" />
 
     <android.support.design.widget.FloatingActionButton
