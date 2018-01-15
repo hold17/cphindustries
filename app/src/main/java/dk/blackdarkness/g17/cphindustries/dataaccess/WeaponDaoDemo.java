@@ -47,17 +47,18 @@ class WeaponDaoDemo implements WeaponDao {
     }
 
     @Override
-    public void update(int weaponId, Weapon newWeapon) {
+    public void update(Weapon updatedWeapon) {
         this.allWeapons = DemoDataRepository.loadListOfWeapons();
+        int id = updatedWeapon.getId();
 
         for (Weapon w : allWeapons) {
-            if (w.getId() == newWeapon.getId()) {
-                w.setConnectionStatus(newWeapon.getConnectionStatus());
-                w.setFireMode(newWeapon.getFireMode());
-                w.setIp(newWeapon.getIp());
-                w.setMac(newWeapon.getMac());
-                w.setWarnings(newWeapon.getWarnings());
-                w.setName(newWeapon.getName());
+            if (w.getId() == id) {
+                w.setConnectionStatus(updatedWeapon.getConnectionStatus());
+                w.setFireMode(updatedWeapon.getFireMode());
+                w.setIp(updatedWeapon.getIp());
+                w.setMac(updatedWeapon.getMac());
+                w.setWarnings(updatedWeapon.getWarnings());
+                w.setName(updatedWeapon.getName());
             }
         }
         DemoDataRepository.saveListOfWeapons(allWeapons);

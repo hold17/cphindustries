@@ -44,14 +44,14 @@ class ShootWeaponDaoDemo implements ShootWeaponDao {
     }
 
     @Override
-    public void update(int shootWeaponId, ShootWeapon newWeapon) {
+    public void update(ShootWeapon updatedWeapon) {
         this.allShootWeapon = DemoDataRepository.loadListOfShootWeapon();
+        int id = updatedWeapon.getShootWeaponId();
 
         for (ShootWeapon sw : allShootWeapon){
-            if (sw.getShootWeaponId()== shootWeaponId){
-                sw.setShootWeaponId(shootWeaponId);
-                sw.setShootId(newWeapon.getShootId());
-                sw.setWeaponId(newWeapon.getWeaponId());
+            if (sw.getShootWeaponId() == id){
+                sw.setShootId(updatedWeapon.getShootId());
+                sw.setWeaponId(updatedWeapon.getWeaponId());
             }
         }
         DemoDataRepository.saveListOfShootWeapon(allShootWeapon);

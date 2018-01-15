@@ -47,9 +47,10 @@ class SceneDaoDemo implements SceneDao {
     @Override
     public void update(Scene updatedScene) {
         this.allScenes = DemoDataRepository.loadListOfScenes();
+        int id = updatedScene.getId();
 
         for (Scene s : allScenes) {
-            if (s.getId() == updatedScene.getId()) {
+            if (s.getId() == id) {
                 s.setName(updatedScene.getName());
             }
         }

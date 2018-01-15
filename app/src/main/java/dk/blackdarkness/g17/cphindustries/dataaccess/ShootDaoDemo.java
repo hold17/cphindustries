@@ -74,12 +74,13 @@ class ShootDaoDemo implements ShootDao {
     }
 
     @Override
-    public void update(int shootId, Shoot newShoot) {
+    public void update(Shoot updatedShoot) {
         this.allShoots = DemoDataRepository.loadListOfShoots();
+        int id = updatedShoot.getId();
 
         for (Shoot s : allShoots) {
-            if (s.getId() == shootId) {
-                s.setName(newShoot.getName());
+            if (s.getId() == id) {
+                s.setName(updatedShoot.getName());
             }
         }
         DemoDataRepository.saveListOfShoots(allShoots);
