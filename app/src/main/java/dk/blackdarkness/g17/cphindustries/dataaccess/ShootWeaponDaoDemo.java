@@ -18,12 +18,14 @@ class ShootWeaponDaoDemo implements ShootWeaponDao {
     }
 
     @Override
-    public ShootWeapon getShootWeapon(int shootWeaponId) {
+    public ShootWeapon getShootWeapon(int shootId, int weaponId) {
         this.allShootWeapon = DemoDataRepository.loadListOfShootWeapon();
 
-        for (ShootWeapon sw : allShootWeapon){
-            if (sw.getShootWeaponId()==shootWeaponId){
-                return sw;
+        for (ShootWeapon sw : allShootWeapon) {
+            if (sw.getShootId() == shootId) {
+                if (sw.getWeaponId() == weaponId) {
+                    return sw;
+                }
             }
         }
         return null;
@@ -34,9 +36,9 @@ class ShootWeaponDaoDemo implements ShootWeaponDao {
         this.allShootWeapon = DemoDataRepository.loadListOfShootWeapon();
         shootWeapon.setShootWeaponId(1);
 
-        for (ShootWeapon sw :allShootWeapon){
+        for (ShootWeapon sw : allShootWeapon) {
             if (sw.getShootWeaponId() == shootWeapon.getShootWeaponId()) {
-                shootWeapon.setShootWeaponId(shootWeapon.getShootWeaponId()+1);
+                shootWeapon.setShootWeaponId(shootWeapon.getShootWeaponId() + 1);
             } else break;
         }
         this.allShootWeapon.add(shootWeapon);
@@ -44,26 +46,29 @@ class ShootWeaponDaoDemo implements ShootWeaponDao {
     }
 
     @Override
-    public void update(int shootWeaponId, ShootWeapon newWeapon) {
+    public void update(int shootId, int weaponId, ShootWeapon newWeapon) {
         this.allShootWeapon = DemoDataRepository.loadListOfShootWeapon();
 
-        for (ShootWeapon sw : allShootWeapon){
-            if (sw.getShootWeaponId()== shootWeaponId){
-                sw.setShootWeaponId(shootWeaponId);
-                sw.setShootId(newWeapon.getShootId());
-                sw.setWeaponId(newWeapon.getWeaponId());
+        for (ShootWeapon sw : allShootWeapon) {
+            if (sw.getShootId() == shootId) {
+                if (sw.getWeaponId() == weaponId) {
+                    sw.setShootId(shootId);
+                    sw.setWeaponId(weaponId);
+                }
             }
         }
         DemoDataRepository.saveListOfShootWeapon(allShootWeapon);
     }
 
     @Override
-    public void delete(int shootWeaponId) {
+    public void delete(int shootId, int weaponId) {
         this.allShootWeapon = DemoDataRepository.loadListOfShootWeapon();
 
-        for(ShootWeapon sw : allShootWeapon){
-            if (sw.getShootWeaponId()==shootWeaponId){
-                allShootWeapon.remove(sw);
+        for (ShootWeapon sw : allShootWeapon) {
+            if (sw.getShootId() == shootId) {
+                if (sw.getWeaponId() == weaponId) {
+                    allShootWeapon.remove(sw);
+                }
             }
         }
         DemoDataRepository.saveListOfShootWeapon(allShootWeapon);
