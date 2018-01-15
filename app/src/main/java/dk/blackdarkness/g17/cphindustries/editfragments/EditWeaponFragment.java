@@ -1,5 +1,6 @@
 package dk.blackdarkness.g17.cphindustries.editfragments;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -68,6 +69,7 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
         this.lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
+        this.lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
 
         this.weapons = ItemConverter.weaponToItem(this.weaponDao.getListByShoot(shootId));
 

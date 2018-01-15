@@ -16,5 +16,5 @@
     <color name="colorButtonStroke">#979797</color>
     <color name="colorPressedButton">#F1F1F1</color>
     <color name="addFabColor">#FF4081</color>
-    <color name="lockFabColor">#FF9800</color>
+    <color name="openLockFabColor">#FF9800</color>
 </resources>
