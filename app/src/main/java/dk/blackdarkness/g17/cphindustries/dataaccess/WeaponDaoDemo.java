@@ -76,7 +76,7 @@ class WeaponDaoDemo implements WeaponDao {
 
         for (ShootWeapon sw : shootWeapons) {
             if (sw.getWeaponId() == weaponId) {
-                factory.getShootWeaponDao().delete(sw.getShootWeaponId());
+                factory.getShootWeaponDao().delete(sw.getShootId(),sw.getShootWeaponId());
             }
         }
         DemoDataRepository.saveListOfWeapons(allWeapons);
