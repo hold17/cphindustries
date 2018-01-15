@@ -144,7 +144,6 @@ public class WeaponDaoDemoTest {
         inputWeapon.setIp("175.216.74.101");
         inputWeapon.setMac("44-0E-1E-FA-68-1E");
 
-
         this.weaponDao.update(inputWeapon);
 
         Weapon updatedWeapon = this.weaponDao.getWeapon(inputWeapon.getId());
@@ -158,14 +157,37 @@ public class WeaponDaoDemoTest {
         assertEquals(inputWeapon.getMac(), updatedWeapon.getMac());
     }
 
-//    @Test
-//   public void getListByShootTest(){
-//
-//   }
-//
-//    @Test
-//    public void getShootsByWeaponTest(){
-//
-//    }
+    @Test
+   public void getListByShootTest(){
+        List<Weapon> expectedListOfWeapons = new ArrayList<>();
+        expectedListOfWeapons.add(new Weapon(2, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.FULL,"128.39.196.59","59-3B-7B-89-29-4E"));
+        expectedListOfWeapons.add(new Weapon(7, "weapon 7", FireMode.SINGLE, ConnectionStatus.BAR_2,"104.84.93.11","9C-28-EC-44-E5-57"));
+
+        List<Weapon> actualListOfWeapons = this.weaponDao.getListByShoot(2);
+
+        assertEquals(expectedListOfWeapons.get(0).getId(),actualListOfWeapons.get(0).getId());
+        assertEquals(expectedListOfWeapons.get(1).getId(),actualListOfWeapons.get(1).getId());
+
+   }
+
+
+    @Test
+    public void getShootsByWeaponTest(){
+       List<Shoot> expectedListOfShoots = new ArrayList<>();
+        expectedListOfShoots.add(new Shoot(1, "Shoot 1", 1));
+        expectedListOfShoots.add(new Shoot(2, "Shoot 2", 1));
+        expectedListOfShoots.add(new Shoot(3, "Shoot 3", 1));
+        expectedListOfShoots.add(new Shoot(5, "Shoot 5", 3));
+        expectedListOfShoots.add(new Shoot(6, "Shoot 6", 3));
+
+        List<Shoot> actualListOfShoots = this.weaponDao.getShootsByWeapon(2);
+
+        assertEquals(expectedListOfShoots.get(0).getId(),actualListOfShoots.get(0).getId());
+        assertEquals(expectedListOfShoots.get(1).getId(),actualListOfShoots.get(1).getId());
+        assertEquals(expectedListOfShoots.get(2).getId(),actualListOfShoots.get(2).getId());
+        assertEquals(expectedListOfShoots.get(3).getId(),actualListOfShoots.get(3).getId());
+        assertEquals(expectedListOfShoots.get(4).getId(),actualListOfShoots.get(4).getId());
+
+    }
 
 }

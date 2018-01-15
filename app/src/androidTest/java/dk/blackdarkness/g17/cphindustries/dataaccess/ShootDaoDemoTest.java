@@ -120,12 +120,12 @@ public class ShootDaoDemoTest {
     @Test
     public void getListBySceneTest() {
 
-        ArrayList<Shoot> expectedListOfShoots = new ArrayList<>();
+        List<Shoot> expectedListOfShoots = new ArrayList<>();
         expectedListOfShoots.add(new Shoot(1, "Shoot 1", 1));
         expectedListOfShoots.add(new Shoot(2, "Shoot 2", 1));
         expectedListOfShoots.add(new Shoot(3, "Shoot 3", 1));
 
-        ArrayList<Shoot> actualListOfShoots = (ArrayList<Shoot>) this.shootDao.getListByScene(1);
+        List<Shoot> actualListOfShoots = (ArrayList<Shoot>) this.shootDao.getListByScene(1);
 
 
 
@@ -142,10 +142,10 @@ public class ShootDaoDemoTest {
         expectedListOfWeapons.add(new Weapon(2, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.FULL,"128.39.196.59","59-3B-7B-89-29-4E"));
         expectedListOfWeapons.add(new Weapon(7, "weapon 7", FireMode.SINGLE, ConnectionStatus.BAR_2,"104.84.93.11","9C-28-EC-44-E5-57"));
 
-        List<Weapon> actuaListOfWeapons = this.shootDao.getWeaponsByShoot(2);
+        List<Weapon> actualListOfWeapons = this.shootDao.getWeaponsByShoot(2);
 
-        assertEquals(expectedListOfWeapons.get(0).getId(),actuaListOfWeapons.get(0).getId());
-        assertEquals(expectedListOfWeapons.get(1).getId(),actuaListOfWeapons.get(1).getId());
+        assertEquals(expectedListOfWeapons.get(0).getId(),actualListOfWeapons.get(0).getId());
+        assertEquals(expectedListOfWeapons.get(1).getId(),actualListOfWeapons.get(1).getId());
 
     }
 
