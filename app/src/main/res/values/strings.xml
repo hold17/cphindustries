@@ -38,4 +38,14 @@
     <!--Default Setting values-->
 
 
+    <!--About section-->
+    <string name="about_message1">The application is developed in collaboration with Copenhagen Industries as part of the course</string>
+    <string name="course_name">62550 Brugerinteraktion og udvikling på mobile enheder</string>
+    <string name="dtu">at Danmarks Tekniske Universitet (DTU).</string>
+    <string name="group">Developed by group 17</string>
+    <string name="members">Thomas Lien Christensen\nAnders Wiberg Olsen\nChristoffer Birk Puls\nJonas Larsen\nSebastian Tibor Bakony\n</string>
+    <string name="link_source_repo">https://github.com/hold17/cphindustries</string>
+    <string name="link_api">https://github.com/hold17/cphapi</string>
+    <string name="creation_date">January 2018</string>
+
 </resources>

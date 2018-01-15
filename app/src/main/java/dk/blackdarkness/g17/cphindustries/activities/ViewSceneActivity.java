@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
+import dk.blackdarkness.g17.cphindustries.viewfragments.AboutFragment;
 import io.fabric.sdk.android.Fabric;
 
 import dk.blackdarkness.g17.cphindustries.BuildConfig;
@@ -63,10 +64,10 @@ public class ViewSceneActivity extends AppCompatActivity {
                 return true;
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_about:
-                Toast.makeText(this, getAppVersion(), Toast.LENGTH_SHORT).show();
+                goToAboutFragment();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -123,8 +124,13 @@ public class ViewSceneActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public String getAppVersion() {
-            return "Current application version: " + BuildConfig.VERSION_NAME;
+    public void goToAboutFragment() {
+        Fragment aboutFragment = new AboutFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, aboutFragment)
+                .addToBackStack(null)
+                .commit();
     }
+
 
 }
