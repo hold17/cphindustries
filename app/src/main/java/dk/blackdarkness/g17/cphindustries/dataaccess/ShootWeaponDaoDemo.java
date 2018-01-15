@@ -26,7 +26,6 @@ class ShootWeaponDaoDemo implements ShootWeaponDao {
                 return sw;
             }
         }
-
         return null;
     }
 
@@ -44,13 +43,14 @@ class ShootWeaponDaoDemo implements ShootWeaponDao {
             }
             this.allShootWeapon.add(shootWeapon);
         }
-
         DemoDataRepository.saveListOfShootWeapon(allShootWeapon);
     }
 
     @Override
-    public void update(int oldShootId, int oldWeaponId, ShootWeapon newShootWeapon) {
+    public void update(int oldShootId, int oldWeaponId, ShootWeapon updatedShootWeapon) {
         this.allShootWeapon = DemoDataRepository.loadListOfShootWeapon();
+        int updatedShootId = updatedShootWeapon.getShootId();
+        int updatedWeaponId = updatedShootWeapon.getWeaponId();
 
         Boolean exist = false;
         Integer oldShootWeaponIndex = null;
@@ -60,8 +60,8 @@ class ShootWeaponDaoDemo implements ShootWeaponDao {
             final int currentWeaponId = this.allShootWeapon.get(i).getWeaponId();
 
             // If the new ShootWeapon object exists
-            if (currentShootId == newShootWeapon.getShootId() &&
-                currentWeaponId == newShootWeapon.getWeaponId()) {
+            if (currentShootId == updatedShootId &&
+                currentWeaponId == updatedWeaponId) {
                     exist = true;
             }
 
@@ -78,12 +78,10 @@ class ShootWeaponDaoDemo implements ShootWeaponDao {
 
         if (!exist) {
             for (ShootWeapon sw : this.allShootWeapon) {
-                if (sw.getShootId() == oldShootId) {
-                    if (sw.getWeaponId() == oldWeaponId) {
-                        sw.setShootId(newShootWeapon.getShootId());
-                        sw.setWeaponId(newShootWeapon.getWeaponId());
-                        break;
-                    }
+                if (sw.getShootId() == oldShootId && sw.getWeaponId() == oldWeaponId) {
+                    sw.setShootId(updatedShootId);
+                    sw.setWeaponId(updatedWeaponId);
+                    break;
                 }
             }
         }
@@ -110,7 +108,7 @@ class ShootWeaponDaoDemo implements ShootWeaponDao {
     private static boolean exists(ShootWeapon shootWeapon, List<ShootWeapon> allShootWeapons) {
         for (ShootWeapon sw : allShootWeapons) {
             if (sw.getShootId() == shootWeapon.getShootId() &&
-                    sw.getWeaponId() == shootWeapon.getWeaponId()) {
+                sw.getWeaponId() == shootWeapon.getWeaponId()) {
                     return true;
             }
         }

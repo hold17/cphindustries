@@ -52,12 +52,14 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
         SharedPreferenceManager.init(getContext());
 
         this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
+
         this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
         this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
 
         return view;
     }
 
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((ViewSceneActivity)getActivity()).setActionBarTitle("Shoots");
@@ -78,15 +80,12 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        //Check if cache is cleared TODO: Work around empty lists!!!
         if(SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED)) {
             Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
             SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
             this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(sceneId));
             adapter.updateItems(this.shoots);
-            adapter.updateItems(this.shoots);adapter.notifyDataSetChanged();
         }
-        Log.d(TAG, "Items onResume: " + adapter.getItemCount());
     }
 
     @Override
@@ -113,9 +112,6 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
         Log.d(TAG, "goToWeaponViewFragment: Returning");
         Fragment weaponViewFragment = new ViewWeaponFragment();
 
-//        Toast.makeText(getContext().getApplicationContext(), "Index: " + position + ", ID = " + ApplicationConfig.getDaoFactory().getShootDao().getList(this.sceneId).getList(position).getId(), Toast.LENGTH_LONG).show();
-
-        // Add shoot ID to arguments
         final int chosenShoot = this.shoots.get(position).getId();
         Bundle bundle = new Bundle();
         bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);

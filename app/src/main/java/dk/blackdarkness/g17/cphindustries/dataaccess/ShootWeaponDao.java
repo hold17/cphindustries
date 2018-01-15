@@ -8,6 +8,6 @@ public interface ShootWeaponDao {
     List<ShootWeapon> getList();
     ShootWeapon getShootWeapon(int shootId, int weaponId);
     void create(ShootWeapon shootWeapon);
-    void update(int shootId, int weaponId, ShootWeapon newWeapon);
+    void update(int oldShootId, int oldWeaponId, ShootWeapon updatedWeapon);
     void delete(int shootId, int weaponId);
 }
