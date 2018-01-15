@@ -45,15 +45,16 @@ class SceneDaoDemo implements SceneDao {
     }
 
     @Override
-    public void update(int sceneId, Scene updatedScene) {
+    public void update(Scene updatedScene) {
         this.allScenes = DemoDataRepository.loadListOfScenes();
 
-        for (Scene s : allScenes) {
-            if (s.getId() == sceneId) {
+        for (Scene s : this.allScenes) {
+            if (s.getId() == updatedScene.getId()) {
                 s.setName(updatedScene.getName());
+                break;
             }
         }
-        DemoDataRepository.saveListOfScenes(allScenes);
+        DemoDataRepository.saveListOfScenes(this.allScenes);
     }
 
     @Override
@@ -61,9 +62,10 @@ class SceneDaoDemo implements SceneDao {
         this.allScenes = DemoDataRepository.loadListOfScenes();
 
         // Find a scene and delete it.
-        for (Scene s : allScenes) {
+        for (Scene s : this.allScenes) {
             if (s.getId() == sceneId) {
                 allScenes.remove(s);
+                break;
             }
         }
         List<Shoot> shoots = factory.getShootDao().getList();
