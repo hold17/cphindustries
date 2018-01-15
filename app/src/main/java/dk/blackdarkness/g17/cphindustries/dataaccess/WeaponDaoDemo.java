@@ -91,7 +91,7 @@ class WeaponDaoDemo implements WeaponDao {
         List<Shoot> shoots = new ArrayList<>();
 
         for (ShootWeapon sw : shootWeapons){
-            if (sw.getWeaponId()==weaponId){
+            if (sw.getWeaponId() == weaponId){
                 Shoot shoot = factory.getShootDao().getShoot(sw.getShootId());
                 shoots.add(shoot);
             }
@@ -105,7 +105,7 @@ class WeaponDaoDemo implements WeaponDao {
         List<Weapon> weapons = new ArrayList<>();
 
         for (ShootWeapon sw : shootWeapons){
-            if (sw.getShootId()==shootId){
+            if (sw.getShootId() == shootId){
                 Weapon weapon = factory.getWeaponDao().getWeapon(sw.getWeaponId());
                 weapons.add(weapon);
             }

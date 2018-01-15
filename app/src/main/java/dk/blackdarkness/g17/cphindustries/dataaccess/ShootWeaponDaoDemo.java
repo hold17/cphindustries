@@ -43,7 +43,6 @@ class ShootWeaponDaoDemo implements ShootWeaponDao {
             }
             this.allShootWeapon.add(shootWeapon);
         }
-
         DemoDataRepository.saveListOfShootWeapon(allShootWeapon);
     }
 
@@ -109,7 +108,7 @@ class ShootWeaponDaoDemo implements ShootWeaponDao {
     private static boolean exists(ShootWeapon shootWeapon, List<ShootWeapon> allShootWeapons) {
         for (ShootWeapon sw : allShootWeapons) {
             if (sw.getShootId() == shootWeapon.getShootId() &&
-                    sw.getWeaponId() == shootWeapon.getWeaponId()) {
+                sw.getWeaponId() == shootWeapon.getWeaponId()) {
                     return true;
             }
         }
