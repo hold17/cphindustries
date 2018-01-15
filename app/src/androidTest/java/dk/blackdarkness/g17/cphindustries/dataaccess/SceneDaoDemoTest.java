@@ -75,7 +75,7 @@ public class SceneDaoDemoTest {
         //Update scene with ny name
         inputScene.setName("UpdatedScene");
 
-        this.sceneDao.update(inputScene);
+        //this.sceneDao.update(inputScene.getId(),inputScene);
 
         Scene updatedScene = this.sceneDao.getScene(inputScene.getId());
 
