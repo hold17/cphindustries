@@ -8,6 +8,11 @@ public class Shoot extends Item {
         this.sceneId = sceneId;
     }
 
+    public Shoot( String name, int sceneId) {
+        super(name);
+        this.sceneId = sceneId;
+    }
+
     public int getSceneId() {
         return sceneId;
     }

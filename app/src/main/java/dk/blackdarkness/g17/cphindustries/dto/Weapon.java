@@ -12,10 +12,31 @@ public class Weapon extends Item {
     private String ip;
     private String mac;
 
-    public Weapon() {}
+    public Weapon() {
+    }
 
     /**
      * Probably the default constructor when creating new weapons. FireMode will always be in SAFE mode initially.
+     *
+     * @param name
+     * @param warnings
+     * @param fireMode
+     * @param connectionStatus
+     * @param ip
+     * @param mac
+     */
+    public Weapon(String name, List<String> warnings, FireMode fireMode, ConnectionStatus connectionStatus, String ip, String mac) {
+        super(name);
+        this.warnings = warnings;
+        this.fireMode = fireMode;
+        this.connectionStatus = connectionStatus;
+        this.setIp(ip);
+        this.setMac(mac);
+    }
+
+    /**
+     * Probably the default constructor when creating new weapons. FireMode will always be in SAFE mode initially.
+     *
      * @param id
      * @param name
      * @param warnings
@@ -24,7 +45,7 @@ public class Weapon extends Item {
      * @param ip
      * @param mac
      */
-    public Weapon(int id, String name, List<String> warnings, FireMode fireMode, ConnectionStatus connectionStatus,String ip, String mac) {
+    public Weapon(int id, String name, List<String> warnings, FireMode fireMode, ConnectionStatus connectionStatus, String ip, String mac) {
         super(id, name);
         this.warnings = warnings;
         this.fireMode = fireMode;
@@ -35,6 +56,7 @@ public class Weapon extends Item {
 
     /**
      * Probably the default constructor when creating new weapons. FireMode will always be in SAFE mode initially.
+     *
      * @param id
      * @param name
      * @param fireMode
@@ -53,6 +75,7 @@ public class Weapon extends Item {
 
     /**
      * Probably the default constructor when creating new weapons. FireMode will always be in SAFE mode initially.
+     *
      * @param id
      * @param name
      * @param connectionStatus
@@ -70,12 +93,13 @@ public class Weapon extends Item {
 
     /**
      * Probably the default constructor when creating new weapons. FireMode will always be in SAFE mode initially.
+     *
      * @param id
      * @param name
      * @param ip
      * @param mac
      */
-    public Weapon(int id, String name,String ip, String mac) {
+    public Weapon(int id, String name, String ip, String mac) {
         super(id, name);
         this.warnings = new ArrayList<>();
         this.fireMode = FireMode.SAFE;
@@ -86,6 +110,7 @@ public class Weapon extends Item {
 
     /**
      * This constructor is used when a weapon has not been added to anything yet (not configured)
+     *
      * @param id
      * @param connectionStatus
      * @param ip
@@ -144,7 +169,7 @@ public class Weapon extends Item {
     }
 
     private static boolean verifyIp(String ip) {
-        if (ip == null){
+        if (ip == null) {
             throw new NullPointerException("IP has not yet been initialized.");
         }
 
@@ -160,7 +185,7 @@ public class Weapon extends Item {
     }
 
     private static boolean verifyMac(String mac) {
-        if (mac == null){
+        if (mac == null) {
             throw new NullPointerException("MAC has not yet been initialized.");
         }
         final String macRegex = "([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$";

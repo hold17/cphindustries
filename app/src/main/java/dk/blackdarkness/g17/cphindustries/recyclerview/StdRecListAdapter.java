@@ -21,6 +21,7 @@ import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 
 public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.ItemViewHolder> {
+    private static final String TAG = "StdRecListAdapter";
     private List<Item> mItems = new ArrayList<>();
     private final RecyclerViewClickListener listener;
     private final Context context;
@@ -57,15 +58,16 @@ public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.It
             if (((Weapon) curItem).getWarnings().size() == 0) {
                 holder.imageFront.setVisibility(View.INVISIBLE);
             }
-
             // Set go button image to the connection status
             holder.imageBack.setImageResource(((Weapon) curItem).getConnectionStatus().getDrawableId());
         }
     }
 
     public void updateItems(List<Item> items) {
+        Log.d(TAG, "updateItems: Items before: " + getItemCount());
         this.mItems = items;
-        Log.d("updateItems", "updated item list!" + this.mItems.toString());
+        notifyDataSetChanged();
+        Log.d(TAG, "updateItems: Items after: " + getItemCount());
     }
 
     @Override
@@ -92,10 +94,8 @@ public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.It
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            System.out.println("item clicked at position: " + position);
+            Log.d(TAG, "onClick: item clicked at position: " + position);
             this.listener.onClick(view, position);
         }
-
     }
-
 }

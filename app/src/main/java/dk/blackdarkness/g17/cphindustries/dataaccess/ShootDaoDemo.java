@@ -81,6 +81,8 @@ class ShootDaoDemo implements ShootDao {
         for (Shoot s : allShoots) {
             if (s.getId() == id) {
                 s.setName(updatedShoot.getName());
+                s.setSceneId(updatedShoot.getSceneId());
+                break;
             }
         }
         DemoDataRepository.saveListOfShoots(allShoots);
@@ -93,13 +95,14 @@ class ShootDaoDemo implements ShootDao {
         for (Shoot s : allShoots) {
             if (s.getId() == shootId) {
                 allShoots.remove(s);
+                break;
             }
         }
         List<ShootWeapon> shootWeapons = factory.getShootWeaponDao().getList();
 
         for (ShootWeapon sw : shootWeapons){
             if(sw.getShootId() == shootId){
-                factory.getShootWeaponDao().delete(sw.getShootWeaponId());
+                factory.getShootWeaponDao().delete(sw.getShootId(),sw.getWeaponId());
             }
         }
         DemoDataRepository.saveListOfShoots(allShoots);

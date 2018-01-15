@@ -68,6 +68,8 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
         this.lock.setOnClickListener(this);
         this.lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
 
+        this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(this.sceneId));
+
         final RecyclerViewClickListener listener = (v, position) -> {
             String name = this.adapter.getEditTextString(position);
             int id = this.shoots.get(position).getId();
@@ -79,7 +81,7 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
             Log.d(TAG, "onClick: dao new name: " + this.shootDao.getShoot(id).getName());
         };
 
-        this.adapter = new EditRecListAdapter(getActivity(), this, shoots, listener);
+        this.adapter = new EditRecListAdapter(getActivity(), this, this.shoots, listener);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
