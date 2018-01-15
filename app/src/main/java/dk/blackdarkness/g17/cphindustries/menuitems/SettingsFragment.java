@@ -1,6 +1,7 @@
 package dk.blackdarkness.g17.cphindustries.menuitems;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.PreferenceFragmentCompat;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import dk.blackdarkness.g17.cphindustries.BuildConfig;
 import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements android.support.v7.preference.Preference.OnPreferenceClickListener {
@@ -25,6 +27,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
 
     //SharedPreferences locations
     public static final String CACHE_CLEARED = "cacheCleared";
+    public static final String APP_RESET = "appReset";
     private static final String SAVED_SCENES_LOCATION = "SAVED_SCENES_LIST";
     private static final String SAVED_SHOOTS_LOCATION = "SAVED_SHOOTS_LIST";
     private static final String SAVED_WEAPONS_LOCATION = "SAVED_WEAPONS_LIST";
@@ -41,7 +44,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
         clearCache.setOnPreferenceClickListener(this);
 
         android.support.v7.preference.Preference buildVersion = findPreference(KEY_PREF_BUILD_VERSION);
-        buildVersion.setSummary(BuildConfig.VERSION_NAME);
+        buildVersion.setSummary("v" + BuildConfig.VERSION_NAME);
 
 
         /****************************************************
@@ -72,6 +75,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 SharedPreferenceManager.getInstance().clear();
+                                SharedPreferenceManager.getInstance().saveBoolean(true, APP_RESET);
+                                restartMainActivity();
                                 Toast.makeText(getContext(), R.string.application_reset, Toast.LENGTH_SHORT).show();
                             }
                         })
@@ -97,6 +102,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
                                 SharedPreferenceManager.getInstance().clear(SAVED_WEAPONS_LOCATION);
                                 SharedPreferenceManager.getInstance().clear(SAVED_SHOOTWEAPON_LOCATION);
                                 SharedPreferenceManager.getInstance().saveBoolean(true, CACHE_CLEARED);
+                                restartMainActivity();
                                 Toast.makeText(getContext(), R.string.cache_cleared, Toast.LENGTH_SHORT).show();
                             }
                         })
@@ -113,5 +119,15 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
                 return true;
         }
         return false;
+    }
+
+    public void restartMainActivity() {
+        //finish() ViewSceneActivity by broadcasting action "finish",
+        //which is picked up by the intent-filter in the activity's broadcast receiver
+        Intent intent = new Intent("finish");
+        getContext().sendBroadcast(intent);
+
+        //Start activity anew
+        startActivity(new Intent(getContext(), ViewSceneActivity.class));
     }
 }

@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -100,12 +99,18 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onResume() {
         super.onResume();
-        if(SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED)) {
-            Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
+        //Check if cache is cleared TODO: Work around empty lists!!!
+        boolean cacheIsCleared = SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED);
+        boolean appIsReset = SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.APP_RESET);
+
+        if(cacheIsCleared || appIsReset) {
             SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
+            SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.APP_RESET);
             this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(sceneId));
             adapter.updateItems(this.shoots);
+            adapter.notifyDataSetChanged();
         }
+        Log.d(TAG, "Items onResume: " + adapter.getItemCount());
     }
     @Override
     public void onClick(View view) {
@@ -123,7 +128,6 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
         Log.d(TAG, "checkLock: Should save input data.");
         getActivity().onBackPressed();
     }
-
     public void goToCreateShotFragment() {
         Log.d(TAG, "goToCreateShotFragment: Returning.");
         Fragment createShotFragment = new CreateShotFragment();
