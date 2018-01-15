@@ -75,12 +75,12 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
         radioButtons.setVisibility(View.GONE);
 
         submitSave.setOnClickListener(this);
-        submitSave.setText("Submit");
+        submitSave.setText(R.string.submit);
         submitSave.setEnabled(false);
         submitSave.setTextColor(buttonTextDisabled);
 
         submitCancel.setOnClickListener(this);
-        submitCancel.setText("Cancel");
+        submitCancel.setText(R.string.cancel);
 
         rgLeft.setOnCheckedChangeListener(lis1);
         rgRight.setOnCheckedChangeListener(lis2);
@@ -161,6 +161,7 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
         }
     };
 
+    // TODO: Find a way to please IntelliJ's Inspector so it stops complaining that this needs to be static
     private class getKnownDevice extends AsyncTask<String, Void, String> {
         private ArrayList<Weapon> weapons;
 

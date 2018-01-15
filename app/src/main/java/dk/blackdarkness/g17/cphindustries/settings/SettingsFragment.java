@@ -24,7 +24,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
     private static final String KEY_PREF_BUILD_VERSION = "buildVersion";
 
     //SharedPreferences locations
-    private static final String CACHE_CLEARED = "cacheCleared";
+    public static final String CACHE_CLEARED = "cacheCleared";
     private static final String SAVED_SCENES_LOCATION = "SAVED_SCENES_LIST";
     private static final String SAVED_SHOOTS_LOCATION = "SAVED_SHOOTS_LIST";
     private static final String SAVED_WEAPONS_LOCATION = "SAVED_WEAPONS_LIST";
@@ -68,17 +68,17 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
             case KEY_PREF_RESET_APP:
                 AlertDialog.Builder a_builderSettings = new AlertDialog.Builder(getContext());
                 a_builderSettings.setMessage(R.string.reset_app__alert)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 SharedPreferenceManager.getInstance().clear();
-                                Toast.makeText(getContext(), "Application reset", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.application_reset, Toast.LENGTH_SHORT).show();
                             }
                         })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(getContext(), "Reset cancelled", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.reset_cancelled, Toast.LENGTH_SHORT).show();
                                 dialogInterface.cancel();
                             }
                         });
@@ -89,7 +89,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
             case KEY_PREF_CLEAR_CACHE:
                 AlertDialog.Builder a_builderCache = new AlertDialog.Builder(getContext());
                 a_builderCache.setMessage(R.string.clear_cache_alert)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 SharedPreferenceManager.getInstance().clear(SAVED_SCENES_LOCATION);
@@ -97,13 +97,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
                                 SharedPreferenceManager.getInstance().clear(SAVED_WEAPONS_LOCATION);
                                 SharedPreferenceManager.getInstance().clear(SAVED_SHOOTWEAPON_LOCATION);
                                 SharedPreferenceManager.getInstance().saveBoolean(true, CACHE_CLEARED);
-                                Toast.makeText(getContext(), "Cache cleared", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.cache_cleared, Toast.LENGTH_SHORT).show();
                             }
                         })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(getContext(), "Cache clear cancelled", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.cache_clear_cancelled, Toast.LENGTH_SHORT).show();
                                 dialogInterface.cancel();
                             }
                         });

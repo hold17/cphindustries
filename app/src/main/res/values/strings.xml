@@ -41,8 +41,14 @@
 
 
     <string name="build_title">Build version</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="cache_clear_cancelled">Cache clear cancelled</string>
+    <string name="cache_cleared">Cache cleared</string>
+    <string name="reset_cancelled">Reset cancelled</string>
+    <string name="application_reset">Application reset</string>
+    <string name="yes">Yes</string>
 
     <!--Default Setting values-->
-
 
 </resources>
