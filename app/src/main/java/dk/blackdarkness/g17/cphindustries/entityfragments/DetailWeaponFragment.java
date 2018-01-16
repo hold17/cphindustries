@@ -136,6 +136,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         this.weaponDao.update(this.weapon);
         Log.d(TAG, "setWeaponFiremode: applied firemode: " + this.weaponDao.getWeapon(this.weapon.getId()).getFireMode());
         updateGuiButtonsFiremode();
+        this.weaponFiremodeText.setText(this.weapon.getFireMode().name());
     }
 
     public void updateGuiButtonsFiremode() {
