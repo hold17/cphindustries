@@ -139,7 +139,8 @@
             android:id="@+id/fr_weapon_details_tvId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Id"
+            android:layout_weight="1"
+            android:text="ID:"
             android:textAlignment="textStart"
             android:textStyle="bold"
             android:textColor="@color/textColorPrimary"
@@ -150,10 +151,11 @@
             android:id="@+id/fr_weapon_details_tvName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name"
             android:textAlignment="textStart"
             android:textStyle="bold"
             android:textColor="@color/textColorPrimary"
+            android:layout_weight="1"
+            android:text="Name:"
             tools:layout_editor_absoluteX="137dp"
             tools:layout_editor_absoluteY="246dp" />
 
@@ -161,29 +163,52 @@
             android:id="@+id/fr_weapon_details_tvFire_mode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fire mode"
             android:textAlignment="textStart"
             android:textStyle="bold"
             android:textColor="@color/textColorPrimary"
+            android:layout_weight="1"
+            android:text="Fire mode:"
             tools:layout_editor_absoluteX="137dp"
             tools:layout_editor_absoluteY="273dp" />
+
+        <TextView
+            android:id="@+id/fr_weapon_details_tvIp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="IP:"
+            android:textAlignment="viewStart"
+            tools:layout_editor_absoluteX="137dp"
+            tools:layout_editor_absoluteY="300dp" />
+
+        <TextView
+            android:id="@+id/fr_weapon_details_tvMac"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="MAC:"
+            android:textAlignment="viewStart"
+            tools:layout_editor_absoluteX="137dp"
+            tools:layout_editor_absoluteY="300dp" />
 
         <TextView
             android:id="@+id/fr_weapon_details_tvShoot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Shoot"
             android:textAlignment="textStart"
             android:textStyle="bold"
             android:textColor="@color/textColorPrimary"
+            android:layout_weight="1"
+            android:text="Shoot:"
             tools:layout_editor_absoluteX="137dp"
             tools:layout_editor_absoluteY="300dp" />
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/fr_weapon_details_detail_description"
         android:layout_width="wrap_content"
-        android:layout_height="77dp"
+        android:layout_height="111dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
@@ -221,6 +246,24 @@
             tools:layout_editor_absoluteY="277dp" />
 
         <TextView
+            android:id="@+id/fr_weapon_details_tvMac_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="01-23-45-67-89-ab"
+            tools:layout_editor_absoluteX="205dp"
+            tools:layout_editor_absoluteY="303dp" />
+
+        <TextView
+            android:id="@+id/fr_weapon_details_tvIp_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="123.123.123.123"
+            tools:layout_editor_absoluteX="205dp"
+            tools:layout_editor_absoluteY="303dp" />
+
+        <TextView
             android:id="@+id/fr_weapon_details_tvShoot_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -229,6 +272,7 @@
             android:textColor="@color/textColorPrimary"
             tools:layout_editor_absoluteX="205dp"
             tools:layout_editor_absoluteY="303dp" />
+
     </LinearLayout>
 
 
