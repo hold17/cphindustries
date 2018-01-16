@@ -128,7 +128,7 @@
     <LinearLayout
         android:id="@+id/fr_weapon_details_linearLayout_detail_titles"
         android:layout_width="wrap_content"
-        android:layout_height="75dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
@@ -177,6 +177,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="IP:"
+            android:textStyle="bold"
+            android:textColor="@color/textColorPrimary"
             android:textAlignment="viewStart"
             tools:layout_editor_absoluteX="137dp"
             tools:layout_editor_absoluteY="300dp" />
@@ -187,6 +189,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="MAC:"
+            android:textStyle="bold"
+            android:textColor="@color/textColorPrimary"
             android:textAlignment="viewStart"
             tools:layout_editor_absoluteX="137dp"
             tools:layout_editor_absoluteY="300dp" />
@@ -208,7 +212,7 @@
     <LinearLayout
         android:id="@+id/fr_weapon_details_detail_description"
         android:layout_width="wrap_content"
-        android:layout_height="111dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
@@ -251,6 +255,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="01-23-45-67-89-ab"
+            android:textColor="@color/textColorPrimary"
             tools:layout_editor_absoluteX="205dp"
             tools:layout_editor_absoluteY="303dp" />
 
@@ -260,6 +265,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="123.123.123.123"
+            android:textColor="@color/textColorPrimary"
             tools:layout_editor_absoluteX="205dp"
             tools:layout_editor_absoluteY="303dp" />
 

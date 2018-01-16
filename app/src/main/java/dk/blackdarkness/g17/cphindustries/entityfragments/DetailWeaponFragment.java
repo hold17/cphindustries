@@ -29,8 +29,8 @@ import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SINGLE;
 public class DetailWeaponFragment extends Fragment implements View.OnClickListener {
     private View view;
     private static final String TAG = "DetailWeaponFragment";
-    private TextView weaponNameTitle, weaponIpText, weaponMacText;
-    private TextView weaponImageDescription, weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
+    private TextView weaponNameTitle, weaponIpText, weaponMacText, weaponImageDescription,
+            weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
     private FloatingActionButton lock;
     private Button fullAutoButton, safeButton;
     private ImageButton singleButton, burstButton;
@@ -53,6 +53,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         this.weaponShootsText = view.findViewById(R.id.fr_weapon_details_tvShoot_description);
         this.weaponIpText = view.findViewById(R.id.fr_weapon_details_tvIp_description);
         this.weaponMacText = view.findViewById(R.id.fr_weapon_details_tvMac_description);
+        this.statusText = view.findViewById(R.id.fr_weapon_details_status_text);
 
         this.singleButton = view.findViewById(R.id.fr_weapon_details_ibtn_single);
         this.burstButton = view.findViewById(R.id.fr_weapon_details_ibtn_burst);
@@ -76,11 +77,9 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         this.lock.setOnClickListener(this);
 
 //        this.statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
-//        this.weaponNameTitle.setText(this.weapon.getName());
         this.weaponNameText.setText(this.weapon.getName());
 
         this.weaponIdText.setText(Integer.toString(this.weapon.getId()));
-        //this.weaponIdText.setText("" + this.weapon.getId());
         this.weaponFiremodeText.setText(this.weapon.getFireMode().name());
         this.weaponIpText.setText(this.weapon.getIp());
         this.weaponMacText.setText(this.weapon.getMac());
