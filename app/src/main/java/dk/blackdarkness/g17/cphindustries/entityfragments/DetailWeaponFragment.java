@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -136,10 +137,14 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         this.weaponDao.update(this.weapon);
         Log.d(TAG, "setWeaponFiremode: applied firemode: " + this.weaponDao.getWeapon(this.weapon.getId()).getFireMode());
         updateGuiButtonsFiremode();
+
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.detach(this);
+        ft.attach(this);
+        ft.commit();
     }
 
     public void updateGuiButtonsFiremode() {
-
         //Resets buttons
         singleButton.setBackground(getResources().getDrawable(R.drawable.buttonshape_left));
         burstButton.setBackground(getResources().getDrawable(R.drawable.buttonshape_center));
