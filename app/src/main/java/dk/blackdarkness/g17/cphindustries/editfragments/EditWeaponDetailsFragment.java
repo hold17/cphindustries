@@ -1,5 +1,6 @@
 package dk.blackdarkness.g17.cphindustries.editfragments;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -28,7 +29,6 @@ import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
-import dk.blackdarkness.g17.cphindustries.entityfragments.DetailWeaponFragment;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.PopupCallback;
 import dk.blackdarkness.g17.cphindustries.recyclerview.PopupRecListAdapter;
@@ -81,6 +81,8 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         this.weaponEdit.setText(this.weapon.getName());
 
         this.lock.setOnClickListener(this);
+        this.lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
+        this.lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
         this.popupButton.setOnClickListener(this);
     }
 
@@ -150,7 +152,6 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
 
     @Override
     public void onCheckClickSend(int shootId, boolean isChecked) {
-        // DO ALL WITH THE SCENEID HER...
         this.weaponIdList.add(isChecked);
         this.shootIdList.add(shootId);
     }
@@ -160,10 +161,8 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
             if (weaponIdList.get(i)) {
                 ShootWeapon sw = new ShootWeapon(shootIdList.get(i), this.weapon.getId());
                 this.shootWeaponDao.create(sw);
-                System.out.println(Integer.toString(shootIdList.get(i)) + "hvad så man");
             } else {
                 this.shootWeaponDao.delete(shootIdList.get(i), this.weapon.getId());
-                System.out.println("whatthe");
             }
         }
         weaponIdList.clear();
