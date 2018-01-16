@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
@@ -36,16 +38,16 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 public class EditWeaponDetailsFragment extends Fragment implements View.OnClickListener, CallbackPopup {
 
     private static final String TAG = "DetailWeaponFragment";
-    private TextView weaponNameTitle, weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
+    private TextView weaponNameTitle;
+    private EditText weaponEdit;
     private FloatingActionButton lock;
-    private int sceneId;
-    private int shootId;
     private Weapon weapon;
     private Button popupButton;
     private View popupView;
     private PopupWindow popupWindow;
     private ArrayList<Integer> shootIdList = new ArrayList<>();
     private ArrayList<Boolean> weaponIdList = new ArrayList<>();
+    private int bundleShoot, bundleScene;
 
 
     //private PopupRecListAdapter adapter;
@@ -57,19 +59,15 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         View view = inflater.inflate(R.layout.fragment_edit_weapon_details, container, false);
 
         this.weaponNameTitle = view.findViewById(R.id.fr_weapon_details_edit_title);
-        this.weaponNameText = view.findViewById(R.id.fr_weapon_details_edit_tvName_description);
-        this.weaponShootsText = view.findViewById(R.id.fr_weapon_details_edit_tvShoot);
-
-        this.statusText = view.findViewById(R.id.fr_weapon_details_edit_status_text);
         this.lock = view.findViewById(R.id.lockFab);
         this.popupButton = view.findViewById(R.id.fr_weapon_details_edit_popup);
         Log.d(TAG, "onCreateView: Returning.");
 
-        this.sceneId = getArguments().getInt("SCENE_ID");
-        this.shootId = getArguments().getInt("SHOOT_ID");
         final int weaponId = getArguments().getInt("WEAPON_ID");
         this.weapon = ApplicationConfig.getDaoFactory().getWeaponDao().getWeapon(weaponId);
-        //this.popupWindow = popupWindow;
+        this.weaponEdit = view.findViewById(R.id.fr_weapon_details_edit_tvName_description);
+        this.bundleScene = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
+        this.bundleShoot = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
 
 
         return view;
@@ -81,21 +79,10 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Weapon Details");
-//        this.statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
         this.weaponNameTitle.setText(this.weapon.getName());
-        this.weaponNameText.setText(this.weapon.getName());
-        //this.weaponIdText.setText("" + this.weapon.getId());
-        this.weaponShootsText.setText("Shoots will go here...");
-        // Set warnings
-        if (this.weapon.getWarnings().size() > 0) {
-            String warnings = "";
-            for (int c = 0; c < this.weapon.getWarnings().size(); c++) {
-                warnings += c + 1 + " " + this.weapon.getWarnings().get(c) + "\n";
-            }
-            this.statusText.setText(warnings);
-        } else {
-            this.statusText.setText("No warnings.");
-        }
+        this.weaponEdit.setText(this.weapon.getName());
+
+
         this.lock.setOnClickListener(this);
         this.popupButton.setOnClickListener(this);
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -122,6 +109,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
                 //Edit view should be different from the one navigated to
                 //from ViewWeaponFragment. Edit this one weapon only?
                 Log.d(TAG, "onClick: Trying to open edit weapon fragment.");
+
                 goToWeaponDetailsFragment();
                 break;
         }
@@ -130,9 +118,15 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
 
     private void goToWeaponDetailsFragment() {
         Log.d(TAG, "goToEditWeaponFragment: Returning");
+        weapon.setName(weaponEdit.getText().toString());
+        ApplicationConfig.getDaoFactory().getWeaponDao().update(weapon);
         Fragment detailWeaponFragment = new DetailWeaponFragment();
 
-        detailWeaponFragment.setArguments(getArguments());
+        Bundle bundle = new Bundle();
+        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.bundleScene);
+        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.bundleShoot);
+        bundle.putInt(ViewSceneActivity.WEAPON_ID_KEY, weapon.getId());
+        detailWeaponFragment.setArguments(bundle);
 
 
         getActivity().getSupportFragmentManager().beginTransaction()
@@ -203,11 +197,11 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         for (int i = 0; i < shootIdList.size(); i++) {
 
             if (weaponIdList.get(i)) {
-                ShootWeapon sw = new ShootWeapon(shootId, this.weapon.getId());
+                ShootWeapon sw = new ShootWeapon(shootIdList.get(i), this.weapon.getId());
                 ApplicationConfig.getDaoFactory().getShootWeaponDao().create(sw);
-                System.out.println("Ciaao");
+                System.out.println(Integer.toString(shootIdList.get(i)) + "hvad så man");
             } else {
-                ApplicationConfig.getDaoFactory().getShootWeaponDao().delete(shootId, this.weapon.getId());
+                ApplicationConfig.getDaoFactory().getShootWeaponDao().delete(shootIdList.get(i), this.weapon.getId());
                 System.out.println("whatthe");
             }
         }
