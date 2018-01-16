@@ -1,4 +1,4 @@
-package dk.blackdarkness.g17.cphindustries.settings;
+package dk.blackdarkness.g17.cphindustries.menuitems;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;

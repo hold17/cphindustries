@@ -1,5 +1,6 @@
 package dk.blackdarkness.g17.cphindustries.editfragments;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -23,12 +24,13 @@ import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 
+import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
-import dk.blackdarkness.g17.cphindustries.settings.SettingsFragment;
+import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
 
 public class EditWeaponFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
     private View view;
@@ -68,10 +70,20 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
         this.lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
+        this.lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
 
         this.weapons = ItemConverter.weaponToItem(this.weaponDao.getListByShoot(shootId));
 
-        final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
+        final RecyclerViewClickListener listener = (v, position) -> {
+            String name = this.adapter.getEditTextString(position);
+            int id = this.weapons.get(position).getId();
+            Log.d(TAG, "onClick: local current name: " + this.weapons.get(position).getName());
+            Log.d(TAG, "onClick: dao current name: " + this.weaponDao.getWeapon(id).getName());
+            this.weapons.get(position).setName(name);
+            this.weaponDao.update((Weapon) this.weapons.get(position));
+            Log.d(TAG, "onClick: local new name: " + this.weapons.get(position).getName());
+            Log.d(TAG, "onClick: dao new name: " + this.weaponDao.getWeapon(id).getName());
+        };
 
         this.adapter = new EditRecListAdapter(getActivity(), this, weapons, listener);
 
@@ -91,9 +103,12 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
     public void onResume() {
         super.onResume();
         //Check if cache is cleared TODO: Work around empty lists!!!
-        if(SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED)) {
-            Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
+        boolean cacheIsCleared = SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED);
+        boolean appIsReset = SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.APP_RESET);
+
+        if(cacheIsCleared || appIsReset) {
             SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
+            SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.APP_RESET);
             this.weapons = ItemConverter.weaponToItem(this.weaponDao.getListByShoot(shootId));
             adapter.updateItems(this.weapons);
             adapter.notifyDataSetChanged();

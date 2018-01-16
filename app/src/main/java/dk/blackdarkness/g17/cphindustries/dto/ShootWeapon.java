@@ -10,7 +10,7 @@ public class ShootWeapon {
         this.shootId = shootId;
         this.weaponId = weaponId;
     }
-    public ShootWeapon(int shootId, int weaponId) {
+    public ShootWeapon( int shootId, int weaponId) {
         this.shootId = shootId;
         this.weaponId = weaponId;
     }

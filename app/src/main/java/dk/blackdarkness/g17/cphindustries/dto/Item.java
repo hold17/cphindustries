@@ -12,6 +12,9 @@ public abstract class Item {
         this.id = id;
         this.name = name;
     }
+    public Item(String name) {
+        this.name = name;
+    }
 
     public void setId(int id) { this.id = id; }
 

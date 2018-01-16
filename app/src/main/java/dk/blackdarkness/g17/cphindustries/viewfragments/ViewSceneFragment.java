@@ -25,7 +25,7 @@ import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
-import dk.blackdarkness.g17.cphindustries.settings.SettingsFragment;
+import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
 
 public class ViewSceneFragment extends Fragment implements View.OnClickListener {
     private View view;
@@ -69,21 +69,17 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        //Check if cache is cleared TODO: Work around empty lists!!!
         if(SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED)) {
             Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
             SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
             this.scenes = ItemConverter.sceneToItem(this.sceneDao.getList());
             adapter.updateItems(this.scenes);
-            adapter.notifyDataSetChanged();
         }
-        Log.d(TAG, "Items onResume: " + adapter.getItemCount());
     }
 
     @Override
@@ -96,6 +92,7 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
         Log.d(TAG, "goToEditSceneFragment: Returning");
         ((ViewSceneActivity)getActivity()).enableActionBar(true);
         Fragment editSceneFragment = new EditSceneFragment();
+
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, editSceneFragment)
                 .addToBackStack(null)

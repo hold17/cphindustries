@@ -19,16 +19,22 @@ import java.util.List;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
+import dk.blackdarkness.g17.cphindustries.dto.Scene;
+import dk.blackdarkness.g17.cphindustries.dto.Shoot;
+import dk.blackdarkness.g17.cphindustries.dto.Weapon;
+import dk.blackdarkness.g17.cphindustries.helper.softInputHelper;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperViewHolder;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 
 public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.ItemViewHolder> implements ItemTouchHelperAdapter {
+    private static final String TAG = "EditRecListAdapter";
     private List<Item> mItems = new ArrayList<>();
     private final OnStartDragListener mDragStartListener;
     private final RecyclerViewClickListener listener;
     private final Context context;
+    private EditText editText;
 
     public EditRecListAdapter(Context context, OnStartDragListener dragStartListener, List<Item> items, RecyclerViewClickListener listener) {
         mDragStartListener = dragStartListener;
@@ -40,56 +46,66 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.edit_recyclerview_list_item, parent, false);
-        return new ItemViewHolder(view, this.listener);
+        return new ItemViewHolder(context, view, this.listener);
     }
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
         final Item curItem = mItems.get(position);
 
+        this.editText = holder.etHeading;
+
         holder.tvHeading.setText(curItem.getName());
         holder.etHeading.setText(curItem.getName());
         holder.etHeading.setVisibility(View.GONE);
         holder.imageFront.setImageResource(R.drawable.ic_reorder_black_24px);
         holder.imageBack.setImageResource(R.drawable.ic_edit_black_24dp);
-        // Start a drag whenever the handle view it touched
-        holder.imageFront.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                mDragStartListener.onStartDrag(holder);
-            }
-            return false;
-        });
-        holder.imageBack.setOnClickListener(new OnClickListener() {
+        // Start a drag whenever the handle view is touched
+        holder.imageFront.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                if(holder.etHeading.getVisibility() == View.GONE) {
-                    holder.tvHeading.setVisibility(View.GONE);
-                    holder.etHeading.setVisibility(View.VISIBLE);
-                } else {
-                    holder.tvHeading.setVisibility(View.VISIBLE);
-                    holder.etHeading.setVisibility(View.GONE);
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    mDragStartListener.onStartDrag(holder);
                 }
+                return false;
             }
         });
     }
 
     public void updateItems(List<Item> items) {
+        Log.d(TAG, "updateItems: Items before: " + getItemCount());
         this.mItems = items;
-        Log.d("updateItems", "updated item list!" + this.mItems.toString());
+        notifyDataSetChanged();
+        Log.d(TAG, "updateItems: Items after: " + getItemCount());
+    }
+
+    public String getEditTextString(int position) {
+        Log.d(TAG, "getEditTextString: input string" + this.editText.getText().toString());
+        notifyItemChanged(position);
+        return editText.getText().toString();
+    }
+
+    // this could be useful at some point
+    public Item getItemByPosition(int position) {
+        Item item = this.mItems.get(position);
+        Log.d(TAG, "getIdFromPosition: position: " + position + " | type: " + item.getClass().toString() + " | ID: " + item.getId());
+        return item;
     }
 
     @Override
     public void onItemDismiss(int position) {
         final Item deletedItem = mItems.get(position);
-        System.out.println("Iraq: Deleting scene " + deletedItem.getId() + "(" + deletedItem.getName() + ")");
+        Log.d(TAG, "onItemDismiss: Deleting item: " + deletedItem.getClass().toString() + " id: "  + deletedItem.getId() + "(" + deletedItem.getName() + ")");
 
-        // TODO: Only works for scenes, crashes for shoots and weapons - See issue #xx on GH
-//        ApplicationConfig.getDaoFactory().getSceneDao().delete(deletedItem.getId());
+        if (deletedItem instanceof Scene)
+            ApplicationConfig.getDaoFactory().getSceneDao().delete(deletedItem.getId());
+        else if (deletedItem instanceof Shoot)
+            ApplicationConfig.getDaoFactory().getShootDao().delete(deletedItem.getId());
+        else if (deletedItem instanceof Weapon)
+            ApplicationConfig.getDaoFactory().getWeaponDao().delete(deletedItem.getId());
 
         mItems.remove(position);
         notifyItemRemoved(position);
-
-        System.out.println("IRAQ: I was dismissed: " + position);
     }
 
     @Override
@@ -97,6 +113,7 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
         Item movedItem = mItems.remove(fromPosition);
         mItems.add(toPosition, movedItem);
         notifyItemMoved(fromPosition, toPosition);
+        Log.d(TAG, "onItemMove: moved item to: " + toPosition + " from: " + fromPosition);
         return true;
     }
 
@@ -111,13 +128,16 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
         final ImageView imageFront;
         final ImageView imageBack;
         final RecyclerViewClickListener listener;
+        final Context context;
 
-        ItemViewHolder(View itemView, RecyclerViewClickListener listener) {
+        ItemViewHolder(Context context, View itemView, RecyclerViewClickListener listener) {
             super(itemView);
             tvHeading = itemView.findViewById(R.id.editRecyclerViewListItem_tvHeading);
             etHeading = itemView.findViewById(R.id.editRecyclerViewListItem_etHeading);
             imageFront = itemView.findViewById(R.id.editRecyclerViewListItem_imageFront);
             imageBack = itemView.findViewById(R.id.editRecyclerViewListItem_imageBack);
+
+            this.context = context;
 
             this.listener = listener;
 
@@ -135,10 +155,24 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
         }
 
         @Override
-        public void onClick(View view) {
-            int position = getAdapterPosition();
-            System.out.println("item clicked on View: " + view + " Position: " + position);
-            this.listener.onClick(view, position);
+        public void onClick(View v) {
+            //TODO: maybe do something about this insanity at some point
+
+            if (etHeading.getVisibility() == View.GONE) {
+                tvHeading.setVisibility(View.GONE);
+                etHeading.setVisibility(View.VISIBLE);
+                etHeading.setFocusableInTouchMode(true);
+                etHeading.requestFocus();
+                softInputHelper.showSoftInput(context, etHeading);
+                imageBack.setImageResource(R.drawable.ic_done_green_24dp);
+            } else {
+                listener.onClick(v, getAdapterPosition());
+                softInputHelper.hideSoftInput(context, v);
+                tvHeading.setText(etHeading.getText().toString());
+                tvHeading.setVisibility(View.VISIBLE);
+                etHeading.setVisibility(View.GONE);
+                imageBack.setImageResource(R.drawable.ic_edit_black_24dp);
+            }
         }
     }
 }

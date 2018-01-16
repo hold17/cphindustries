@@ -1,6 +1,9 @@
 package dk.blackdarkness.g17.cphindustries.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -11,18 +14,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 //crashlytics
 import com.crashlytics.android.Crashlytics;
 
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
+import dk.blackdarkness.g17.cphindustries.menuitems.AboutActivity;
 import io.fabric.sdk.android.Fabric;
 
-import dk.blackdarkness.g17.cphindustries.BuildConfig;
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.settings.SettingsActivity;
+import dk.blackdarkness.g17.cphindustries.menuitems.SettingsActivity;
 import dk.blackdarkness.g17.cphindustries.viewfragments.ViewSceneFragment;
 
 public class ViewSceneActivity extends AppCompatActivity {
@@ -51,6 +52,19 @@ public class ViewSceneActivity extends AppCompatActivity {
         }
         //crashlyics
         Fabric.with(this, new Crashlytics());
+
+        //Broadcast receiver to finish activity from within Settings
+        BroadcastReceiver br = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context arg0, Intent intent) {
+                String action = intent.getAction();
+                if (action.equals("finish")) {
+                    finish();
+                }
+            }
+        };
+        registerReceiver(br, new IntentFilter("finish"));
+
     }
 
     @Override
@@ -63,10 +77,10 @@ public class ViewSceneActivity extends AppCompatActivity {
                 return true;
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_about:
-                Toast.makeText(this, getAppVersion(), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, AboutActivity.class));
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -121,10 +135,6 @@ public class ViewSceneActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, sceneViewFragment)
                 .commit();
-    }
-
-    public String getAppVersion() {
-            return "Current application version: " + BuildConfig.VERSION_NAME;
     }
 
 }
