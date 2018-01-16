@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tessting"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#add8e6"
+    android:background="#ffffff"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
@@ -13,8 +12,6 @@
         android:layout_height="46dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="1dp"
-        android:background="#ffffff"
         android:text="Weapon"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -27,11 +24,10 @@
         android:id="@+id/fr_editWeaponDetails_recyclerView"
         android:layout_width="wrap_content"
         android:layout_height="350dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="3dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="#0000e6"
+        android:layout_marginTop="3dp"
         app:layout_constraintBottom_toTopOf="@+id/popupApply"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,20 +38,21 @@
         android:id="@+id/popupCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginEnd="16dp"
         android:text="Cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/popupApply" />
+        app:layout_constraintTop_toTopOf="@+id/popupApply"
+        app:layout_constraintVertical_bias="0.666" />
 
     <Button
         android:id="@+id/popupApply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginStart="16dp"
+
         android:text="Apply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
