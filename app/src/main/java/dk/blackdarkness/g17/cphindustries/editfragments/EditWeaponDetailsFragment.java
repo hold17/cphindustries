@@ -19,16 +19,17 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
+import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootWeaponDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
-import dk.blackdarkness.g17.cphindustries.entityfragments.DetailWeaponFragment;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.PopupCallback;
 import dk.blackdarkness.g17.cphindustries.recyclerview.PopupRecListAdapter;
@@ -42,11 +43,12 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     private FloatingActionButton lock;
     private WeaponDao weaponDao;
     private ShootWeaponDao shootWeaponDao;
+    private ShootDao shootDao;
     private Weapon weapon;
     private Button popupButton;
     private PopupWindow popupWindow;
-    private ArrayList<Integer> shootIdList = new ArrayList<>();
-    private ArrayList<Boolean> weaponIdList = new ArrayList<>();
+    private List<Integer> changedShootIds = new ArrayList<>();
+    private List<Item> shoots;
     private int sceneId, shootId, weaponId;
 
     @Nullable
@@ -65,9 +67,11 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         this.weaponId = getArguments().getInt(ViewSceneActivity.WEAPON_ID_KEY);
 
         this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
+        this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
         this.shootWeaponDao = ApplicationConfig.getDaoFactory().getShootWeaponDao();
 
         this.weapon = this.weaponDao.getWeapon(this.weaponId);
+        this.shoots = ItemConverter.shootToItem(this.shootDao.getList());
 
         return view;
     }
@@ -91,11 +95,11 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
                 onButtonShowPopup(getView());
                 break;
             case R.id.fr_editWeaponDetails_popupCancel:
-                cancelChanges();
+                changedShootIds.clear();
+                popupWindow.dismiss();
                 break;
             case R.id.fr_editWeaponDetails_popupApply:
                 applyChanges();
-                popupWindow.dismiss();
                 break;
             case R.id.lockFab:
                 Log.d(TAG, "onClick: Going to weapon details fragment.");
@@ -140,39 +144,36 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     }
 
     private void createRecycler(View view) {
-        ArrayList<Item> shoots = new ArrayList<>(ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getList()));
         RecyclerView recyclerView = view.findViewById(R.id.fr_editWeaponDetails_recyclerView);
-        PopupRecListAdapter adapter = new PopupRecListAdapter(getContext(), shoots, this, this.weapon.getId());
+        PopupRecListAdapter adapter = new PopupRecListAdapter(getContext(), this.shoots, this, this.weapon.getId());
         recyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
     }
 
     @Override
-    public void onCheckClickSend(int shootId, boolean isChecked) {
-        // DO ALL WITH THE SCENEID HER...
-        this.weaponIdList.add(isChecked);
-        this.shootIdList.add(shootId);
+    public void onCheckClickSend(int shootId) {
+        if (this.changedShootIds.contains(shootId)) {
+            Log.d(TAG, "onCheckClickSend: removed from list: " + this.shootDao.getShoot(shootId).getName());
+            this.changedShootIds.remove((Integer) shootId);
+        } else {
+            Log.d(TAG, "onCheckClickSend: added to list: " + this.shootDao.getShoot(shootId).getName());
+            this.changedShootIds.add(shootId);
+        }
     }
 
     private void applyChanges() {
-        for (int i = 0; i < shootIdList.size(); i++) {
-            if (weaponIdList.get(i)) {
-                ShootWeapon sw = new ShootWeapon(shootIdList.get(i), this.weapon.getId());
+        for (int shootId: changedShootIds) {
+            if (shootWeaponDao.getShootWeapon(shootId, this.weaponId) == null) {
+                ShootWeapon sw = new ShootWeapon(shootId, this.weaponId);
                 this.shootWeaponDao.create(sw);
-                System.out.println(Integer.toString(shootIdList.get(i)) + "hvad så man");
+                Log.d(TAG, "applyChanges: creating new ShootWeapon with shootId: " + shootId);
             } else {
-                this.shootWeaponDao.delete(shootIdList.get(i), this.weapon.getId());
-                System.out.println("whatthe");
+                Log.d(TAG, "applyChanges: deleting ShootWeapon with shootId: " + shootId);
+                this.shootWeaponDao.delete(shootId, this.weaponId);
             }
         }
-        weaponIdList.clear();
-        shootIdList.clear();
-    }
-
-    private void cancelChanges() {
-        weaponIdList.clear();
-        shootIdList.clear();
+        changedShootIds.clear();
         popupWindow.dismiss();
     }
 }

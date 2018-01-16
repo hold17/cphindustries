@@ -76,13 +76,7 @@ public class PopupRecListAdapter extends RecyclerView.Adapter<PopupRecListAdapte
         public void onClick(View view) {
             int shootId = mItems.get(getAdapterPosition()).getId();
             // send back checkbox checked event
-            CheckBox cb = (CheckBox) view;
-            if (cb.isChecked()){
-                popupCallback.onCheckClickSend(shootId, true);
-            }
-            else if (!cb.isChecked()){
-                popupCallback.onCheckClickSend(shootId, false);
-            }
+            popupCallback.onCheckClickSend(shootId);
         }
     }
 }
