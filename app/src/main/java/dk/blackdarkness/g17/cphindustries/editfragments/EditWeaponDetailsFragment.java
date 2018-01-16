@@ -41,10 +41,10 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     private int shootId;
     private Weapon weapon;
     private Button popupButton;
+    private View popupView;
     private PopupWindow popupWindow;
 
     //private PopupRecListAdapter adapter;
-
 
 
     @Nullable
@@ -66,8 +66,6 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         final int weaponId = getArguments().getInt("WEAPON_ID");
         this.weapon = ApplicationConfig.getDaoFactory().getWeaponDao().getWeapon(weaponId);
         //this.popupWindow = popupWindow;
-
-
 
 
         return view;
@@ -96,7 +94,8 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         }
         this.lock.setOnClickListener(this);
         this.popupButton.setOnClickListener(this);
-
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+        this.popupView = inflater.inflate(R.layout.edit_weapon_details_popup, null);
 
 
     }
@@ -116,20 +115,18 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     }
 
 
-    public void onButtonShowPopup(View view){
+    public void onButtonShowPopup(View view) {
 
         // get a reference to the already created main layout
 
 
         ConstraintLayout relativeLayout = view.findViewById(R.id.weapon_details_edit);
         // inflate the layout of the popup window
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.edit_weapon_details_popup, null);
-        System.out.println("Et egentligt ord 111" );
+
+        System.out.println("Et egentligt ord 111");
 
         TextView textTitle = popupView.findViewById(R.id.popupTitle);
         textTitle.setText(this.weapon.getName());
-
 
         // create the popup window
         createRecycler(popupView);
@@ -138,21 +135,22 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true; // lets taps outside the popup also dismiss it
         popupWindow = new PopupWindow(popupView, 300, 470, focusable);
-
-
+        Button cancelButton = popupView.findViewById(R.id.popupCancel);
+        cancelButton.setOnClickListener(this);
 
         // show the popup window
         popupWindow.showAtLocation(relativeLayout, Gravity.CENTER, 0, 0);
 
         // TODO: button cancel
+
         //popupWindow.dismiss();
 
 
     }
 
 
-    public void createRecycler(View view){
-        System.out.println("Et egentligt ord 222" );
+    public void createRecycler(View view) {
+        System.out.println("Et egentligt ord 222");
         ArrayList<Item> shoots = new ArrayList<>(ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getList()));
         RecyclerView recyclerView = view.findViewById(R.id.fr_editWeaponDetails_recyclerView);
         PopupRecListAdapter adapter = new PopupRecListAdapter(getContext(), shoots, this, this.weapon.getId());
@@ -166,23 +164,13 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     public void onCheckClickSend(int shootId, boolean isChecked) {
         // DO ALL WITH THE SCENEID HER...
 
-        if(isChecked){
+        if (isChecked) {
             ShootWeapon sw = new ShootWeapon(shootId, this.weapon.getId());
             ApplicationConfig.getDaoFactory().getShootWeaponDao().create(sw);
-        } else{
+        } else {
             ApplicationConfig.getDaoFactory().getShootWeaponDao().delete(shootId, this.weapon.getId());
 
         }
 
     }
-   /* private static List<Item> getListOfShoots(int sceneId) {
-        final List<Item> itemShoots = new ArrayList<>();
-        final List<Shoot> shoots = ApplicationConfig.getDaoFactory().getShootDao().get(sceneId);
-
-        for (Shoot s : shoots) {
-            itemShoots.add(s);
-        }
-        System.out.println("Et egentligt ord" + itemShoots.toString());
-        return itemShoots;
-    }*/
 }
