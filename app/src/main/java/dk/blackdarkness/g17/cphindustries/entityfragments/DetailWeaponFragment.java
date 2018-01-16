@@ -77,7 +77,6 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         ((ViewSceneActivity) getActivity()).setActionBarTitle(weapon.getName() + " " + "Details");
         this.lock.setOnClickListener(this);
 
-//        this.statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
         this.weaponNameText.setText(this.weapon.getName());
 
         this.weaponIdText.setText(Integer.toString(this.weapon.getId()));
@@ -116,7 +115,6 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.lockFab:
-
                 Log.d(TAG, "onClick: Trying to open edit weapon details fragment.");
                 goToEditWeaponDetailsFragment();
                 break;

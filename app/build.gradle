@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 ext.versionMajor = 0
-ext.versionMinor = 4
-ext.versionPatch = 2
+ext.versionMinor = 5
+ext.versionPatch = 0
 ext.versionClassifier = null
 ext.isSnapshot = true
 ext.minimumSdkVersion = 21
@@ -49,12 +49,10 @@ private String generateVersionName() {
     if (ext.versionClassifier != null) {
         versionName += "-" + ext.versionClassifier
     }
-    return versionName;
+    return versionName
 }
 
-
 // Crashlytics
-
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
@@ -91,9 +89,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.android.support:preference-v7:26.1.0'
     compile 'com.google.code.gson:gson:2.8.2'
-
-
-
 
     testCompile 'junit:junit:4.12'
     compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
