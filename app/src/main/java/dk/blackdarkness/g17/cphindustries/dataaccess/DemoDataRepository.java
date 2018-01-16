@@ -115,19 +115,19 @@ class DemoDataRepository {
 
         // Demo Warnings
         final List<String> warnings = new ArrayList<>();
-        warnings.add("This is a warning");
-        warnings.add("This is a secondary warning!");
+//        warnings.add("This is a warning!");
+//        warnings.add("This is a secondary warning!");
 
         // Demo Weapons
         listOfWeapons = new ArrayList<>();
-        listOfWeapons.add(new Weapon(1, "Weapon 1", warnings, FireMode.BURST, ConnectionStatus.NO_CONNECTION,"175.216.74.202","44-0E-1E-FA-58-0E"));
-        listOfWeapons.add(new Weapon(2, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.FULL,"128.39.196.59","59-3B-7B-89-29-4E"));
-        listOfWeapons.add(new Weapon(3, "Weapon 3", warnings , FireMode.SAFE, ConnectionStatus.NO_CONNECTION,"211.233.131.106","1F-D6-15-92-6B-4B"));
-        listOfWeapons.add(new Weapon(4, "Weapon 4", FireMode.SINGLE, ConnectionStatus.BAR_2,"174.208.237.9","A9-78-15-DA-DF-1D"));
-        listOfWeapons.add(new Weapon(5, "weapon 5", warnings, FireMode.SINGLE, ConnectionStatus.BAR_3,"51.207.19.164","A2-19-02-EF-CA-6D"));
-        listOfWeapons.add(new Weapon(6, "weapon 6", warnings, FireMode.BURST, ConnectionStatus.BAR_1,"3.40.199.232","99-50-FD-6F-67-C4"));
-        listOfWeapons.add(new Weapon(7, "weapon 7", FireMode.SINGLE, ConnectionStatus.BAR_2,"104.84.93.11","9C-28-EC-44-E5-57"));
-        listOfWeapons.add(new Weapon(8, "weapon 8", FireMode.FULL_AUTO, ConnectionStatus.BAR_1,"135.123.55.219","6F-5E-D6-D1-A3-39"));
+        listOfWeapons.add(new Weapon(1, "Brian's M16A4", warnings, FireMode.BURST, ConnectionStatus.NO_CONNECTION,"175.216.74.202","44-0E-1E-FA-58-0E"));
+        listOfWeapons.add(new Weapon(2, "John's AK47", FireMode.FULL_AUTO, ConnectionStatus.FULL,"128.39.196.59","59-3B-7B-89-29-4E"));
+        listOfWeapons.add(new Weapon(3, "Linda's P90", warnings , FireMode.SAFE, ConnectionStatus.NO_CONNECTION,"211.233.131.106","1F-D6-15-92-6B-4B"));
+        listOfWeapons.add(new Weapon(4, "Brian's Smith & Wessern 9mm", FireMode.SINGLE, ConnectionStatus.BAR_2,"174.208.237.9","A9-78-15-DA-DF-1D"));
+        listOfWeapons.add(new Weapon(5, "Kidnapper's Glock 18", warnings, FireMode.SINGLE, ConnectionStatus.BAR_3,"51.207.19.164","A2-19-02-EF-CA-6D"));
+        listOfWeapons.add(new Weapon(6, "Kidnapper's MAC-10", warnings, FireMode.BURST, ConnectionStatus.BAR_1,"3.40.199.232","99-50-FD-6F-67-C4"));
+        listOfWeapons.add(new Weapon(7, "Hostage's concealed Ruger LCP", FireMode.SINGLE, ConnectionStatus.BAR_2,"104.84.93.11","9C-28-EC-44-E5-57"));
+        listOfWeapons.add(new Weapon(8, "Roof sniper's AS50", FireMode.FULL_AUTO, ConnectionStatus.BAR_1,"135.123.55.219","6F-5E-D6-D1-A3-39"));
         saveListOfWeapons(listOfWeapons);
 
         // Demo shoots
@@ -142,7 +142,7 @@ class DemoDataRepository {
 
         // Demo scenes
         listOfScenes = new ArrayList<>();
-        listOfScenes.add(new Scene(1, "1 - Ze Zjuting sihn"));
+        listOfScenes.add(new Scene(1, "The kidnapping"));
         listOfScenes.add(new Scene(2, "22 - Robbing the bank"));
         listOfScenes.add(new Scene(3, "54 - The escape"));
         saveListOfScenes(listOfScenes);
@@ -163,7 +163,7 @@ class DemoDataRepository {
         listOfShootWeapons.add(new ShootWeapon(12,4, 7));
         listOfShootWeapons.add(new ShootWeapon(13,4, 1));
         listOfShootWeapons.add(new ShootWeapon(14,5, 2));
-        listOfShootWeapons.add(new ShootWeapon(15,6, 1));
+        listOfShootWeapons.add(new ShootWeapon(15,6, 3));
         listOfShootWeapons.add(new ShootWeapon(16,6, 2));
         listOfShootWeapons.add(new ShootWeapon(17,6, 5));
         listOfShootWeapons.add(new ShootWeapon(18,6, 6));

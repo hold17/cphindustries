@@ -30,7 +30,7 @@ import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SINGLE;
 public class DetailWeaponFragment extends Fragment implements View.OnClickListener {
     private View view;
     private static final String TAG = "DetailWeaponFragment";
-    private TextView weaponNameTitle, weaponIpText, weaponMacText, weaponImageDescription,
+    private TextView weaponIpText, weaponMacText, weaponImageDescription,
             weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
     private FloatingActionButton lock;
     private Button fullAutoButton, safeButton;
@@ -74,7 +74,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewSceneActivity) getActivity()).setActionBarTitle(weapon.getName() + " " + "Details");
+        ((ViewSceneActivity) getActivity()).setActionBarTitle(weapon.getName());
         this.lock.setOnClickListener(this);
 
 //        this.statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
@@ -88,8 +88,12 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         // TODO: maybe put a limit on the amount of shoots shown or something
         // Set shoots
         StringBuilder sb = new StringBuilder();
+        int counter = 0;
         for (Shoot s : this.weaponDao.getShootsByWeapon(this.weapon.getId())) {
-            sb.append(s.getName()).append(", ")/*.append("\n")*/;
+            sb.append(s.getName());
+            counter++;
+            if(counter != this.weaponDao.getShootsByWeapon(this.weapon.getId()).size())
+            sb.append(", ")/*.append("\n")*/;
         }
         this.weaponShootsText.setText(sb);
 
@@ -97,7 +101,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         if (this.weapon.getWarnings().size() > 0) {
             StringBuilder sb2 = new StringBuilder();
             for (int c = 0; c < this.weapon.getWarnings().size(); c++) {
-                sb2.append(c).append(": ").append(this.weapon.getWarnings().get(c)).append("\n");
+                sb2.append(c+1).append(": ").append(this.weapon.getWarnings().get(c)).append("\n");
             }
             this.statusText.setText(sb2);
         } else {
