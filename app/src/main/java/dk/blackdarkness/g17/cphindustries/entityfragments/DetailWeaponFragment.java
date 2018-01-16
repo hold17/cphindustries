@@ -18,12 +18,12 @@ import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.FireMode;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
+import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponDetailsFragment;
 
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.BURST;
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.FULL_AUTO;
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SAFE;
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SINGLE;
-import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponDetailsFragment;
 
 public class DetailWeaponFragment extends Fragment implements View.OnClickListener {
     private View view;
@@ -105,8 +105,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.lockFab:
-                //Edit view should be different from the one navigated to
-                //from ViewWeaponFragment. Edit this one weapon only?
+
                 Log.d(TAG, "onClick: Trying to open edit weapon fragment.");
                 goToEditWeaponFragment();
                 break;

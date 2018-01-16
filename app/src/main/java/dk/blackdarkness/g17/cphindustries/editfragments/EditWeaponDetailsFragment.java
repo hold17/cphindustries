@@ -25,6 +25,7 @@ import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
+import dk.blackdarkness.g17.cphindustries.entityfragments.DetailWeaponFragment;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.CallbackPopup;
 import dk.blackdarkness.g17.cphindustries.recyclerview.PopupRecListAdapter;
@@ -43,6 +44,9 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     private Button popupButton;
     private View popupView;
     private PopupWindow popupWindow;
+    private ArrayList<Integer> shootIdList = new ArrayList<>();
+    private ArrayList<Boolean> weaponIdList = new ArrayList<>();
+
 
     //private PopupRecListAdapter adapter;
 
@@ -108,10 +112,33 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
                 onButtonShowPopup(getView());
                 break;
             case R.id.popupCancel:
+                cancelChanges();
+                break;
+            case R.id.popupApply:
+                applyChanges();
                 popupWindow.dismiss();
+                break;
+            case R.id.lockFab:
+                //Edit view should be different from the one navigated to
+                //from ViewWeaponFragment. Edit this one weapon only?
+                Log.d(TAG, "onClick: Trying to open edit weapon fragment.");
+                goToWeaponDetailsFragment();
                 break;
         }
 
+    }
+
+    private void goToWeaponDetailsFragment() {
+        Log.d(TAG, "goToEditWeaponFragment: Returning");
+        Fragment detailWeaponFragment = new DetailWeaponFragment();
+
+        detailWeaponFragment.setArguments(getArguments());
+
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, detailWeaponFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
 
@@ -136,7 +163,10 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         boolean focusable = true; // lets taps outside the popup also dismiss it
         popupWindow = new PopupWindow(popupView, 300, 470, focusable);
         Button cancelButton = popupView.findViewById(R.id.popupCancel);
+        Button applyButton = popupView.findViewById(R.id.popupApply);
         cancelButton.setOnClickListener(this);
+        applyButton.setOnClickListener(this);
+
 
         // show the popup window
         popupWindow.showAtLocation(relativeLayout, Gravity.CENTER, 0, 0);
@@ -163,14 +193,32 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     @Override
     public void onCheckClickSend(int shootId, boolean isChecked) {
         // DO ALL WITH THE SCENEID HER...
+        this.weaponIdList.add(isChecked);
+        this.shootIdList.add(shootId);
 
-        if (isChecked) {
-            ShootWeapon sw = new ShootWeapon(shootId, this.weapon.getId());
-            ApplicationConfig.getDaoFactory().getShootWeaponDao().create(sw);
-        } else {
-            ApplicationConfig.getDaoFactory().getShootWeaponDao().delete(shootId, this.weapon.getId());
+    }
 
+    public void applyChanges() {
+
+        for (int i = 0; i < shootIdList.size(); i++) {
+
+            if (weaponIdList.get(i)) {
+                ShootWeapon sw = new ShootWeapon(shootId, this.weapon.getId());
+                ApplicationConfig.getDaoFactory().getShootWeaponDao().create(sw);
+                System.out.println("Ciaao");
+            } else {
+                ApplicationConfig.getDaoFactory().getShootWeaponDao().delete(shootId, this.weapon.getId());
+                System.out.println("whatthe");
+            }
         }
+        weaponIdList.clear();
+        shootIdList.clear();
+    }
+
+    public void cancelChanges() {
+        weaponIdList.clear();
+        shootIdList.clear();
+        popupWindow.dismiss();
 
     }
 }
