@@ -60,5 +60,6 @@
     <string name="link_source_repo">https://github.com/hold17/cphindustries</string>
     <string name="link_api">https://github.com/hold17/cphapi</string>
     <string name="creation_date">January 2018</string>
+    <string name="status_text_no_warnings">All systems nominal!</string>
 
 </resources>

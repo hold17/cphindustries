@@ -18,6 +18,7 @@ import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.FireMode;
+import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.BURST;
@@ -28,10 +29,10 @@ import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SINGLE;
 public class DetailWeaponFragment extends Fragment implements View.OnClickListener {
     private View view;
     private static final String TAG = "DetailWeaponFragment";
-    private TextView weaponNameTitle, weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
+    private TextView statusText, weaponNameTitle, weaponIdText, weaponNameText, weaponFiremodeText, weaponShootsText, weaponIpText, weaponMacText;
     private FloatingActionButton lock;
     private Button fullAutoButton, safeButton;
-    ImageButton singleButton, burstButton;
+    private ImageButton singleButton, burstButton;
     private int sceneId;
     private int shootId;
     private int weaponId;
@@ -43,14 +44,16 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_weapon_details_layout, container, false);
         Log.d(TAG, "onCreateView: Returning.");
-
         this.lock = view.findViewById(R.id.lockFab);
+
+        this.statusText = view.findViewById(R.id.fr_weapon_details_status_text);
         this.weaponNameTitle = view.findViewById(R.id.fr_weapon_details_title);
-        this.weaponNameText = view.findViewById(R.id.fr_weapon_details_tvName_description);
         this.weaponIdText = view.findViewById(R.id.fr_weapon_details_tvId_description);
+        this.weaponNameText = view.findViewById(R.id.fr_weapon_details_tvName_description);
         this.weaponFiremodeText = view.findViewById(R.id.fr_weapon_details_tvFire_mode_description);
         this.weaponShootsText = view.findViewById(R.id.fr_weapon_details_tvShoot_description);
-        this.statusText = view.findViewById(R.id.fr_weapon_details_status_text);
+        this.weaponIpText = view.findViewById(R.id.fr_weapon_details_tvIp_description);
+        this.weaponMacText = view.findViewById(R.id.fr_weapon_details_tvMac_description);
 
         this.singleButton = view.findViewById(R.id.fr_weapon_details_ibtn_single);
         this.burstButton = view.findViewById(R.id.fr_weapon_details_ibtn_burst);
@@ -71,26 +74,33 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((ViewSceneActivity) getActivity()).setActionBarTitle(weapon.getName() + " " + "Details");
-
         this.lock.setOnClickListener(this);
 
-//        this.statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
         this.weaponNameTitle.setText(this.weapon.getName());
-        this.weaponNameText.setText(this.weapon.getName());
 
         this.weaponIdText.setText(Integer.toString(this.weapon.getId()));
-        //this.weaponIdText.setText("" + this.weapon.getId());
+        this.weaponNameText.setText(this.weapon.getName());
         this.weaponFiremodeText.setText(this.weapon.getFireMode().name());
-        this.weaponShootsText.setText("Shoots will go here...");
+        this.weaponIpText.setText(this.weapon.getIp());
+        this.weaponMacText.setText(this.weapon.getMac());
+
+        // TODO: maybe put a limit on the amount of shoots shown or something
+        // Set shoots
+        StringBuilder sb = new StringBuilder();
+        for (Shoot s : this.weaponDao.getShootsByWeapon(this.weapon.getId())) {
+            sb.append(s.getName()).append(", ")/*.append("\n")*/;
+        }
+        this.weaponShootsText.setText(sb);
+
         // Set warnings
         if (this.weapon.getWarnings().size() > 0) {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb2 = new StringBuilder();
             for (int c = 0; c < this.weapon.getWarnings().size(); c++) {
-                sb.append(c).append(1).append(" ").append(this.weapon.getWarnings().get(c)).append("\n");
+                sb2.append(c).append(": ").append(this.weapon.getWarnings().get(c)).append("\n");
             }
-            this.statusText.setText(sb);
+            this.statusText.setText(sb2);
         } else {
-            this.statusText.setText("No warnings.");
+            this.statusText.setText(R.string.status_text_no_warnings);
         }
 
         updateGuiButtonsFiremode();
