@@ -41,6 +41,7 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
     private int sceneId;
     private ShootDao shootDao;
     private List<Item> shoots;
+    private int position;
 
     @Nullable
     @Override
@@ -72,14 +73,7 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
         this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(this.sceneId));
 
         final RecyclerViewClickListener listener = (v, position) -> {
-            String name = this.adapter.getEditTextString(position);
-            int id = this.shoots.get(position).getId();
-            Log.d(TAG, "onClick: local current name: " + this.shoots.get(position).getName());
-            Log.d(TAG, "onClick: dao current name: " + this.shootDao.getShoot(id).getName());
-            this.shoots.get(position).setName(name);
-            this.shootDao.update((Shoot) this.shoots.get(position));
-            Log.d(TAG, "onClick: local new name: " + this.shoots.get(position).getName());
-            Log.d(TAG, "onClick: dao new name: " + this.shootDao.getShoot(id).getName());
+            this.position = position;
         };
 
         this.adapter = new EditRecListAdapter(getActivity(), this, this.shoots, listener);
@@ -126,6 +120,21 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
 
     public void checkLock() {
         Log.d(TAG, "checkLock: Should save input data.");
+
+        // users seem to think pressing the lock a second time is what saves changes, the users are always right
+        if (position > 0) {
+            String name = this.adapter.getEditTextString(this.position);
+            if (!name.equals("")) {
+                int id = this.shoots.get(position).getId();
+                Log.d(TAG, "onClick: local current name: " + this.shoots.get(position).getName());
+                Log.d(TAG, "onClick: dao current name: " + this.shootDao.getShoot(id).getName());
+                this.shoots.get(position).setName(name);
+                this.shootDao.update((Shoot) this.shoots.get(position));
+                Log.d(TAG, "onClick: local new name: " + this.shoots.get(position).getName());
+                Log.d(TAG, "onClick: dao new name: " + this.shootDao.getShoot(id).getName());
+            }
+        }
+
         getActivity().onBackPressed();
     }
     public void goToCreateShotFragment() {

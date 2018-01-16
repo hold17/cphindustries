@@ -43,6 +43,7 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
     private EditRecListAdapter adapter;
     private SceneDao sceneDao;
     private List<Item> scenes;
+    private int position;
 
     @Nullable
     @Override
@@ -74,14 +75,7 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
         this.scenes = ItemConverter.sceneToItem(this.sceneDao.getList());
 
         final RecyclerViewClickListener listener = (v, position) -> {
-            String name = this.adapter.getEditTextString(position);
-            int id = this.scenes.get(position).getId();
-            Log.d(TAG, "onClick: local current name: " + this.scenes.get(position).getName());
-            Log.d(TAG, "onClick: dao current name: " + this.sceneDao.getScene(id).getName());
-            this.scenes.get(position).setName(name);
-            this.sceneDao.update((Scene) this.scenes.get(position));
-            Log.d(TAG, "onClick: local new name: " + this.scenes.get(position).getName());
-            Log.d(TAG, "onClick: dao new name: " + this.sceneDao.getScene(id).getName());
+            this.position = position;
         };
 
         this.adapter = new EditRecListAdapter(getActivity(), this, scenes, listener);
@@ -136,6 +130,21 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
 
     public void checkLock() {
         Log.d(TAG, "checkLock: Should save input data.");
+
+        // users seem to think pressing the lock a second time is what saves changes, the users are always right
+        if (position > 0) {
+            String name = this.adapter.getEditTextString(this.position);
+            if (!name.equals("")) {
+                int id = this.scenes.get(this.position).getId();
+                Log.d(TAG, "onClick: local current name: " + this.scenes.get(this.position).getName());
+                Log.d(TAG, "onClick: dao current name: " + this.sceneDao.getScene(id).getName());
+                this.scenes.get(this.position).setName(name);
+                this.sceneDao.update((Scene) this.scenes.get(this.position));
+                Log.d(TAG, "onClick: local new name: " + this.scenes.get(this.position).getName());
+                Log.d(TAG, "onClick: dao new name: " + this.sceneDao.getScene(id).getName());
+            }
+        }
+
         getActivity().onBackPressed();
     }
 

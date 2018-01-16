@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -43,6 +42,7 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
     private EditRecListAdapter adapter;
     private WeaponDao weaponDao;
     private List<Item> weapons;
+    private int position;
 
     @Nullable
     @Override
@@ -75,14 +75,7 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
         this.weapons = ItemConverter.weaponToItem(this.weaponDao.getListByShoot(shootId));
 
         final RecyclerViewClickListener listener = (v, position) -> {
-            String name = this.adapter.getEditTextString(position);
-            int id = this.weapons.get(position).getId();
-            Log.d(TAG, "onClick: local current name: " + this.weapons.get(position).getName());
-            Log.d(TAG, "onClick: dao current name: " + this.weaponDao.getWeapon(id).getName());
-            this.weapons.get(position).setName(name);
-            this.weaponDao.update((Weapon) this.weapons.get(position));
-            Log.d(TAG, "onClick: local new name: " + this.weapons.get(position).getName());
-            Log.d(TAG, "onClick: dao new name: " + this.weaponDao.getWeapon(id).getName());
+            this.position = position;
         };
 
         this.adapter = new EditRecListAdapter(getActivity(), this, weapons, listener);
@@ -134,7 +127,22 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
     }
 
     public void checkLock() {
-        Log.d(TAG, "onClick: lockFab. Returning ViewWeaponFragment.");
+        Log.d(TAG, "checkLock: Should save input data.");
+
+        // users seem to think pressing the lock a second time is what saves changes, the users are always right
+        if (position > 0) {
+            String name = this.adapter.getEditTextString(this.position);
+            if (!name.equals("")) {
+                int id = this.weapons.get(position).getId();
+                Log.d(TAG, "onClick: local current name: " + this.weapons.get(position).getName());
+                Log.d(TAG, "onClick: dao current name: " + this.weaponDao.getWeapon(id).getName());
+                this.weapons.get(position).setName(name);
+                this.weaponDao.update((Weapon) this.weapons.get(position));
+                Log.d(TAG, "onClick: local new name: " + this.weapons.get(position).getName());
+                Log.d(TAG, "onClick: dao new name: " + this.weaponDao.getWeapon(id).getName());
+            }
+        }
+
         getActivity().onBackPressed();
     }
 

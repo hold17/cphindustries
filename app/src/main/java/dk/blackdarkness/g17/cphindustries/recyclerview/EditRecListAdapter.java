@@ -35,6 +35,7 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
     private final RecyclerViewClickListener listener;
     private final Context context;
     private EditText editText;
+    private boolean isEditingText = false;
 
     public EditRecListAdapter(Context context, OnStartDragListener dragStartListener, List<Item> items, RecyclerViewClickListener listener) {
         mDragStartListener = dragStartListener;
@@ -46,7 +47,7 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.edit_recyclerview_list_item, parent, false);
-        return new ItemViewHolder(context, view, this.listener);
+        return new ItemViewHolder(view, this.listener);
     }
 
     @Override
@@ -60,11 +61,12 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
         holder.etHeading.setVisibility(View.GONE);
         holder.imageFront.setImageResource(R.drawable.ic_reorder_black_24px);
         holder.imageBack.setImageResource(R.drawable.ic_edit_black_24dp);
+
         // Start a drag whenever the handle view is touched
         holder.imageFront.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && !isEditingText) {
                     mDragStartListener.onStartDrag(holder);
                 }
                 return false;
@@ -80,9 +82,13 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
     }
 
     public String getEditTextString(int position) {
-        Log.d(TAG, "getEditTextString: input string" + this.editText.getText().toString());
-        notifyItemChanged(position);
-        return editText.getText().toString();
+        if (this.isEditingText) {
+            this.isEditingText = false;
+            Log.d(TAG, "getEditTextString: input string" + this.editText.getText().toString());
+            notifyItemChanged(position);
+            return this.editText.getText().toString();
+        }
+        return "";
     }
 
     // this could be useful at some point
@@ -122,22 +128,19 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
         return mItems.size();
     }
 
-    static class ItemViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder, OnClickListener {
+    class ItemViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder, OnClickListener {
         final TextView tvHeading;
         final EditText etHeading;
         final ImageView imageFront;
         final ImageView imageBack;
         final RecyclerViewClickListener listener;
-        final Context context;
 
-        ItemViewHolder(Context context, View itemView, RecyclerViewClickListener listener) {
+        ItemViewHolder(View itemView, RecyclerViewClickListener listener) {
             super(itemView);
             tvHeading = itemView.findViewById(R.id.editRecyclerViewListItem_tvHeading);
             etHeading = itemView.findViewById(R.id.editRecyclerViewListItem_etHeading);
             imageFront = itemView.findViewById(R.id.editRecyclerViewListItem_imageFront);
             imageBack = itemView.findViewById(R.id.editRecyclerViewListItem_imageBack);
-
-            this.context = context;
 
             this.listener = listener;
 
@@ -159,16 +162,17 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
             //TODO: maybe do something about this insanity at some point
 
             if (etHeading.getVisibility() == View.GONE) {
+                isEditingText = true;
                 tvHeading.setVisibility(View.GONE);
                 etHeading.setVisibility(View.VISIBLE);
                 etHeading.setFocusableInTouchMode(true);
                 etHeading.requestFocus();
                 softInputHelper.showSoftInput(context, etHeading);
-                imageBack.setImageResource(R.drawable.ic_done_green_24dp);
+                imageBack.setImageResource(R.drawable.ic_close_black_24dp);
             } else {
+                isEditingText = false;
                 listener.onClick(v, getAdapterPosition());
                 softInputHelper.hideSoftInput(context, v);
-                tvHeading.setText(etHeading.getText().toString());
                 tvHeading.setVisibility(View.VISIBLE);
                 etHeading.setVisibility(View.GONE);
                 imageBack.setImageResource(R.drawable.ic_edit_black_24dp);
