@@ -117,8 +117,8 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         switch (view.getId()) {
             case R.id.lockFab:
 
-                Log.d(TAG, "onClick: Trying to open edit weapon fragment.");
-                goToEditWeaponFragment();
+                Log.d(TAG, "onClick: Trying to open edit weapon details fragment.");
+                goToEditWeaponDetailsFragment();
                 break;
             case R.id.fr_weapon_details_ibtn_single:
                 setWeaponFiremode(SINGLE);
@@ -135,12 +135,15 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    public void goToEditWeaponFragment() {
-        Log.d(TAG, "goToEditWeaponFragment: Returning");
+    public void goToEditWeaponDetailsFragment() {
+        Log.d(TAG, "goToEditWeaponDetailsFragment: Returning");
         Fragment editWeaponDetailsFragment = new EditWeaponDetailsFragment();
 
-        editWeaponDetailsFragment.setArguments(getArguments());
-
+        Bundle bundle = new Bundle();
+        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.shootId);
+        bundle.putInt(ViewSceneActivity.WEAPON_ID_KEY, this.weaponId);
+        editWeaponDetailsFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, editWeaponDetailsFragment)
