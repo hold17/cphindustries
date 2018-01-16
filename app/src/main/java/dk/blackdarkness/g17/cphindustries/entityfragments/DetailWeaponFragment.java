@@ -28,7 +28,7 @@ import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SINGLE;
 public class DetailWeaponFragment extends Fragment implements View.OnClickListener {
     private View view;
     private static final String TAG = "DetailWeaponFragment";
-    private TextView weaponNameTitle, weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
+    private TextView weaponImageDescription, weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
     private FloatingActionButton lock;
     private Button fullAutoButton, safeButton;
     ImageButton singleButton, burstButton;
@@ -45,7 +45,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         Log.d(TAG, "onCreateView: Returning.");
 
         this.lock = view.findViewById(R.id.lockFab);
-        this.weaponNameTitle = view.findViewById(R.id.fr_weapon_details_title);
+        this.weaponImageDescription = view.findViewById(R.id.imageDescription);
         this.weaponNameText = view.findViewById(R.id.fr_weapon_details_tvName_description);
         this.weaponIdText = view.findViewById(R.id.fr_weapon_details_tvId_description);
         this.weaponFiremodeText = view.findViewById(R.id.fr_weapon_details_tvFire_mode_description);
@@ -75,7 +75,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         this.lock.setOnClickListener(this);
 
 //        this.statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
-        this.weaponNameTitle.setText(this.weapon.getName());
+//        this.weaponNameTitle.setText(this.weapon.getName());
         this.weaponNameText.setText(this.weapon.getName());
 
         this.weaponIdText.setText(Integer.toString(this.weapon.getId()));
