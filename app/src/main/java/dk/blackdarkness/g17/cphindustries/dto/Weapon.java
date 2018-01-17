@@ -11,6 +11,7 @@ public class Weapon extends Item {
     private ConnectionStatus connectionStatus;
     private String ip;
     private String mac;
+    private int batteryLevel;
 
     public Weapon() {
     }
@@ -153,6 +154,16 @@ public class Weapon extends Item {
 
     public void setConnectionStatus(ConnectionStatus connectionStatus) {
         this.connectionStatus = connectionStatus;
+    }
+
+    public int getBatteryLevel() {
+        return batteryLevel;
+    }
+
+    public void setBatteryLevel(int batteryLevel) {
+        if (batteryLevel > 100) this.batteryLevel = 100;
+        if (batteryLevel < 0)   this.batteryLevel = 0;
+        else                    this.batteryLevel = batteryLevel;
     }
 
     public String getIp() {
