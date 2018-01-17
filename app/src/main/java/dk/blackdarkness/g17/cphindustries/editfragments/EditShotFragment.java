@@ -74,14 +74,23 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
 
         this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(this.sceneId));
 
-        final RecyclerViewClickListener listener = (v, itemId) -> {
-            this.selectedShootId = itemId;
-            if (this.adapter.isEditingText) {
-                this.lock.setImageResource(R.drawable.ic_check_white_24dp);
-                this.lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPositive)));
-            } else {
-                this.lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
-                this.lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
+        final RecyclerViewClickListener listener = new RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int itemId) {
+                selectedShootId = itemId;
+                if (adapter.isEditingText) {
+                    lock.setImageResource(R.drawable.ic_check_white_24dp);
+                    lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPositive)));
+                } else {
+                    lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
+                    lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
+                }
+            }
+
+            @Override
+            public boolean onLongClick(View view, int itemId) {
+                // do nothing
+                return false;
             }
         };
 

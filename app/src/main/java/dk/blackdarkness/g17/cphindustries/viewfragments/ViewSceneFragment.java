@@ -60,7 +60,20 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
         ((ViewSceneActivity)getActivity()).setActionBarSubtitle("");
         this.lock.setOnClickListener(this);
 
-        final RecyclerViewClickListener listener = (v, sceneId) -> goToViewShotFragment(sceneId);
+        //final RecyclerViewClickListener listener = (v, sceneId) -> goToViewShotFragment(sceneId);
+
+        final RecyclerViewClickListener listener = new RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int itemId) {
+                goToViewShotFragment(itemId);
+            }
+
+            @Override
+            public boolean onLongClick(View view, int itemId) {
+                goToEditSceneFragment();
+                return false;
+            }
+        };
 
         this.scenes = ItemConverter.sceneToItem(this.sceneDao.getList());
 
