@@ -82,7 +82,7 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
+        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(getContext(), adapter);
         SITHCallback.setDragEnabled(true);
         SITHCallback.setSwipeEnabled(true);
 

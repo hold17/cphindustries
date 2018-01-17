@@ -168,7 +168,7 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
                 etHeading.setFocusableInTouchMode(true);
                 etHeading.requestFocus();
                 softInputHelper.showSoftInput(context, etHeading);
-                imageBack.setImageResource(R.drawable.ic_close_black_24dp);
+                imageBack.setImageResource(R.drawable.ic_close_red_24dp);
             } else {
                 isEditingText = false;
                 listener.onClick(v, getAdapterPosition());

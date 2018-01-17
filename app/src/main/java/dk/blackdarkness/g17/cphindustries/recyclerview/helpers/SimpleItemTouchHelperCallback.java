@@ -1,18 +1,38 @@
 package dk.blackdarkness.g17.cphindustries.recyclerview.helpers;
 
+import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
+import android.view.View;
+
+import dk.blackdarkness.g17.cphindustries.R;
 
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
+    private final Drawable deleteIcon;
+    private final int intrinsicWidth;
+    private final int intrinsicHeight;
+    private final ColorDrawable background;
+    private final int backgroundColor;
     private static final float ALPHA_FULL = 1.0f;
     private final ItemTouchHelperAdapter mAdapter;
     private boolean dragEnabled = true;
     private boolean swipeEnabled = true;
 
-    public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
+    public SimpleItemTouchHelperCallback(Context context, ItemTouchHelperAdapter adapter) {
         mAdapter = adapter;
         dragEnabled = swipeEnabled = true;
+
+        this.deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete_white_24dp);
+        this.intrinsicWidth = this.deleteIcon.getIntrinsicWidth();
+        this.intrinsicHeight = this.deleteIcon.getIntrinsicHeight();
+        this.background = new ColorDrawable();
+        this.backgroundColor = Color.parseColor("#f44336");
     }
 
     @Override
@@ -37,7 +57,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         // Set movement flags
         final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-        final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+        final int swipeFlags = ItemTouchHelper.START/* | ItemTouchHelper.END*/;
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
@@ -58,13 +78,29 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        System.out.println("isCurrentlyActive: " + isCurrentlyActive);
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            View itemView = viewHolder.itemView;
+
+            int itemHeight = viewHolder.itemView.getBottom() - viewHolder.itemView.getTop();
+            this.background.setColor(this.backgroundColor);
+            this.background.setBounds(itemView.getRight() + (int)dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+            this.background.draw(c);
+
+            int deleteIconTop = itemView.getTop() + (itemHeight - this.intrinsicHeight) / 2;
+            int deleteIconMargin = (itemHeight - this.intrinsicHeight) / 2;
+            int deleteIconLeft = itemView.getRight() - deleteIconMargin - this.intrinsicWidth;
+            int deleteIconRight = itemView.getRight() - deleteIconMargin;
+            int deleteIconBottom = deleteIconTop + this.intrinsicHeight;
+
+            this.deleteIcon.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
+            this.deleteIcon.draw(c);
+
             // Fade out the view as it is swiped out of the parent's bounds
             final float alpha = ALPHA_FULL - Math.abs(dX) / (float) viewHolder.itemView.getWidth();
             viewHolder.itemView.setAlpha(alpha);
             viewHolder.itemView.setTranslationX(dX);
-        } else {
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     }
 
