@@ -24,7 +24,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_about);
 
         this.linkSourceString = getString(R.string.link_source_repo);
-        this.linkApiString = getString(R.string.link_api);
+        this.linkApiString = getString(R.string.link_api_repo);
 
         this.linkSource = findViewById(R.id.link_source);
         this.linkSource.setOnClickListener(this);
@@ -62,7 +62,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
                 Log.d(TAG, "onClick: R.id.link_source - Ran goToURI(" + linkSourceString +")");
                 break;
             case R.id.link_api:
-                goToURI(getString(R.string.link_api));
+                goToURI(getString(R.string.link_api_repo));
                 Log.d(TAG, "onClick: R.id.link_api - Ran goToURI(" + linkApiString +")");
                 break;
         }

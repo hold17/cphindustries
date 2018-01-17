@@ -17,6 +17,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="56dp"
+        android:contentDescription="@string/weapon_type_dummy"
         android:src="@drawable/ic_m16a1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +31,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="32dp"
-        android:text="M16A1"
+        android:text="@string/weapon_type_dummy"
         android:textStyle="italic"
         android:textColor="@color/textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +46,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="40dp"
-        android:text="Device status"
+        android:text="@string/weapon_status_title"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/textColorPrimary"
@@ -74,7 +75,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/textColorPrimary"
-        android:text="Details"
+        android:text="@string/weapon_details_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fr_weapon_details_status_text" />
 
@@ -118,7 +119,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="97%"
+            android:text="@string/battery_level_dummy"
             android:textAlignment="center"
             android:textSize="12sp"
             android:textColor="@color/textColorPrimary"/>
@@ -140,12 +141,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="ID:"
             android:textAlignment="textStart"
             android:textStyle="bold"
             android:textColor="@color/textColorPrimary"
-            tools:layout_editor_absoluteX="151dp"
-            tools:layout_editor_absoluteY="210dp" />
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/fr_weapon_details_tvName"
@@ -155,9 +154,7 @@
             android:textStyle="bold"
             android:textColor="@color/textColorPrimary"
             android:layout_weight="1"
-            android:text="Name:"
-            tools:layout_editor_absoluteX="137dp"
-            tools:layout_editor_absoluteY="246dp" />
+            android:text="@string/weapon_name_title"/>
 
         <TextView
             android:id="@+id/fr_weapon_details_tvFire_mode"
@@ -167,33 +164,7 @@
             android:textStyle="bold"
             android:textColor="@color/textColorPrimary"
             android:layout_weight="1"
-            android:text="Fire mode:"
-            tools:layout_editor_absoluteX="137dp"
-            tools:layout_editor_absoluteY="273dp" />
-
-        <TextView
-            android:id="@+id/fr_weapon_details_tvIp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="IP:"
-            android:textStyle="bold"
-            android:textColor="@color/textColorPrimary"
-            android:textAlignment="viewStart"
-            tools:layout_editor_absoluteX="137dp"
-            tools:layout_editor_absoluteY="300dp" />
-
-        <TextView
-            android:id="@+id/fr_weapon_details_tvMac"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="MAC:"
-            android:textStyle="bold"
-            android:textColor="@color/textColorPrimary"
-            android:textAlignment="viewStart"
-            tools:layout_editor_absoluteX="137dp"
-            tools:layout_editor_absoluteY="300dp" />
+            android:text="@string/weapon_fire_mode_title"/>
 
         <TextView
             android:id="@+id/fr_weapon_details_tvShoot"
@@ -203,9 +174,27 @@
             android:textStyle="bold"
             android:textColor="@color/textColorPrimary"
             android:layout_weight="1"
-            android:text="Shoot:"
-            tools:layout_editor_absoluteX="137dp"
-            tools:layout_editor_absoluteY="300dp" />
+            android:text="@string/weapon_shoots_title"/>
+
+        <TextView
+            android:id="@+id/fr_weapon_details_tvIp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/weapon_ip_title"
+            android:textStyle="bold"
+            android:textColor="@color/textColorPrimary"
+            android:textAlignment="textStart"/>
+
+        <TextView
+            android:id="@+id/fr_weapon_details_tvMac"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/weapon_mac_title"
+            android:textStyle="bold"
+            android:textColor="@color/textColorPrimary"
+            android:textAlignment="textStart"/>
 
     </LinearLayout>
 
@@ -224,146 +213,50 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="1"
             android:textColor="@color/textColorPrimary"
-            tools:layout_editor_absoluteX="223dp"
-            tools:layout_editor_absoluteY="209dp" />
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/fr_weapon_details_tvName_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Weapon 1"
-            android:textColor="@color/textColorPrimary"
-            tools:layout_editor_absoluteX="210dp"
-            tools:layout_editor_absoluteY="246dp" />
+            android:text="@string/weapon_name_dummy"
+            android:textColor="@color/textColorPrimary"/>
 
         <TextView
             android:id="@+id/fr_weapon_details_tvFire_mode_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Burst"
-            android:textColor="@color/textColorPrimary"
-            tools:layout_editor_absoluteX="214dp"
-            tools:layout_editor_absoluteY="277dp" />
-
-        <TextView
-            android:id="@+id/fr_weapon_details_tvMac_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="01-23-45-67-89-ab"
-            android:textColor="@color/textColorPrimary"
-            tools:layout_editor_absoluteX="205dp"
-            tools:layout_editor_absoluteY="303dp" />
-
-        <TextView
-            android:id="@+id/fr_weapon_details_tvIp_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="123.123.123.123"
-            android:textColor="@color/textColorPrimary"
-            tools:layout_editor_absoluteX="205dp"
-            tools:layout_editor_absoluteY="303dp" />
+            android:text="@string/weapon_fire_mode_dummy"
+            android:textColor="@color/textColorPrimary"/>
 
         <TextView
             android:id="@+id/fr_weapon_details_tvShoot_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Shoot 1, Shoot 3"
-            android:textColor="@color/textColorPrimary"
-            tools:layout_editor_absoluteX="205dp"
-            tools:layout_editor_absoluteY="303dp" />
+            android:text="@string/weapon_shoots_dummy"
+            android:textColor="@color/textColorPrimary"/>
+
+        <TextView
+            android:id="@+id/fr_weapon_details_tvIp_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/weapon_ip_dummy"
+            android:textColor="@color/textColorPrimary"/>
+
+        <TextView
+            android:id="@+id/fr_weapon_details_tvMac_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/weapon_mac_dummy"
+            android:textColor="@color/textColorPrimary"/>
 
     </LinearLayout>
-
-
-
-   <!-- <LinearLayout
-        android:id="@+id/fr_weapon_details_linearLayout_oxygen"
-        android:layout_width="50dp"
-        android:layout_height="88dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/fr_weapon_details_linearLayout_fire_mode"
-        app:layout_constraintEnd_toStartOf="@+id/fr_weapon_details_linearLayout_propane">
-
-        <ImageView
-            android:id="@+id/fr_weapon_details_ivOxgen_icon"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:contentDescription="@string/oxygen_level_icon"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_gas"
-            tools:layout_editor_absoluteX="167dp"
-            tools:layout_editor_absoluteY="262dp" />
-
-        <TextView
-            android:id="@+id/fr_weapon_details_tvOxgen_description"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/oxygen"
-            android:textAlignment="center"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/fr_weapon_details_tvOxgen_level"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="100%"
-            android:textAlignment="center"
-            android:textSize="12sp" />
-
-    </LinearLayout> -->
-
-   <!-- <LinearLayout
-        android:id="@+id/fr_weapon_details_linearLayout_propane"
-        android:layout_width="50dp"
-        android:layout_height="88dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/fr_weapon_details_linearLayout_fire_mode"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/fr_weapon_details_ivPropane_icon"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:contentDescription="@string/propane_level_icon"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_gas"
-            tools:layout_editor_absoluteX="120dp"
-            tools:layout_editor_absoluteY="262dp" />
-
-        <TextView
-            android:id="@+id/fr_weapon_details_tvPropane_description"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/propane"
-            android:textAlignment="center"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/fr_weapon_details_tvPropane_level"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="14%"
-            android:textAlignment="center"
-            android:textSize="12sp" />
-
-    </LinearLayout> -->
 
     <LinearLayout
         android:id="@+id/fr_weapon_details_linearLayout_fire_mode"
@@ -415,10 +308,95 @@
 
     </LinearLayout>
 
-
     <include
         android:id="@+id/include"
         layout="@layout/fab_buttons_layout"></include>
 
 </android.support.constraint.ConstraintLayout>
 
+    <!--############################################################
+     ####GAS CANNISTER LAYOUT, NOT USED YET DUE TO LACK OF HARDWARE####
+     ####WILL BE IMPLEMENTED ON A LATER DATE                       ####
+        ############################################################-->
+
+    <!-- <LinearLayout
+         android:id="@+id/fr_weapon_details_linearLayout_oxygen"
+         android:layout_width="50dp"
+         android:layout_height="88dp"
+         android:layout_marginBottom="8dp"
+         android:layout_marginEnd="16dp"
+         android:orientation="vertical"
+         app:layout_constraintBottom_toTopOf="@+id/fr_weapon_details_linearLayout_fire_mode"
+         app:layout_constraintEnd_toStartOf="@+id/fr_weapon_details_linearLayout_propane">
+
+         <ImageView
+             android:id="@+id/fr_weapon_details_ivOxgen_icon"
+             android:layout_width="match_parent"
+             android:layout_height="48dp"
+             android:contentDescription="@string/oxygen_level_icon"
+             android:scaleType="fitCenter"
+             app:srcCompat="@drawable/ic_gas"
+             tools:layout_editor_absoluteX="167dp"
+             tools:layout_editor_absoluteY="262dp" />
+
+         <TextView
+             android:id="@+id/fr_weapon_details_tvOxgen_description"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_weight="1"
+             android:text="@string/oxygen"
+             android:textAlignment="center"
+             android:textSize="12sp" />
+
+         <TextView
+             android:id="@+id/fr_weapon_details_tvOxgen_level"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_weight="1"
+             android:text="100%"
+             android:textAlignment="center"
+             android:textSize="12sp" />
+
+     </LinearLayout> -->
+
+    <!-- <LinearLayout
+         android:id="@+id/fr_weapon_details_linearLayout_propane"
+         android:layout_width="50dp"
+         android:layout_height="88dp"
+         android:layout_marginBottom="8dp"
+         android:layout_marginEnd="16dp"
+         android:layout_marginStart="16dp"
+         android:orientation="vertical"
+         app:layout_constraintBottom_toTopOf="@+id/fr_weapon_details_linearLayout_fire_mode"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent">
+
+         <ImageView
+             android:id="@+id/fr_weapon_details_ivPropane_icon"
+             android:layout_width="match_parent"
+             android:layout_height="48dp"
+             android:contentDescription="@string/propane_level_icon"
+             android:scaleType="fitCenter"
+             app:srcCompat="@drawable/ic_gas"
+             tools:layout_editor_absoluteX="120dp"
+             tools:layout_editor_absoluteY="262dp" />
+
+         <TextView
+             android:id="@+id/fr_weapon_details_tvPropane_description"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_weight="1"
+             android:text="@string/propane"
+             android:textAlignment="center"
+             android:textSize="12sp" />
+
+         <TextView
+             android:id="@+id/fr_weapon_details_tvPropane_level"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_weight="1"
+             android:text="14%"
+             android:textAlignment="center"
+             android:textSize="12sp" />
+
+     </LinearLayout> -->
