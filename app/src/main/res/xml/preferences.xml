@@ -23,11 +23,15 @@
         android:title="@string/update_rate_title"
         android:summary="@string/update_rate_summary"/>
     <Preference
-        android:title="@string/clear_app_cache"
+        android:title="@string/clear_app_cache_title"
         android:key="@string/clear_app_cache_key" />
     <Preference
         android:title="@string/reset_app__title"
         android:key="@string/reset_app__key"/>
+    <Preference
+        android:title="@string/server_address_title"
+        android:summary="@string/server_address_summary"
+        android:key="@string/server_address_key"/>
     <Preference
         android:title="@string/build_title"
         android:key="buildVersion"/>
