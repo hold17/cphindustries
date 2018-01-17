@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import dk.blackdarkness.g17.cphindustries.R;
@@ -21,6 +22,7 @@ import dk.blackdarkness.g17.cphindustries.dto.FireMode;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponDetailsFragment;
+import dk.blackdarkness.g17.cphindustries.helper.BatteryIcon;
 
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.BURST;
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.FULL_AUTO;
@@ -35,6 +37,8 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     private FloatingActionButton lock;
     private Button fullAutoButton, safeButton;
     private ImageButton singleButton, burstButton;
+    private ImageView batteryIcon;
+    private TextView batteryLevel;
     private int sceneId;
     private int shootId;
     private int weaponId;
@@ -61,12 +65,18 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         this.fullAutoButton = view.findViewById(R.id.fr_weapon_details_btn_full_auto);
         this.safeButton = view.findViewById(R.id.fr_weapon_details_btn_safe);
 
+        this.batteryIcon = view.findViewById(R.id.fr_weapon_details_ivBattery_icon);
+        this.batteryLevel = view.findViewById(R.id.fr_weapon_details_tvBattery_level);
+
         this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
         this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
         this.weaponId = getArguments().getInt(ViewSceneActivity.WEAPON_ID_KEY);
 
         this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
         this.weapon = this.weaponDao.getWeapon(weaponId);
+
+        this.batteryLevel.setText(this.weapon.getBatteryLevel() + "%");
+        this.batteryIcon.setImageResource(BatteryIcon.getDrawableId(this.weapon.getBatteryLevel()));
 
         return view;
     }
