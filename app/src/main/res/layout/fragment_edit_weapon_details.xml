@@ -19,6 +19,7 @@
         android:text="Weapon 1"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Name"
+            android:textColor="@color/colorPrimary"
             android:textAlignment="textEnd"
             tools:layout_editor_absoluteX="137dp"
             tools:layout_editor_absoluteY="246dp" />
@@ -49,6 +51,7 @@
             android:layout_weight="1"
             android:layout_marginTop="10dp"
             android:text="Shoot"
+            android:textColor="@color/colorPrimary"
             android:textAlignment="textEnd"
             tools:layout_editor_absoluteX="137dp"
             tools:layout_editor_absoluteY="300dp" />
