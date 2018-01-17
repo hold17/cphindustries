@@ -12,6 +12,8 @@ import android.view.View;
 
 import dk.blackdarkness.g17.cphindustries.R;
 
+import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
+
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     private final Drawable deleteIcon;
     private final int intrinsicWidth;
@@ -44,7 +46,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         return swipeEnabled;
     }
 
-    public void setDragEnabled(boolean dragEnabled) {
+    public void setLongPressDragEnabled(boolean dragEnabled) {
         this.dragEnabled = dragEnabled;
     }
 
@@ -54,9 +56,17 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        // Set movement flags
+        // set movement flags
         final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-        final int swipeFlags = ItemTouchHelper.LEFT/* | ItemTouchHelper.END*/;
+        int swipeFlags;
+        // disable swipe when editing text in editRecyclerAdapter
+        if (recyclerView.getAdapter() instanceof EditRecListAdapter) {
+            if (((EditRecListAdapter) recyclerView.getAdapter()).isEditingText) {
+                swipeFlags = 0;
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+        }
+        swipeFlags = ItemTouchHelper.LEFT/* | ItemTouchHelper.END*/;
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
@@ -65,13 +75,13 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         if (source.getItemViewType() != target.getItemViewType()) {
             return false;
         }
-        // Notify the adapter of the move
+        // notify the adapter of the move
         return mAdapter.onItemMove(source.getAdapterPosition(), target.getAdapterPosition());
     }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int i) {
-        // Notify the adapter of the dismissal
+        // notify the adapter of the dismissal
         mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
     }
 
@@ -104,10 +114,10 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
-        // We only want the active item to change
+        // we only want the active item to change
         if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
             if (viewHolder instanceof ItemTouchHelperViewHolder) {
-                // Let the view holder know that this item is being moved or dragged
+                // let the view holder know that this item is being moved or dragged
                 ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
                 itemViewHolder.onItemSelected();
             }
@@ -122,7 +132,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         viewHolder.itemView.setAlpha(ALPHA_FULL);
 
         if (viewHolder instanceof ItemTouchHelperViewHolder) {
-            // Tell the view holder it's time to restore the idle state
+            // tell the viewHolder it should restore the idle state
             ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
             itemViewHolder.onItemClear();
         }

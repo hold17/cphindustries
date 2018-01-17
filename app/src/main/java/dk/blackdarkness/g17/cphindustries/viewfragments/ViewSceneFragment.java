@@ -60,7 +60,7 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
         ((ViewSceneActivity)getActivity()).setActionBarSubtitle("");
         this.lock.setOnClickListener(this);
 
-        final RecyclerViewClickListener listener = (v, position) -> goToViewShotFragment(position);
+        final RecyclerViewClickListener listener = (v, sceneId) -> goToViewShotFragment(sceneId);
 
         this.scenes = ItemConverter.sceneToItem(this.sceneDao.getList());
 
@@ -99,14 +99,13 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
                 .commit();
     }
 
-    public void goToViewShotFragment(int position) {
+    public void goToViewShotFragment(int sceneId) {
         Log.d(TAG, "goToShotViewFragment: Returning");
         ((ViewSceneActivity)getActivity()).enableActionBar(true);
         Fragment shotViewFragment = new ViewShotFragment();
 
-        final int chosenScene = this.scenes.get(position).getId();
         Bundle bundle = new Bundle();
-        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, chosenScene);
+        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, sceneId);
         shotViewFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

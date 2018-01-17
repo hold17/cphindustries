@@ -41,7 +41,7 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
     private int sceneId;
     private ShootDao shootDao;
     private List<Item> shoots;
-    private int position;
+    private int selectedShootId;
 
     @Nullable
     @Override
@@ -52,6 +52,8 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
         Log.d(TAG, "onCreateView: Returning.");
 
         this.recyclerView = this.view.findViewById(R.id.fr_editShot_recyclerView);
+
+        SharedPreferenceManager.init(getContext());
 
         this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
 
@@ -72,8 +74,15 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
 
         this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(this.sceneId));
 
-        final RecyclerViewClickListener listener = (v, position) -> {
-            this.position = position;
+        final RecyclerViewClickListener listener = (v, itemId) -> {
+            this.selectedShootId = itemId;
+            if (this.adapter.isEditingText) {
+                this.lock.setImageResource(R.drawable.ic_check_white_24dp);
+                this.lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPositive)));
+            } else {
+                this.lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
+                this.lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
+            }
         };
 
         this.adapter = new EditRecListAdapter(getActivity(), this, this.shoots, listener);
@@ -82,8 +91,8 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(getContext(), adapter);
-        SITHCallback.setDragEnabled(true);
+        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
+        SITHCallback.setLongPressDragEnabled(false);
         SITHCallback.setSwipeEnabled(true);
 
         mItemTouchHelper = new ItemTouchHelper(SITHCallback);
@@ -119,24 +128,23 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
     }
 
     public void checkLock() {
-        Log.d(TAG, "checkLock: Should save input data.");
-
-        // users seem to think pressing the lock a second time is what saves changes, the users are always right
-        if (position > 0) {
-            String name = this.adapter.getEditTextString(this.position);
-            if (!name.equals("")) {
-                int id = this.shoots.get(position).getId();
-                Log.d(TAG, "onClick: local current name: " + this.shoots.get(position).getName());
-                Log.d(TAG, "onClick: dao current name: " + this.shootDao.getShoot(id).getName());
-                this.shoots.get(position).setName(name);
-                this.shootDao.update((Shoot) this.shoots.get(position));
-                Log.d(TAG, "onClick: local new name: " + this.shoots.get(position).getName());
-                Log.d(TAG, "onClick: dao new name: " + this.shootDao.getShoot(id).getName());
-            }
+        // users believe pressing the lock a second time is what saves changes, the user is always right
+        if (this.adapter.isEditingText) {
+            Log.d(TAG, "checkLock: Should save input data.");
+            this.lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
+            this.lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
+            String name = this.adapter.setNewItemTextAndReturnText();
+            Shoot selectedShoot = this.shootDao.getShoot(this.selectedShootId);
+            Log.d(TAG, "onClick: dao current name: " + selectedShoot.getName());
+            selectedShoot.setName(name);
+            this.shootDao.update(selectedShoot);
+            Log.d(TAG, "onClick: dao new name: " + this.shootDao.getShoot(this.selectedShootId).getName());
+            this.selectedShootId = -1;
+        } else {
+            getActivity().onBackPressed();
         }
-
-        getActivity().onBackPressed();
     }
+
     public void goToCreateShotFragment() {
         Log.d(TAG, "goToCreateShotFragment: Returning.");
         Fragment createShotFragment = new CreateShotFragment();

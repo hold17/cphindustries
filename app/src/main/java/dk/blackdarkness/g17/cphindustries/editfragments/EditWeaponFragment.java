@@ -42,7 +42,7 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
     private EditRecListAdapter adapter;
     private WeaponDao weaponDao;
     private List<Item> weapons;
-    private int position;
+    private int selectedWeaponId;
 
     @Nullable
     @Override
@@ -53,6 +53,8 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
         Log.d(TAG, "onCreateView: Returning.");
 
         this.recyclerView = this.view.findViewById(R.id.fr_editWeapon_recyclerView);
+
+        SharedPreferenceManager.init(getContext());
 
         this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
         this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
@@ -74,8 +76,15 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
 
         this.weapons = ItemConverter.weaponToItem(this.weaponDao.getListByShoot(shootId));
 
-        final RecyclerViewClickListener listener = (v, position) -> {
-            this.position = position;
+        final RecyclerViewClickListener listener = (v, itemId) -> {
+            this.selectedWeaponId = itemId;
+            if (this.adapter.isEditingText) {
+                this.lock.setImageResource(R.drawable.ic_check_white_24dp);
+                this.lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPositive)));
+            } else {
+                this.lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
+                this.lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
+            }
         };
 
         this.adapter = new EditRecListAdapter(getActivity(), this, weapons, listener);
@@ -84,8 +93,8 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(getContext(), adapter);
-        SITHCallback.setDragEnabled(true);
+        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
+        SITHCallback.setLongPressDragEnabled(false);
         SITHCallback.setSwipeEnabled(true);
 
         mItemTouchHelper = new ItemTouchHelper(SITHCallback);
@@ -95,7 +104,7 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        //Check if cache is cleared TODO: Work around empty lists!!!
+
         boolean cacheIsCleared = SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED);
         boolean appIsReset = SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.APP_RESET);
 
@@ -107,11 +116,6 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
             adapter.notifyDataSetChanged();
         }
         Log.d(TAG, "Items onResume: " + adapter.getItemCount());
-    }
-
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        mItemTouchHelper.startDrag(viewHolder);
     }
 
     @Override
@@ -127,23 +131,21 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
     }
 
     public void checkLock() {
-        Log.d(TAG, "checkLock: Should save input data.");
-
-        // users seem to think pressing the lock a second time is what saves changes, the users are always right
-        if (position > 0) {
-            String name = this.adapter.getEditTextString(this.position);
-            if (!name.equals("")) {
-                int id = this.weapons.get(position).getId();
-                Log.d(TAG, "onClick: local current name: " + this.weapons.get(position).getName());
-                Log.d(TAG, "onClick: dao current name: " + this.weaponDao.getWeapon(id).getName());
-                this.weapons.get(position).setName(name);
-                this.weaponDao.update((Weapon) this.weapons.get(position));
-                Log.d(TAG, "onClick: local new name: " + this.weapons.get(position).getName());
-                Log.d(TAG, "onClick: dao new name: " + this.weaponDao.getWeapon(id).getName());
-            }
+        // users believe pressing the lock a second time is what saves changes, the user is always right
+        if (this.adapter.isEditingText) {
+            Log.d(TAG, "checkLock: Should save input data.");
+            this.lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
+            this.lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
+            String name = this.adapter.setNewItemTextAndReturnText();
+            Weapon selectedWeapon = this.weaponDao.getWeapon(this.selectedWeaponId);
+            Log.d(TAG, "onClick: dao current name: " + selectedWeapon.getName());
+            selectedWeapon.setName(name);
+            this.weaponDao.update(selectedWeapon);
+            Log.d(TAG, "onClick: dao new name: " + this.weaponDao.getWeapon(this.selectedWeaponId).getName());
+            this.selectedWeaponId = -1;
+        } else {
+            getActivity().onBackPressed();
         }
-
-        getActivity().onBackPressed();
     }
 
     public void goToCreateWeaponFragment() {
@@ -154,9 +156,15 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
         bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
         bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.shootId);
         createWeaponFragment.setArguments(bundle);
+
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, createWeaponFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
     }
 }

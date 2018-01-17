@@ -103,7 +103,6 @@ public class SharedPreferenceManager {
     }
 
     public boolean getBoolean(String storeLocation) {
-        Log.d(TAG, "getBoolean: " + storeLocation + " = " + this.prefs.getBoolean(storeLocation, true));
         return this.prefs.getBoolean(storeLocation, true);
     }
 
