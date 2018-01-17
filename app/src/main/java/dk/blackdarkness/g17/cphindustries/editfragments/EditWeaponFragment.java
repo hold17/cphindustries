@@ -93,7 +93,7 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
+        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(getContext(), adapter);
         SITHCallback.setLongPressDragEnabled(false);
         SITHCallback.setSwipeEnabled(true);
 
