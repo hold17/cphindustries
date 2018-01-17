@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewMainActivity;
+import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateShotFragment;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
@@ -54,7 +54,7 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
 
         SharedPreferenceManager.init(getContext());
 
-        this.sceneId = getArguments().getInt(ViewMainActivity.SCENE_ID_KEY);
+        this.sceneId = getArguments().getInt(MainActivity.SCENE_ID_KEY);
 
         this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
 
@@ -64,7 +64,7 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewMainActivity)getActivity()).setActionBarTitle("Edit Shoots");
+        ((MainActivity)getActivity()).setActionBarTitle("Edit Shoots");
         this.add.setVisibility(View.VISIBLE);
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
@@ -158,7 +158,7 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
         Fragment createShotFragment = new CreateShotFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(ViewMainActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(MainActivity.SCENE_ID_KEY, this.sceneId);
         createShotFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

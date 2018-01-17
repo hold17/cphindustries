@@ -17,13 +17,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewMainActivity;
+import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootWeaponDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
-import dk.blackdarkness.g17.cphindustries.helper.softInputHelper;
+import dk.blackdarkness.g17.cphindustries.helper.SoftInputHelper;
 
 import static android.widget.RadioGroup.OnCheckedChangeListener;
 
@@ -59,8 +59,8 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
         submitSave = view.findViewById(R.id.fr_create_weapon_tvSave);
         submitCancel = view.findViewById(R.id.fr_create_weapon_tvCancel);
 
-        this.sceneId = getArguments().getInt(ViewMainActivity.SCENE_ID_KEY);
-        this.shootId = getArguments().getInt(ViewMainActivity.SHOOT_ID_KEY);
+        this.sceneId = getArguments().getInt(MainActivity.SCENE_ID_KEY);
+        this.shootId = getArguments().getInt(MainActivity.SHOOT_ID_KEY);
 
         this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
         this.shootWeaponDao = ApplicationConfig.getDaoFactory().getShootWeaponDao();
@@ -71,12 +71,12 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewMainActivity)getActivity()).setActionBarTitle("Create Weapon");
+        ((MainActivity)getActivity()).setActionBarTitle("Create Weapon");
 
         // handle softInput and focus
         weaponNameText.setFocusableInTouchMode(true);
         weaponNameText.requestFocus();
-        softInputHelper.showSoftInput(getContext(), weaponNameText);
+        SoftInputHelper.showSoftInput(getContext(), weaponNameText);
         // click on view dismisses softInput
         view.setOnClickListener(this);
 
@@ -112,7 +112,7 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
                 break;
             // handle click on view (layout)
             case R.id.fr_create_weapon_layout:
-                softInputHelper.hideSoftInput(getContext(), view);
+                SoftInputHelper.hideSoftInput(getContext(), view);
                 break;
         }
     }
@@ -132,7 +132,7 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
         }}
 
     private void saveClicked() {
-        softInputHelper.hideSoftInput(getContext(), view);
+        SoftInputHelper.hideSoftInput(getContext(), view);
         Weapon selectedWep = this.weaponDao.getWeapon(this.selectedWeapon);
 
         final Weapon newWeapon = new Weapon(-1, this.weaponNameText.getText().toString(), selectedWep.getIp(), selectedWep.getMac());

@@ -23,7 +23,7 @@ import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
-import dk.blackdarkness.g17.cphindustries.helper.softInputHelper;
+import dk.blackdarkness.g17.cphindustries.helper.SoftInputHelper;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperViewHolder;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
@@ -200,7 +200,7 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
             etHeading.setText(getItemByPosition(getAdapterPosition()).getName());
             etHeading.setVisibility(View.GONE);
             tvHeading.setVisibility(View.VISIBLE);
-            softInputHelper.hideSoftInput(context, view);
+            SoftInputHelper.hideSoftInput(context, view);
             imageBack.setImageResource(R.drawable.ic_edit_black_24dp);
         }
 
@@ -209,7 +209,7 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
             etHeading.setVisibility(View.VISIBLE);
             etHeading.setFocusableInTouchMode(true);
             etHeading.requestFocus();
-            softInputHelper.showSoftInput(context, etHeading);
+            SoftInputHelper.showSoftInput(context, etHeading);
             imageBack.setImageResource(R.drawable.ic_close_red_24dp);
         }
     }

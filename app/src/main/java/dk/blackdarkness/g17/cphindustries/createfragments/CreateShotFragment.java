@@ -11,11 +11,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewMainActivity;
+import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
-import dk.blackdarkness.g17.cphindustries.helper.softInputHelper;
+import dk.blackdarkness.g17.cphindustries.helper.SoftInputHelper;
 
 public class CreateShotFragment extends Fragment implements View.OnClickListener {
     private View view;
@@ -35,7 +35,7 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
         submitSave = view.findViewById(R.id.fr_create_shot_tvSave);
         submitCancel = view.findViewById(R.id.fr_create_shot_tvCancel);
 
-        this.sceneId = getArguments().getInt(ViewMainActivity.SCENE_ID_KEY);
+        this.sceneId = getArguments().getInt(MainActivity.SCENE_ID_KEY);
 
         this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
 
@@ -45,12 +45,12 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewMainActivity)getActivity()).setActionBarTitle("Create Shoot");
+        ((MainActivity)getActivity()).setActionBarTitle("Create Shoot");
 
         // handle softInput and focus
         shootNameText.setFocusableInTouchMode(true);
         shootNameText.requestFocus();
-        softInputHelper.showSoftInput(getContext(), shootNameText);
+        SoftInputHelper.showSoftInput(getContext(), shootNameText);
         // click on view dismisses softInput
         view.setOnClickListener(this);
 
@@ -70,13 +70,13 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
                 break;
             // handle click on view (layout)
             case R.id.fr_create_shot_layout:
-                softInputHelper.hideSoftInput(getContext(), view);
+                SoftInputHelper.hideSoftInput(getContext(), view);
                 break;
         }
     }
 
     private void saveClicked() {
-        softInputHelper.hideSoftInput(getContext(), view);
+        SoftInputHelper.hideSoftInput(getContext(), view);
         final Shoot newShoot = new Shoot(-1, this.shootNameText.getText().toString(), this.sceneId);
         Log.d(TAG, "saveClicked: creating shoot: " + newShoot.toString());
         this.shootDao.create(newShoot);

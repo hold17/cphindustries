@@ -25,13 +25,13 @@ import dk.blackdarkness.g17.cphindustries.menuitems.AboutActivity;
 import dk.blackdarkness.g17.cphindustries.menuitems.SettingsActivity;
 import dk.blackdarkness.g17.cphindustries.viewfragments.ViewSceneFragment;
 
-public class ViewMainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     public static final String SCENE_ID_KEY = "SCENE_ID";
     public static final String SHOOT_ID_KEY = "SHOOT_ID";
     public static final String WEAPON_ID_KEY = "WEAPON_ID";
     private BroadcastReceiver broadcastReceiver;
 
-    private static final String TAG = "ViewMainActivity";
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewMainActivity;
+import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.FireMode;
@@ -31,7 +31,7 @@ import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SINGLE;
 
 public class ViewWeaponDetailsFragment extends Fragment implements View.OnClickListener {
     private View view;
-    private static final String TAG = "ViewWeaponDetailsFragment";
+    private static final String TAG = "ViewWeaponDetailsFrag";
     private TextView weaponIpText, weaponMacText, weaponImageDescription,
             weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
     private FloatingActionButton lock;
@@ -68,9 +68,9 @@ public class ViewWeaponDetailsFragment extends Fragment implements View.OnClickL
         this.batteryIcon = view.findViewById(R.id.fr_weapon_details_ivBattery_icon);
         this.batteryLevel = view.findViewById(R.id.fr_weapon_details_tvBattery_level);
 
-        this.sceneId = getArguments().getInt(ViewMainActivity.SCENE_ID_KEY);
-        this.shootId = getArguments().getInt(ViewMainActivity.SHOOT_ID_KEY);
-        this.weaponId = getArguments().getInt(ViewMainActivity.WEAPON_ID_KEY);
+        this.sceneId = getArguments().getInt(MainActivity.SCENE_ID_KEY);
+        this.shootId = getArguments().getInt(MainActivity.SHOOT_ID_KEY);
+        this.weaponId = getArguments().getInt(MainActivity.WEAPON_ID_KEY);
 
         this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
         this.weapon = this.weaponDao.getWeapon(weaponId);
@@ -84,7 +84,7 @@ public class ViewWeaponDetailsFragment extends Fragment implements View.OnClickL
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewMainActivity) getActivity()).setActionBarTitle(weapon.getName());
+        ((MainActivity) getActivity()).setActionBarTitle(weapon.getName());
         this.lock.setOnClickListener(this);
 
         this.weaponNameText.setText(this.weapon.getName());
@@ -152,9 +152,9 @@ public class ViewWeaponDetailsFragment extends Fragment implements View.OnClickL
         Fragment editWeaponDetailsFragment = new EditWeaponDetailsFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(ViewMainActivity.SCENE_ID_KEY, this.sceneId);
-        bundle.putInt(ViewMainActivity.SHOOT_ID_KEY, this.shootId);
-        bundle.putInt(ViewMainActivity.WEAPON_ID_KEY, this.weaponId);
+        bundle.putInt(MainActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(MainActivity.SHOOT_ID_KEY, this.shootId);
+        bundle.putInt(MainActivity.WEAPON_ID_KEY, this.weaponId);
         editWeaponDetailsFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

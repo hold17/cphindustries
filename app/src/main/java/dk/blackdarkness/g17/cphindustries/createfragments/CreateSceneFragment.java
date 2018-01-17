@@ -10,11 +10,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewMainActivity;
+import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
-import dk.blackdarkness.g17.cphindustries.helper.softInputHelper;
+import dk.blackdarkness.g17.cphindustries.helper.SoftInputHelper;
 
 public class CreateSceneFragment extends android.support.v4.app.Fragment implements View.OnClickListener {
     private View view;
@@ -41,12 +41,12 @@ public class CreateSceneFragment extends android.support.v4.app.Fragment impleme
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewMainActivity)getActivity()).setActionBarTitle("Create Scene");
+        ((MainActivity)getActivity()).setActionBarTitle("Create Scene");
 
         // handle softInput and focus
         sceneNameText.setFocusableInTouchMode(true);
         sceneNameText.requestFocus();
-        softInputHelper.showSoftInput(getContext(), sceneNameText);
+        SoftInputHelper.showSoftInput(getContext(), sceneNameText);
         // click on view dismisses softInput
         view.setOnClickListener(this);
 
@@ -67,13 +67,13 @@ public class CreateSceneFragment extends android.support.v4.app.Fragment impleme
                 break;
                 // handle click on view (layout)
             case R.id.fr_create_scene_layout:
-                softInputHelper.hideSoftInput(getContext(), view);
+                SoftInputHelper.hideSoftInput(getContext(), view);
                 break;
         }
     }
 
     private void saveClicked() {
-        softInputHelper.hideSoftInput(getContext(), view);
+        SoftInputHelper.hideSoftInput(getContext(), view);
         final Scene newScene = new Scene(-1, this.sceneNameText.getText().toString());
         Log.d(TAG, "saveClicked: creating scene: " + newScene.toString());
         this.sceneDao.create(newScene);

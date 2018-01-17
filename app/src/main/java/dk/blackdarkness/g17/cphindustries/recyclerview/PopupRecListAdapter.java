@@ -33,7 +33,7 @@ public class PopupRecListAdapter extends RecyclerView.Adapter<PopupRecListAdapte
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.weapon_detail_popup_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.edit_weapon_details_popup_list_item, parent, false);
 
         // TODO: Find way to not have a dao in this class at all
         this.shootWeaponDao = ApplicationConfig.getDaoFactory().getShootWeaponDao();

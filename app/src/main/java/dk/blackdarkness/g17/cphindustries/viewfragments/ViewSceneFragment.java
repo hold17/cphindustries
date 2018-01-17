@@ -15,7 +15,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewMainActivity;
+import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
@@ -55,8 +55,8 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewMainActivity)getActivity()).setActionBarTitle("Scenes");
-        ((ViewMainActivity)getActivity()).setActionBarSubtitle("");
+        ((MainActivity)getActivity()).setActionBarTitle("Scenes");
+        ((MainActivity)getActivity()).setActionBarSubtitle("");
         this.lock.setOnClickListener(this);
 
         //final RecyclerViewClickListener listener = (v, sceneId) -> goToViewShotFragment(sceneId);
@@ -102,7 +102,7 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
 
     public void goToEditSceneFragment() {
         Log.d(TAG, "goToEditSceneFragment: Returning");
-        ((ViewMainActivity)getActivity()).enableActionBar(true);
+        ((MainActivity)getActivity()).enableActionBar(true);
         Fragment editSceneFragment = new EditSceneFragment();
 
         getActivity().getSupportFragmentManager().beginTransaction()
@@ -113,11 +113,11 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
 
     public void goToViewShotFragment(int sceneId) {
         Log.d(TAG, "goToShotViewFragment: Returning");
-        ((ViewMainActivity)getActivity()).enableActionBar(true);
+        ((MainActivity)getActivity()).enableActionBar(true);
         Fragment shotViewFragment = new ViewShotFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(ViewMainActivity.SCENE_ID_KEY, sceneId);
+        bundle.putInt(MainActivity.SCENE_ID_KEY, sceneId);
         shotViewFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

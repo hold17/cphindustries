@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import dk.blackdarkness.g17.cphindustries.BuildConfig;
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewMainActivity;
+import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements android.support.v7.preference.Preference.OnPreferenceClickListener {
@@ -122,12 +122,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements androi
     }
 
     public void restartMainActivity() {
-        //finish() ViewMainActivity by broadcasting action "finish",
+        //finish() MainActivity by broadcasting action "finish",
         //which is picked up by the intent-filter in the activity's broadcast receiver
         Intent intent = new Intent("finish");
         getContext().sendBroadcast(intent);
 
         //Start activity anew
-        startActivity(new Intent(getContext(), ViewMainActivity.class));
+        startActivity(new Intent(getContext(), MainActivity.class));
     }
 }

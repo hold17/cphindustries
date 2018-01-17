@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewMainActivity;
+import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateWeaponFragment;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
@@ -55,8 +55,8 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
 
         SharedPreferenceManager.init(getContext());
 
-        this.sceneId = getArguments().getInt(ViewMainActivity.SCENE_ID_KEY);
-        this.shootId = getArguments().getInt(ViewMainActivity.SHOOT_ID_KEY);
+        this.sceneId = getArguments().getInt(MainActivity.SCENE_ID_KEY);
+        this.shootId = getArguments().getInt(MainActivity.SHOOT_ID_KEY);
 
         this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
 
@@ -66,7 +66,7 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewMainActivity)getActivity()).setActionBarTitle("Edit Weapons");
+        ((MainActivity)getActivity()).setActionBarTitle("Edit Weapons");
         this.add.setVisibility(View.VISIBLE);
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
@@ -161,8 +161,8 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
         Fragment createWeaponFragment = new CreateWeaponFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(ViewMainActivity.SCENE_ID_KEY, this.sceneId);
-        bundle.putInt(ViewMainActivity.SHOOT_ID_KEY, this.shootId);
+        bundle.putInt(MainActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(MainActivity.SHOOT_ID_KEY, this.shootId);
         createWeaponFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

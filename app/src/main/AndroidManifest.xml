@@ -2,16 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dk.blackdarkness.g17.cphindustries">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_ci_logo_small_trans"
         android:label="@string/app_name"
-        android:logo="@drawable/ic_ci_logo_small_trans"
-        android:roundIcon="@drawable/ic_ci_logo_small_trans"
         android:supportsRtl="true"
         android:theme="@style/CPHIndustriesTheme">
         <activity
-            android:name=".activities.ViewMainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:configChanges="orientation|screenSize"
             android:theme="@style/CPHIndustriesTheme">
@@ -25,12 +25,12 @@
             android:name=".menuitems.SettingsActivity"
             android:label="Settings"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".activities.ViewMainActivity">
+            android:parentActivityName=".activities.MainActivity">
         </activity>
         <activity
             android:name=".menuitems.AboutActivity"
             android:label="About"
-            android:parentActivityName=".activities.ViewMainActivity">
+            android:parentActivityName=".activities.MainActivity">
         </activity>
 
         <meta-data
@@ -38,5 +38,4 @@
             android:value="3880ff607ba8029ca6386dcb8788d10d9151e29d" />
 
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
