@@ -81,7 +81,7 @@ public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.It
         return mItems.size();
     }
 
-    class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         final TextView tvHeading;
         final ImageView imageFront;
         final ImageView imageBack;
@@ -95,6 +95,15 @@ public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.It
 
             this.listener = listener;
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            int position = getAdapterPosition();
+            Log.d(TAG, "onLongClick: item clicked at position: " + position);
+            listener.onLongClick(view, getItemByPosition(getAdapterPosition()).getId());
+            return false;
         }
 
         @Override
