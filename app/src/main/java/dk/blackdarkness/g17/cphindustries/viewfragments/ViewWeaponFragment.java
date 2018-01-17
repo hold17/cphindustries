@@ -74,7 +74,19 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
 
         this.weapons = ItemConverter.weaponToItem(this.weaponDao.getListByShoot(shootId));
 
-        final RecyclerViewClickListener listener = (v, weaponId) -> goToDetailWeaponFragment(weaponId);
+        final RecyclerViewClickListener listener = new RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int itemId) {
+                goToDetailWeaponFragment(itemId);
+            }
+
+            @Override
+            public boolean onLongClick(View view, int itemId) {
+                goToEditWeaponFragment();
+                return false;
+            }
+        };
+
 
         this.adapter = new StdRecListAdapter(getActivity(), this.weapons, listener);
 
