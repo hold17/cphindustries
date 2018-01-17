@@ -93,7 +93,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        this.recyclerHeight =  (displaymetrics.heightPixels*72)/100;
+        this.recyclerHeight = (displaymetrics.heightPixels * 72) / 100;
     }
 
     @Override
@@ -152,7 +152,6 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     }
 
     private void createRecycler(View view) {
-
         RecyclerView recyclerView = view.findViewById(R.id.fr_editWeaponDetails_recyclerView);
         PopupRecListAdapter adapter = new PopupRecListAdapter(getContext(), this.shoots, this, this.weapon.getId());
         recyclerView.getLayoutParams().height = recyclerHeight;
