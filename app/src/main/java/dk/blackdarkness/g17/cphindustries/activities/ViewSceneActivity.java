@@ -30,6 +30,7 @@ public class ViewSceneActivity extends AppCompatActivity {
     public static final String SCENE_ID_KEY = "SCENE_ID";
     public static final String SHOOT_ID_KEY = "SHOOT_ID";
     public static final String WEAPON_ID_KEY = "WEAPON_ID";
+    private BroadcastReceiver broadcastReceiver;
 
     private static final String TAG = "ViewSceneActivity";
 
@@ -54,16 +55,17 @@ public class ViewSceneActivity extends AppCompatActivity {
         Fabric.with(this, new Crashlytics());
 
         //Broadcast receiver to finish activity from within Settings
-        BroadcastReceiver br = new BroadcastReceiver() {
+        broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context arg0, Intent intent) {
                 String action = intent.getAction();
                 if (action.equals("finish")) {
+                    unregisterReceiver(broadcastReceiver);
                     finish();
                 }
             }
         };
-        registerReceiver(br, new IntentFilter("finish"));
+        registerReceiver(broadcastReceiver, new IntentFilter("finish"));
 
     }
 
