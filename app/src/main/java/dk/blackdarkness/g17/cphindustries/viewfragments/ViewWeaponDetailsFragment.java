@@ -1,4 +1,4 @@
-package dk.blackdarkness.g17.cphindustries.entityfragments;
+package dk.blackdarkness.g17.cphindustries.viewfragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,9 +29,9 @@ import static dk.blackdarkness.g17.cphindustries.dto.FireMode.FULL_AUTO;
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SAFE;
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SINGLE;
 
-public class DetailWeaponFragment extends Fragment implements View.OnClickListener {
+public class ViewWeaponDetailsFragment extends Fragment implements View.OnClickListener {
     private View view;
-    private static final String TAG = "DetailWeaponFragment";
+    private static final String TAG = "ViewWeaponDetailsFragment";
     private TextView weaponIpText, weaponMacText, weaponImageDescription,
             weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
     private FloatingActionButton lock;
@@ -48,7 +48,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.fragment_weapon_details_layout, container, false);
+        this.view = inflater.inflate(R.layout.fragment_weapon_view_details_layout, container, false);
         Log.d(TAG, "onCreateView: Returning.");
         this.lock = view.findViewById(R.id.lockFab);
         this.weaponImageDescription = view.findViewById(R.id.imageDescription);

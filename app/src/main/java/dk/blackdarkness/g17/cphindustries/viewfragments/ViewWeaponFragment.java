@@ -23,7 +23,6 @@ import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponFragment;
-import dk.blackdarkness.g17.cphindustries.entityfragments.DetailWeaponFragment;
 
 import dk.blackdarkness.g17.cphindustries.helper.BreadcrumbHelper;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
@@ -129,7 +128,7 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
 
     public void goToDetailWeaponFragment(int weaponId) {
         Log.d(TAG, "goToDetailWeaponFragment: Returning");
-        Fragment detailWeaponFragment = new DetailWeaponFragment();
+        Fragment detailWeaponFragment = new ViewWeaponDetailsFragment();
 
         Bundle bundle = new Bundle();
         bundle.putInt(ViewMainActivity.SCENE_ID_KEY, this.sceneId);
