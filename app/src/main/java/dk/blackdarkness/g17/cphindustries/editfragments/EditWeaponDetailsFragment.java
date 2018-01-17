@@ -128,7 +128,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         ConstraintLayout constraintLayout = view.findViewById(R.id.weapon_details_edit);
 
         TextView textTitle = popupView.findViewById(R.id.fr_editWeaponDetails_title);
-        textTitle.setText(this.weapon.getName());
+        textTitle.setText("Shoots with " + this.weapon.getName());
 
         Button cancelButton = popupView.findViewById(R.id.fr_editWeaponDetails_popupCancel);
         Button applyButton = popupView.findViewById(R.id.fr_editWeaponDetails_popupApply);
