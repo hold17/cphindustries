@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/fr_editWeaponDetails_popupButtons"
         android:layout_alignParentTop="true"
         android:orientation="vertical">
 
@@ -39,36 +39,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fr_editWeaponDetails_title" />
     </LinearLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/fr_editWeaponDetails_popupButtons"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/fr_editWeaponDetails_popupCancel"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true">
+            android:text="Cancel"
+            android:layout_marginStart="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true" />
 
-            <Button
-                android:id="@+id/fr_editWeaponDetails_popupCancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="Cancel"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <Button
-                android:id="@+id/fr_editWeaponDetails_popupApply"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:text="Apply"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </RelativeLayout>
-
-
-
+        <Button
+            android:id="@+id/fr_editWeaponDetails_popupApply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="Apply" />
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
