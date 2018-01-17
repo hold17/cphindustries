@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 
 import dk.blackdarkness.g17.cphindustries.R;
@@ -88,6 +89,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        //Log.d("SimpleItemTouchHelper", "onChildDraw: isCurrentlyActive: " + isCurrentlyActive + " dX: " + dX + " dY: " + dY);
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             View itemView = viewHolder.itemView;
 
@@ -102,10 +104,14 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
             int deleteIconRight = itemView.getRight() - deleteIconMargin;
             int deleteIconBottom = deleteIconTop + this.intrinsicHeight;
 
-            this.deleteIcon.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
-            this.deleteIcon.draw(c);
+            // only draw icon when view is not super close to edge
+            // fixes weird bug where deleteicon could be seen through parent object
+            if (dX < -0.1f) {
+                this.deleteIcon.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
+                this.deleteIcon.draw(c);
+            }
 
-            // Fade out the view as it is swiped out of the parent's bounds
+            // fade out the view as it is swiped out of the parent's bounds
             final float alpha = ALPHA_FULL - Math.abs(dX) / (float) viewHolder.itemView.getWidth();
             viewHolder.itemView.setAlpha(alpha);
             viewHolder.itemView.setTranslationX(dX);
