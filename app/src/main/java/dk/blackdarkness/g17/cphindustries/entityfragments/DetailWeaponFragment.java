@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
@@ -21,6 +20,7 @@ import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.FireMode;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
+import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponDetailsFragment;
 
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.BURST;
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.FULL_AUTO;
@@ -77,7 +77,6 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         ((ViewSceneActivity) getActivity()).setActionBarTitle(weapon.getName());
         this.lock.setOnClickListener(this);
 
-//        this.statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
         this.weaponNameText.setText(this.weapon.getName());
 
         this.weaponIdText.setText(Integer.toString(this.weapon.getId()));
@@ -120,10 +119,8 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.lockFab:
-                //Edit view should be different from the one navigated to
-                //from ViewWeaponFragment. Edit this one weapon only?
-                Log.d(TAG, "onClick: Trying to open edit weapon fragment.");
-                goToEditWeaponFragment();
+                Log.d(TAG, "onClick: Trying to open edit weapon details fragment.");
+                goToEditWeaponDetailsFragment();
                 break;
             case R.id.fr_weapon_details_ibtn_single:
                 setWeaponFiremode(SINGLE);
@@ -140,9 +137,20 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    public void goToEditWeaponFragment() {
-        Log.d(TAG, "goToEditWeaponFragment: Returning");
-        Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_LONG).show();
+    public void goToEditWeaponDetailsFragment() {
+        Log.d(TAG, "goToEditWeaponDetailsFragment: Returning");
+        Fragment editWeaponDetailsFragment = new EditWeaponDetailsFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.shootId);
+        bundle.putInt(ViewSceneActivity.WEAPON_ID_KEY, this.weaponId);
+        editWeaponDetailsFragment.setArguments(bundle);
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, editWeaponDetailsFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     public void setWeaponFiremode(FireMode firemode) {
