@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,8 +33,8 @@ import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
-import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.PopupCallback;
 import dk.blackdarkness.g17.cphindustries.recyclerview.PopupRecListAdapter;
+import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.PopupCallback;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -50,7 +51,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     private PopupWindow popupWindow;
     private List<Integer> changedShootIds = new ArrayList<>();
     private List<Item> shoots;
-    private int sceneId, shootId, weaponId;
+    private int sceneId, shootId, weaponId, recyclerHeight;
 
     @Nullable
     @Override
@@ -89,6 +90,10 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         this.lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
         this.lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
         this.popupButton.setOnClickListener(this);
+
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        this.recyclerHeight = (displaymetrics.heightPixels * 72) / 100;
     }
 
     @Override
@@ -123,7 +128,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         ConstraintLayout constraintLayout = view.findViewById(R.id.weapon_details_edit);
 
         TextView textTitle = popupView.findViewById(R.id.fr_editWeaponDetails_title);
-        textTitle.setText(this.weapon.getName());
+        textTitle.setText("Shoots with " + this.weapon.getName());
 
         Button cancelButton = popupView.findViewById(R.id.fr_editWeaponDetails_popupCancel);
         Button applyButton = popupView.findViewById(R.id.fr_editWeaponDetails_popupApply);
@@ -149,6 +154,8 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
     private void createRecycler(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.fr_editWeaponDetails_recyclerView);
         PopupRecListAdapter adapter = new PopupRecListAdapter(getContext(), this.shoots, this, this.weapon.getId());
+        recyclerView.getLayoutParams().height = recyclerHeight;
+
         recyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
