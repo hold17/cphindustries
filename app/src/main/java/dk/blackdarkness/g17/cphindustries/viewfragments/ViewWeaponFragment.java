@@ -101,7 +101,7 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
     }
 
     public void goToEditWeaponFragment() {
-        Log.d(TAG, "goToEditWeaponFragment: Returning");
+        Log.d(TAG, "goToEditWeaponDetailsFragment: Returning");
         Fragment editWeaponFragment = new EditWeaponFragment();
 
         Bundle bundle = new Bundle();

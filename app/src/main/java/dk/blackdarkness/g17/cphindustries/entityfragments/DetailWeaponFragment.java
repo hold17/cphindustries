@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +12,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.FireMode;
+import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
+import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponDetailsFragment;
 
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.BURST;
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.FULL_AUTO;
@@ -28,10 +30,11 @@ import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SINGLE;
 public class DetailWeaponFragment extends Fragment implements View.OnClickListener {
     private View view;
     private static final String TAG = "DetailWeaponFragment";
-    private TextView weaponNameTitle, weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
+    private TextView weaponIpText, weaponMacText, weaponImageDescription,
+            weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
     private FloatingActionButton lock;
     private Button fullAutoButton, safeButton;
-    ImageButton singleButton, burstButton;
+    private ImageButton singleButton, burstButton;
     private int sceneId;
     private int shootId;
     private int weaponId;
@@ -43,13 +46,14 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_weapon_details_layout, container, false);
         Log.d(TAG, "onCreateView: Returning.");
-
         this.lock = view.findViewById(R.id.lockFab);
-        this.weaponNameTitle = view.findViewById(R.id.fr_weapon_details_title);
+        this.weaponImageDescription = view.findViewById(R.id.imageDescription);
         this.weaponNameText = view.findViewById(R.id.fr_weapon_details_tvName_description);
         this.weaponIdText = view.findViewById(R.id.fr_weapon_details_tvId_description);
         this.weaponFiremodeText = view.findViewById(R.id.fr_weapon_details_tvFire_mode_description);
         this.weaponShootsText = view.findViewById(R.id.fr_weapon_details_tvShoot_description);
+        this.weaponIpText = view.findViewById(R.id.fr_weapon_details_tvIp_description);
+        this.weaponMacText = view.findViewById(R.id.fr_weapon_details_tvMac_description);
         this.statusText = view.findViewById(R.id.fr_weapon_details_status_text);
 
         this.singleButton = view.findViewById(R.id.fr_weapon_details_ibtn_single);
@@ -70,27 +74,37 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewSceneActivity) getActivity()).setActionBarTitle(weapon.getName() + " " + "Details");
-
+        ((ViewSceneActivity) getActivity()).setActionBarTitle(weapon.getName());
         this.lock.setOnClickListener(this);
 
-//        this.statusText.setText("1: Device could not be connected. Make sure it is turned on and connected to the network.");
-        this.weaponNameTitle.setText(this.weapon.getName());
         this.weaponNameText.setText(this.weapon.getName());
 
         this.weaponIdText.setText(Integer.toString(this.weapon.getId()));
-        //this.weaponIdText.setText("" + this.weapon.getId());
         this.weaponFiremodeText.setText(this.weapon.getFireMode().name());
-        this.weaponShootsText.setText("Shoots will go here...");
+        this.weaponIpText.setText(this.weapon.getIp());
+        this.weaponMacText.setText(this.weapon.getMac());
+
+        // TODO: maybe put a limit on the amount of shoots shown or something
+        // Set shoots
+        StringBuilder sb = new StringBuilder();
+        int counter = 0;
+        for (Shoot s : this.weaponDao.getShootsByWeapon(this.weapon.getId())) {
+            sb.append(s.getName());
+            counter++;
+            if(counter != this.weaponDao.getShootsByWeapon(this.weapon.getId()).size())
+            sb.append(", ")/*.append("\n")*/;
+        }
+        this.weaponShootsText.setText(sb);
+
         // Set warnings
         if (this.weapon.getWarnings().size() > 0) {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb2 = new StringBuilder();
             for (int c = 0; c < this.weapon.getWarnings().size(); c++) {
-                sb.append(c).append(1).append(" ").append(this.weapon.getWarnings().get(c)).append("\n");
+                sb2.append(c+1).append(": ").append(this.weapon.getWarnings().get(c)).append("\n");
             }
-            this.statusText.setText(sb);
+            this.statusText.setText(sb2);
         } else {
-            this.statusText.setText("No warnings.");
+            this.statusText.setText(R.string.status_text_no_warnings);
         }
 
         updateGuiButtonsFiremode();
@@ -105,10 +119,8 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.lockFab:
-                //Edit view should be different from the one navigated to
-                //from ViewWeaponFragment. Edit this one weapon only?
-                Log.d(TAG, "onClick: Trying to open edit weapon fragment.");
-                goToEditWeaponFragment();
+                Log.d(TAG, "onClick: Trying to open edit weapon details fragment.");
+                goToEditWeaponDetailsFragment();
                 break;
             case R.id.fr_weapon_details_ibtn_single:
                 setWeaponFiremode(SINGLE);
@@ -125,21 +137,37 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    public void goToEditWeaponFragment() {
-        Log.d(TAG, "goToEditWeaponFragment: Returning");
-        Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_LONG).show();
+    public void goToEditWeaponDetailsFragment() {
+        Log.d(TAG, "goToEditWeaponDetailsFragment: Returning");
+        Fragment editWeaponDetailsFragment = new EditWeaponDetailsFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.shootId);
+        bundle.putInt(ViewSceneActivity.WEAPON_ID_KEY, this.weaponId);
+        editWeaponDetailsFragment.setArguments(bundle);
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, editWeaponDetailsFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     public void setWeaponFiremode(FireMode firemode) {
         Log.d(TAG, "setWeaponFiremode: selected firemode: " + firemode);
         this.weapon.setFireMode(firemode);
         this.weaponDao.update(this.weapon);
+        this.weaponFiremodeText.setText(this.weapon.getFireMode().name());
         Log.d(TAG, "setWeaponFiremode: applied firemode: " + this.weaponDao.getWeapon(this.weapon.getId()).getFireMode());
         updateGuiButtonsFiremode();
+
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.detach(this);
+        ft.attach(this);
+        ft.commit();
     }
 
     public void updateGuiButtonsFiremode() {
-
         //Resets buttons
         singleButton.setBackground(getResources().getDrawable(R.drawable.buttonshape_left));
         burstButton.setBackground(getResources().getDrawable(R.drawable.buttonshape_center));

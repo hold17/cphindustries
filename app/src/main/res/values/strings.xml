@@ -1,9 +1,24 @@
 <resources>
-    <string name="app_name">CPHindustries</string>
+
+    <!--Application-->
+    <string name="app_name">Gr17 CPH Industries</string>
     <string name="action_settings">Settings</string>
     <string name="sceneview">Scenes</string>
     <string name="shotview">Shots</string>
     <string name="weaponview">Weapons</string>
+
+    <string name="weapon_status_title">Device status</string>
+    <string name="weapon_details_title">Details</string>
+    <string name="weapon_name_title">Name:</string>
+    <string name="weapon_fire_mode_title">Fire mode:</string>
+    <string name="weapon_shoots_title">Shoots:</string>
+    <string name="weapon_ip_title">IP:</string>
+    <string name="weapon_mac_title">MAC:</string>
+
+    <!--Application Miscellaneous-->
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
     <string name="auto">AUTO</string>
     <string name="safe">SAFE</string>
     <string name="oxygen">Oxygen</string>
@@ -14,10 +29,18 @@
     <string name="oxygen_level_icon">Oxygen level icon</string>
     <string name="battery_level_icon">Battery level icon</string>
     <string name="propane_level_icon">Propane level icon</string>
-    <string name="title_activity_settings">Settings</string>
+    <string name="weapon_type_dummy">M16A4</string>
+    <string name="weapon_mac_dummy">01-23-45-67-89-ab</string>
+    <string name="weapon_ip_dummy">123.123.123.123</string>
+    <string name="weapon_shoots_dummy">Shoot 1, Shoot 3</string>
+    <string name="weapon_fire_mode_dummy">BURST</string>
+    <string name="weapon_name_dummy">Weapon 1</string>
+    <string name="battery_level_dummy">97%</string>
 
     <!--Settings-->
+    <string name="title_activity_settings">Settings</string>
     <string name="warning">Warning!</string>
+
     <string name="demo_data_title">Demo data</string>
     <string name="demo_data_summary">Turn demo data on/off</string>
     <string name="demo_data_key">demoDataSwitch</string>
@@ -34,22 +57,21 @@
     <string name="reset_app__key">resetApp</string>
     <string name="reset_app__alert">Resetting the application will remove all data and preferences. Do you still want to reset?</string>
 
-
-    <string name="clear_app_cache">Clear cache</string>
+    <string name="clear_app_cache_title">Clear cache</string>
     <string name="clear_app_cache_key">clearCache</string>
     <string name="clear_cache_alert">Clearing the cache will delete local data. You might not have any data until the next server sync. Do you want to continue?</string>
 
-
     <string name="build_title">Build version</string>
-    <string name="submit">Submit</string>
-    <string name="cancel">Cancel</string>
+
+    <string name="server_address_title">Server address</string>
+    <string name="server_address_summary">IP: 192.168.0.1\n</string>
+    <string name="server_address_key">serverAddress</string>
+
+    <!--Settings miscellaneous-->
     <string name="cache_clear_cancelled">Cache clear cancelled</string>
     <string name="cache_cleared">Cache cleared</string>
     <string name="reset_cancelled">Reset cancelled</string>
     <string name="application_reset">Application reset</string>
-    <string name="yes">Yes</string>
-
-    <!--Default Setting values-->
 
     <!--About section-->
     <string name="about_message1">The application is developed in collaboration with\n Copenhagen Industries as part of the course</string>
@@ -58,7 +80,8 @@
     <string name="group">Developed by group 17</string>
     <string name="members">Thomas Lien Christensen\nAnders Wiberg Olsen\nChristoffer Birk Puls\nJonas Larsen\nSebastian Tibor Bakony\n</string>
     <string name="link_source_repo">https://github.com/hold17/cphindustries</string>
-    <string name="link_api">https://github.com/hold17/cphapi</string>
+    <string name="link_api_repo">https://github.com/hold17/cphapi</string>
     <string name="creation_date">January 2018</string>
+    <string name="status_text_no_warnings">All systems nominal!</string>
 
 </resources>
