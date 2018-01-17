@@ -74,7 +74,7 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
 
         this.weapons = ItemConverter.weaponToItem(this.weaponDao.getListByShoot(shootId));
 
-        final RecyclerViewClickListener listener = (v, position) -> goToDetailWeaponFragment(position);
+        final RecyclerViewClickListener listener = (v, weaponId) -> goToDetailWeaponFragment(weaponId);
 
         this.adapter = new StdRecListAdapter(getActivity(), this.weapons, listener);
 
@@ -115,15 +115,14 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
                 .commit();
     }
 
-    public void goToDetailWeaponFragment(int position) {
+    public void goToDetailWeaponFragment(int weaponId) {
         Log.d(TAG, "goToDetailWeaponFragment: Returning");
         Fragment detailWeaponFragment = new DetailWeaponFragment();
 
-        final int chosenWeapon = this.weapons.get(position).getId();
         Bundle bundle = new Bundle();
         bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
         bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.shootId);
-        bundle.putInt(ViewSceneActivity.WEAPON_ID_KEY, chosenWeapon);
+        bundle.putInt(ViewSceneActivity.WEAPON_ID_KEY, weaponId);
         detailWeaponFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

@@ -70,12 +70,18 @@ public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.It
         Log.d(TAG, "updateItems: Items after: " + getItemCount());
     }
 
+    private Item getItemByPosition(int position) {
+        Item item = this.mItems.get(position);
+        Log.d(TAG, "getIdFromPosition: position: " + position + " | type: " + item.getClass().toString() + " | ID: " + item.getId());
+        return item;
+    }
+
     @Override
     public int getItemCount() {
         return mItems.size();
     }
 
-    static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView tvHeading;
         final ImageView imageFront;
         final ImageView imageBack;
@@ -95,7 +101,7 @@ public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.It
         public void onClick(View view) {
             int position = getAdapterPosition();
             Log.d(TAG, "onClick: item clicked at position: " + position);
-            this.listener.onClick(view, position);
+            listener.onClick(view, getItemByPosition(getAdapterPosition()).getId());
         }
     }
 }
