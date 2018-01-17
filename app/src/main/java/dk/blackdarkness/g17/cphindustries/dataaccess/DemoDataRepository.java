@@ -143,8 +143,8 @@ class DemoDataRepository {
         // Demo scenes
         listOfScenes = new ArrayList<>();
         listOfScenes.add(new Scene(1, "The kidnapping"));
-        listOfScenes.add(new Scene(2, "22 - Robbing the bank"));
-        listOfScenes.add(new Scene(3, "54 - The escape"));
+        listOfScenes.add(new Scene(2, "Robbing the bank"));
+        listOfScenes.add(new Scene(3, "The escape"));
         saveListOfScenes(listOfScenes);
 
         // Demo Shootweapon
