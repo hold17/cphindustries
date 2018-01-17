@@ -8,7 +8,7 @@
     android:layout_centerHorizontal="false"
     android:layout_centerInParent="false"
     android:layout_centerVertical="false"
-    tools:context="dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity">
+    tools:context="dk.blackdarkness.g17.cphindustries.activities.ViewMainActivity">
 
         <include layout="@layout/custom_toolbar_layout"></include>
 

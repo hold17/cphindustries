@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/CPHIndustriesTheme">
         <activity
-            android:name=".activities.ViewSceneActivity"
+            android:name=".activities.ViewMainActivity"
             android:label="@string/app_name"
             android:configChanges="orientation|screenSize"
             android:theme="@style/CPHIndustriesTheme">
@@ -25,12 +25,12 @@
             android:name=".menuitems.SettingsActivity"
             android:label="Settings"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".activities.ViewSceneActivity">
+            android:parentActivityName=".activities.ViewMainActivity">
         </activity>
         <activity
             android:name=".menuitems.AboutActivity"
             android:label="About"
-            android:parentActivityName=".activities.ViewSceneActivity">
+            android:parentActivityName=".activities.ViewMainActivity">
         </activity>
 
         <meta-data

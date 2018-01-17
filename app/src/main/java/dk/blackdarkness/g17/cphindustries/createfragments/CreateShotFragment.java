@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
+import dk.blackdarkness.g17.cphindustries.activities.ViewMainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
@@ -35,7 +35,7 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
         submitSave = view.findViewById(R.id.fr_create_shot_tvSave);
         submitCancel = view.findViewById(R.id.fr_create_shot_tvCancel);
 
-        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
+        this.sceneId = getArguments().getInt(ViewMainActivity.SCENE_ID_KEY);
 
         this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
 
@@ -45,7 +45,7 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewSceneActivity)getActivity()).setActionBarTitle("Create Shoot");
+        ((ViewMainActivity)getActivity()).setActionBarTitle("Create Shoot");
 
         // handle softInput and focus
         shootNameText.setFocusableInTouchMode(true);

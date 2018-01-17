@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
+import dk.blackdarkness.g17.cphindustries.activities.ViewMainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
@@ -55,8 +55,8 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
 
         SharedPreferenceManager.init(getContext());
 
-        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
-        this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
+        this.sceneId = getArguments().getInt(ViewMainActivity.SCENE_ID_KEY);
+        this.shootId = getArguments().getInt(ViewMainActivity.SHOOT_ID_KEY);
 
         this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
         this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
@@ -68,8 +68,8 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewSceneActivity)getActivity()).setActionBarTitle("Weapons");
-        ((ViewSceneActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.getScene(sceneId), shootDao.getShoot(shootId)));
+        ((ViewMainActivity)getActivity()).setActionBarTitle("Weapons");
+        ((ViewMainActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.getScene(sceneId), shootDao.getShoot(shootId)));
         this.lock.setOnClickListener(this);
 
         this.weapons = ItemConverter.weaponToItem(this.weaponDao.getListByShoot(shootId));
@@ -117,8 +117,8 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
         Fragment editWeaponFragment = new EditWeaponFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
-        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.shootId);
+        bundle.putInt(ViewMainActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(ViewMainActivity.SHOOT_ID_KEY, this.shootId);
         editWeaponFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()
@@ -132,9 +132,9 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
         Fragment detailWeaponFragment = new DetailWeaponFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
-        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.shootId);
-        bundle.putInt(ViewSceneActivity.WEAPON_ID_KEY, weaponId);
+        bundle.putInt(ViewMainActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(ViewMainActivity.SHOOT_ID_KEY, this.shootId);
+        bundle.putInt(ViewMainActivity.WEAPON_ID_KEY, weaponId);
         detailWeaponFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

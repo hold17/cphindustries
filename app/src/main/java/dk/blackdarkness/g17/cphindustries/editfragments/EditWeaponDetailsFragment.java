@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
+import dk.blackdarkness.g17.cphindustries.activities.ViewMainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootWeaponDao;
@@ -64,9 +64,9 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
         this.weaponEdit = view.findViewById(R.id.fr_weapon_details_edit_tvName_description);
         this.popupButton = view.findViewById(R.id.fr_weapon_details_edit_popup);
 
-        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
-        this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
-        this.weaponId = getArguments().getInt(ViewSceneActivity.WEAPON_ID_KEY);
+        this.sceneId = getArguments().getInt(ViewMainActivity.SCENE_ID_KEY);
+        this.shootId = getArguments().getInt(ViewMainActivity.SHOOT_ID_KEY);
+        this.weaponId = getArguments().getInt(ViewMainActivity.WEAPON_ID_KEY);
 
         this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
         this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();

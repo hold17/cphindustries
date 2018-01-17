@@ -26,18 +26,18 @@ import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.menuitems.SettingsActivity;
 import dk.blackdarkness.g17.cphindustries.viewfragments.ViewSceneFragment;
 
-public class ViewSceneActivity extends AppCompatActivity {
+public class ViewMainActivity extends AppCompatActivity {
     public static final String SCENE_ID_KEY = "SCENE_ID";
     public static final String SHOOT_ID_KEY = "SHOOT_ID";
     public static final String WEAPON_ID_KEY = "WEAPON_ID";
     private BroadcastReceiver broadcastReceiver;
 
-    private static final String TAG = "ViewSceneActivity";
+    private static final String TAG = "ViewMainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scene_view_layout);
+        setContentView(R.layout.activity_main_view_layout);
         Log.d(TAG, "onCreate: Creating ShotViewActivity");
 
         //Create custom toolbar, set title and set toolbar as activity actionbar

@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
+import dk.blackdarkness.g17.cphindustries.activities.ViewMainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootWeaponDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
@@ -59,8 +59,8 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
         submitSave = view.findViewById(R.id.fr_create_weapon_tvSave);
         submitCancel = view.findViewById(R.id.fr_create_weapon_tvCancel);
 
-        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
-        this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
+        this.sceneId = getArguments().getInt(ViewMainActivity.SCENE_ID_KEY);
+        this.shootId = getArguments().getInt(ViewMainActivity.SHOOT_ID_KEY);
 
         this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
         this.shootWeaponDao = ApplicationConfig.getDaoFactory().getShootWeaponDao();
@@ -71,7 +71,7 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewSceneActivity)getActivity()).setActionBarTitle("Create Weapon");
+        ((ViewMainActivity)getActivity()).setActionBarTitle("Create Weapon");
 
         // handle softInput and focus
         weaponNameText.setFocusableInTouchMode(true);
