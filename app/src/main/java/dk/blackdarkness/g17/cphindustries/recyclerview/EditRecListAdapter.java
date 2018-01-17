@@ -35,7 +35,6 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
     private final OnStartDragListener mDragStartListener;
     private final RecyclerViewClickListener listener;
     private final Context context;
-    private EditText editText;
     public boolean isEditingText = false;
     private int itemUnderEdit = -1;
     private RecyclerView recyclerView;
@@ -64,8 +63,6 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
         final Item curItem = mItems.get(position);
 
-        this.editText = holder.etHeading;
-
         holder.tvHeading.setText(curItem.getName());
         holder.etHeading.setText(curItem.getName());
         holder.etHeading.setVisibility(View.GONE);
@@ -93,8 +90,8 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
 
     public String setNewItemTextAndReturnText() {
         if (this.isEditingText) {
-            Log.d(TAG, "getEditTextString: input string" + this.editText.getText().toString());
-            String newName = this.editText.getText().toString();
+            Log.d(TAG, "getEditTextString: input string maybe good: " + ((ItemViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(itemUnderEdit))).etHeading.getText().toString());
+            String newName = ((ItemViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(itemUnderEdit))).etHeading.getText().toString();
             mItems.get(itemUnderEdit).setName(newName);
             notifyItemChanged(itemUnderEdit);
             ((ItemViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(itemUnderEdit))).disableEditMode(recyclerView.getRootView());
@@ -199,6 +196,7 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
         }
 
         void disableEditMode(View view) {
+            Log.d(TAG, "disableEditMode: default text: " + getItemByPosition(getAdapterPosition()).getName());
             etHeading.setText(getItemByPosition(getAdapterPosition()).getName());
             etHeading.setVisibility(View.GONE);
             tvHeading.setVisibility(View.VISIBLE);
