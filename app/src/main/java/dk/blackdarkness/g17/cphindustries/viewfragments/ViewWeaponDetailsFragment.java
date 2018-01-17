@@ -99,10 +99,16 @@ public class ViewWeaponDetailsFragment extends Fragment implements View.OnClickL
         StringBuilder sb = new StringBuilder();
         int counter = 0;
         for (Shoot s : this.weaponDao.getShootsByWeapon(this.weapon.getId())) {
+            if(counter == 3) {
+                sb.append("...");
+                break;
+            }
             sb.append(s.getName());
             counter++;
-            if(counter != this.weaponDao.getShootsByWeapon(this.weapon.getId()).size())
-            sb.append(", ")/*.append("\n")*/;
+            if(counter != this.weaponDao.getShootsByWeapon(this.weapon.getId()).size()) {
+                sb.append(", ")/*.append("\n")*/;
+            }
+
         }
         this.weaponShootsText.setText(sb);
 
