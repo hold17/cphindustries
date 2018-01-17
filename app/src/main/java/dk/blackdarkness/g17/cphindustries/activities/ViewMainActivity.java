@@ -18,13 +18,12 @@ import android.view.MenuItem;
 //crashlytics
 import com.crashlytics.android.Crashlytics;
 
+import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.menuitems.AboutActivity;
-import io.fabric.sdk.android.Fabric;
-
-import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.menuitems.SettingsActivity;
 import dk.blackdarkness.g17.cphindustries.viewfragments.ViewSceneFragment;
+import io.fabric.sdk.android.Fabric;
 
 public class ViewMainActivity extends AppCompatActivity {
     public static final String SCENE_ID_KEY = "SCENE_ID";

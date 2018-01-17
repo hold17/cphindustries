@@ -3,7 +3,6 @@ package dk.blackdarkness.g17.cphindustries.dataaccess;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
-import android.util.Log;
 
 import com.google.gson.Gson;
 

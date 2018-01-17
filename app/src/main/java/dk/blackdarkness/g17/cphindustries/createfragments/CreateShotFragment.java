@@ -13,8 +13,8 @@ import android.widget.TextView;
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.ViewMainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
-import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
+import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.helper.softInputHelper;
 
 public class CreateShotFragment extends Fragment implements View.OnClickListener {

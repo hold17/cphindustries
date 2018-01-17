@@ -25,7 +25,7 @@ import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.helper.softInputHelper;
 
-import static android.widget.RadioGroup.*;
+import static android.widget.RadioGroup.OnCheckedChangeListener;
 
 public class CreateWeaponFragment extends Fragment implements View.OnClickListener {
     private View view;
