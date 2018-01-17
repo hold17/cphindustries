@@ -1,5 +1,6 @@
 package dk.blackdarkness.g17.cphindustries.recyclerview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -35,7 +36,9 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
     private final RecyclerViewClickListener listener;
     private final Context context;
     private EditText editText;
-    private boolean isEditingText = false;
+    public boolean isEditingText = false;
+    private int itemUnderEdit = -1;
+    private RecyclerView recyclerView;
 
     public EditRecListAdapter(Context context, OnStartDragListener dragStartListener, List<Item> items, RecyclerViewClickListener listener) {
         mDragStartListener = dragStartListener;
@@ -45,11 +48,18 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
     }
 
     @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.recyclerView = recyclerView;
+    }
+
+    @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.edit_recyclerview_list_item, parent, false);
         return new ItemViewHolder(view, this.listener);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
         final Item curItem = mItems.get(position);
@@ -81,18 +91,22 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
         Log.d(TAG, "updateItems: Items after: " + getItemCount());
     }
 
-    public String getEditTextString(int position) {
+    public String setNewItemTextAndReturnText() {
         if (this.isEditingText) {
-            this.isEditingText = false;
             Log.d(TAG, "getEditTextString: input string" + this.editText.getText().toString());
-            notifyItemChanged(position);
-            return this.editText.getText().toString();
+            String newName = this.editText.getText().toString();
+            mItems.get(itemUnderEdit).setName(newName);
+            notifyItemChanged(itemUnderEdit);
+            ((ItemViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(itemUnderEdit))).disableEditMode(recyclerView.getRootView());
+            this.itemUnderEdit = -1;
+            this.isEditingText = false;
+            return newName;
         }
-        return "";
+        // TODO: remove before entering production!
+        throw new NullPointerException("isEditingText was NOT true somehow.\nThis obviously shouldn't happen.\nPlease contact Anders Wiberg Olsen at anders@wiberg.tech");
     }
 
-    // this could be useful at some point
-    public Item getItemByPosition(int position) {
+    private Item getItemByPosition(int position) {
         Item item = this.mItems.get(position);
         Log.d(TAG, "getIdFromPosition: position: " + position + " | type: " + item.getClass().toString() + " | ID: " + item.getId());
         return item;
@@ -158,25 +172,47 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
         }
 
         @Override
-        public void onClick(View v) {
-            //TODO: maybe do something about this insanity at some point
-
-            if (etHeading.getVisibility() == View.GONE) {
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            // call this on very first click on editPen in recyclerAdapter
+            if (!isEditingText && itemUnderEdit != position) {
+                itemUnderEdit = getAdapterPosition();
                 isEditingText = true;
-                tvHeading.setVisibility(View.GONE);
-                etHeading.setVisibility(View.VISIBLE);
-                etHeading.setFocusableInTouchMode(true);
-                etHeading.requestFocus();
-                softInputHelper.showSoftInput(context, etHeading);
-                imageBack.setImageResource(R.drawable.ic_close_black_24dp);
-            } else {
-                isEditingText = false;
-                listener.onClick(v, getAdapterPosition());
-                softInputHelper.hideSoftInput(context, v);
-                tvHeading.setVisibility(View.VISIBLE);
-                etHeading.setVisibility(View.GONE);
-                imageBack.setImageResource(R.drawable.ic_edit_black_24dp);
+                enableEditMode();
             }
+            // call this on first click on editPen on different item than last clicked
+            else if (isEditingText && itemUnderEdit != position) {
+                // call disableEditMode() on last clicked to clear it's state;
+                ((ItemViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(itemUnderEdit))).disableEditMode(view);
+                itemUnderEdit = position;
+                enableEditMode();
+            }
+            // click was on same item as last clicked, reset edit state
+            else {
+                itemUnderEdit = -1;
+                isEditingText = false;
+                disableEditMode(view);
+            }
+            // send click event with itemId to fragment
+            Log.d(TAG, "onClick: item clicked at position: " + position);
+            listener.onClick(view, getItemByPosition(getAdapterPosition()).getId());
+        }
+
+        void disableEditMode(View view) {
+            etHeading.setText(getItemByPosition(getAdapterPosition()).getName());
+            etHeading.setVisibility(View.GONE);
+            tvHeading.setVisibility(View.VISIBLE);
+            softInputHelper.hideSoftInput(context, view);
+            imageBack.setImageResource(R.drawable.ic_edit_black_24dp);
+        }
+
+        void enableEditMode() {
+            tvHeading.setVisibility(View.GONE);
+            etHeading.setVisibility(View.VISIBLE);
+            etHeading.setFocusableInTouchMode(true);
+            etHeading.requestFocus();
+            softInputHelper.showSoftInput(context, etHeading);
+            imageBack.setImageResource(R.drawable.ic_close_black_24dp);
         }
     }
 }

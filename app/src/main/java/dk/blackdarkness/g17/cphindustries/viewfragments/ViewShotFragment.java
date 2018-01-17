@@ -68,7 +68,7 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
 
         this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(sceneId));
 
-        final RecyclerViewClickListener listener = (v, position) -> goToViewWeaponFragment(position);
+        final RecyclerViewClickListener listener = (v, shootId) -> goToViewWeaponFragment(shootId);
 
         this.adapter = new StdRecListAdapter(getActivity(), shoots, listener);
 
@@ -108,14 +108,13 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
                 .commit();
     }
 
-    public void goToViewWeaponFragment(int position) {
+    public void goToViewWeaponFragment(int shootId) {
         Log.d(TAG, "goToWeaponViewFragment: Returning");
         Fragment weaponViewFragment = new ViewWeaponFragment();
 
-        final int chosenShoot = this.shoots.get(position).getId();
         Bundle bundle = new Bundle();
         bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
-        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, chosenShoot);
+        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, shootId);
         weaponViewFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()
