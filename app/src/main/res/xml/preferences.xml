@@ -15,6 +15,10 @@
         android:title="@string/orientation_title"
         android:summary="@string/orientation_summary"
         android:enabled="false"/>
+    <Preference
+        android:title="@string/server_address_title"
+        android:summary="@string/server_address_summary"
+        android:key="@string/server_address_key"/>
     <ListPreference
         android:defaultValue="1"
         android:entries="@array/array_updatePreferences"
@@ -28,10 +32,6 @@
     <Preference
         android:title="@string/reset_app__title"
         android:key="@string/reset_app__key"/>
-    <Preference
-        android:title="@string/server_address_title"
-        android:summary="@string/server_address_summary"
-        android:key="@string/server_address_key"/>
     <Preference
         android:title="@string/build_title"
         android:key="buildVersion"/>
