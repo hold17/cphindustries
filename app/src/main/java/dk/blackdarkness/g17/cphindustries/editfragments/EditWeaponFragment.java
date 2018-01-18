@@ -24,6 +24,7 @@ import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
+import dk.blackdarkness.g17.cphindustries.helper.SoftInputHelper;
 import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
 import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
@@ -67,6 +68,9 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((MainActivity)getActivity()).setActionBarTitle("Edit Weapons");
+
+        view.setOnClickListener(this);
+
         this.add.setVisibility(View.VISIBLE);
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
@@ -134,6 +138,9 @@ public class EditWeaponFragment extends Fragment implements View.OnClickListener
                 break;
             case R.id.createFab:
                 goToCreateWeaponFragment();
+                break;
+            case R.id.fr_editWeapon_layout:
+                SoftInputHelper.hideSoftInput(getContext(), view);
                 break;
         }
     }
