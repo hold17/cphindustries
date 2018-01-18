@@ -11,46 +11,109 @@ public class Weapon extends Item {
     private ConnectionStatus connectionStatus;
     private String ip;
     private String mac;
+    private int batteryLevel;
 
-    public Weapon(int id, String name, List<String> warnings, FireMode fireMode, ConnectionStatus connectionStatus) {
-        super(id, name);
-        this.warnings = warnings;
-        this.fireMode = fireMode;
-        this.connectionStatus = connectionStatus;
-    }
-
-    public Weapon(int id, String name, FireMode fireMode, ConnectionStatus connectionStatus) {
-        super(id, name);
-        this.fireMode = fireMode;
-        this.connectionStatus = connectionStatus;
-
-        this.warnings = new ArrayList<>();
+    public Weapon() {
     }
 
     /**
      * Probably the default constructor when creating new weapons. FireMode will always be in SAFE mode initially.
+     *
+     * @param name
+     * @param warnings
+     * @param fireMode
+     * @param connectionStatus
+     * @param ip
+     * @param mac
+     */
+    public Weapon(String name, List<String> warnings, FireMode fireMode, ConnectionStatus connectionStatus, String ip, String mac) {
+        super(name);
+        this.warnings = warnings;
+        this.fireMode = fireMode;
+        this.connectionStatus = connectionStatus;
+        this.setIp(ip);
+        this.setMac(mac);
+    }
+
+    /**
+     * Probably the default constructor when creating new weapons. FireMode will always be in SAFE mode initially.
+     *
+     * @param id
+     * @param name
+     * @param warnings
+     * @param fireMode
+     * @param connectionStatus
+     * @param ip
+     * @param mac
+     */
+    public Weapon(int id, String name, List<String> warnings, FireMode fireMode, ConnectionStatus connectionStatus, String ip, String mac, int batteryLevel) {
+        super(id, name);
+        this.warnings = warnings;
+        this.fireMode = fireMode;
+        this.connectionStatus = connectionStatus;
+        this.setIp(ip);
+        this.setMac(mac);
+        this.setBatteryLevel(batteryLevel);
+    }
+
+    /**
+     * Probably the default constructor when creating new weapons. FireMode will always be in SAFE mode initially.
+     *
+     * @param id
+     * @param name
+     * @param fireMode
+     * @param connectionStatus
+     * @param ip
+     * @param mac
+     */
+    public Weapon(int id, String name, FireMode fireMode, ConnectionStatus connectionStatus, String ip, String mac, int batteryLevel) {
+        super(id, name);
+        this.warnings = new ArrayList<>();
+        this.fireMode = fireMode;
+        this.connectionStatus = connectionStatus;
+        this.setIp(ip);
+        this.setMac(mac);
+        this.setBatteryLevel(batteryLevel);
+    }
+
+    /**
+     * Probably the default constructor when creating new weapons. FireMode will always be in SAFE mode initially.
+     *
      * @param id
      * @param name
      * @param connectionStatus
+     * @param ip
+     * @param mac
      */
-    public Weapon(int id, String name, ConnectionStatus connectionStatus) {
+    public Weapon(int id, String name, ConnectionStatus connectionStatus, String ip, String mac) {
         super(id, name);
-        this.connectionStatus = connectionStatus;
-
-        this.fireMode = FireMode.SAFE;
         this.warnings = new ArrayList<>();
+        this.fireMode = FireMode.SAFE;
+        this.connectionStatus = connectionStatus;
+        this.setIp(ip);
+        this.setMac(mac);
     }
 
-    public Weapon(int id, String name) {
+    /**
+     * Probably the default constructor when creating new weapons. FireMode will always be in SAFE mode initially.
+     *
+     * @param id
+     * @param name
+     * @param ip
+     * @param mac
+     */
+    public Weapon(int id, String name, String ip, String mac) {
         super(id, name);
-
-        this.connectionStatus = ConnectionStatus.NO_CONNECTION;
-        this.fireMode = FireMode.SAFE;
         this.warnings = new ArrayList<>();
+        this.fireMode = FireMode.SAFE;
+        this.connectionStatus = ConnectionStatus.NO_CONNECTION;
+        this.setIp(ip);
+        this.setMac(mac);
     }
 
     /**
      * This constructor is used when a weapon has not been added to anything yet (not configured)
+     *
      * @param id
      * @param connectionStatus
      * @param ip
@@ -58,13 +121,11 @@ public class Weapon extends Item {
      */
     public Weapon(int id, ConnectionStatus connectionStatus, String ip, String mac) {
         super(id, null);
+        this.warnings = new ArrayList<>();
+        this.fireMode = FireMode.SAFE;
         this.connectionStatus = connectionStatus;
         this.setIp(ip);
         this.setMac(mac);
-
-        this.fireMode = FireMode.SAFE;
-
-        this.warnings = new ArrayList<>();
     }
 
     public List<String> getWarnings() {
@@ -97,6 +158,16 @@ public class Weapon extends Item {
         this.connectionStatus = connectionStatus;
     }
 
+    public int getBatteryLevel() {
+        return batteryLevel;
+    }
+
+    public void setBatteryLevel(int batteryLevel) {
+        if (batteryLevel > 100) this.batteryLevel = 100;
+        if (batteryLevel < 0)   this.batteryLevel = 0;
+        else                    this.batteryLevel = batteryLevel;
+    }
+
     public String getIp() {
         return ip;
     }
@@ -111,6 +182,10 @@ public class Weapon extends Item {
     }
 
     private static boolean verifyIp(String ip) {
+        if (ip == null) {
+            throw new NullPointerException("IP has not yet been initialized.");
+        }
+
         final String ipv4Regex = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
                 + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
                 + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
@@ -123,6 +198,9 @@ public class Weapon extends Item {
     }
 
     private static boolean verifyMac(String mac) {
+        if (mac == null) {
+            throw new NullPointerException("MAC has not yet been initialized.");
+        }
         final String macRegex = "([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$";
 
         final Pattern pattern = Pattern.compile(macRegex);
@@ -140,7 +218,7 @@ public class Weapon extends Item {
             this.mac = mac;
         } else {
             this.mac = null;
-            throw new NullPointerException("Failed to parse mac");
+            throw new NullPointerException("Failed to parse MAC");
         }
     }
 }

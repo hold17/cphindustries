@@ -1,9 +1,9 @@
 package dk.blackdarkness.g17.cphindustries.dataaccess;
 
 import java.util.List;
+
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
-import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 
 class SceneDaoDemo implements SceneDao {
     private List<Scene> allScenes;
@@ -14,12 +14,12 @@ class SceneDaoDemo implements SceneDao {
     }
 
     @Override
-    public List<Scene> get() {
+    public List<Scene> getList() {
         return DemoDataRepository.loadListOfScenes();
     }
 
     @Override
-    public Scene get(int sceneId) {
+    public Scene getScene(int sceneId) {
         this.allScenes = DemoDataRepository.loadListOfScenes();
 
         for (Scene s : allScenes) {
@@ -48,13 +48,15 @@ class SceneDaoDemo implements SceneDao {
     @Override
     public void update(Scene updatedScene) {
         this.allScenes = DemoDataRepository.loadListOfScenes();
+        int id = updatedScene.getId();
 
-        for (Scene s : allScenes) {
-            if (s.getId() == updatedScene.getId()) {
+        for (Scene s : this.allScenes) {
+            if (s.getId() == id) {
                 s.setName(updatedScene.getName());
+                break;
             }
         }
-        DemoDataRepository.saveListOfScenes(allScenes);
+        DemoDataRepository.saveListOfScenes(this.allScenes);
     }
 
     @Override
@@ -62,12 +64,13 @@ class SceneDaoDemo implements SceneDao {
         this.allScenes = DemoDataRepository.loadListOfScenes();
 
         // Find a scene and delete it.
-        for (Scene s : allScenes) {
+        for (Scene s : this.allScenes) {
             if (s.getId() == sceneId) {
                 allScenes.remove(s);
+                break;
             }
         }
-        List<Shoot> shoots = factory.getShootDao().get();
+        List<Shoot> shoots = factory.getShootDao().getList();
 
         for (Shoot shoot : shoots){
             if(shoot.getSceneId() == sceneId){

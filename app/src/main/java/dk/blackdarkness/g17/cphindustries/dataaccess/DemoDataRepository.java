@@ -4,9 +4,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import dk.blackdarkness.g17.cphindustries.dto.ConnectionStatus;
 import dk.blackdarkness.g17.cphindustries.dto.FireMode;
@@ -22,9 +20,9 @@ class DemoDataRepository {
     private static final String SAVED_SHOOTWEAPON_LOCATION = "SAVED_SHOOTWEAPON_LIST";
 
     private static List<Scene> listOfScenes;
-    private static List<Shoot> listOfShoot;
-    private static List<Weapon> listOfWeapon;
-    private static List<ShootWeapon> listOfShootWeapon;
+    private static List<Shoot> listOfShoots;
+    private static List<Weapon> listOfWeapons;
+    private static List<ShootWeapon> listOfShootWeapons;
 
 
     static void saveListOfScenes(List<Scene> listOfScenes) {
@@ -36,7 +34,6 @@ class DemoDataRepository {
     static List<Scene> loadListOfScenes() {
         if (SharedPreferenceManager.getInstance() == null)
             throw new NullPointerException("SharedPreferenceManager has not yet been initialized.");
-
 
         Type returnType = new TypeToken<ArrayList<Scene>>() {
         }.getType();
@@ -63,12 +60,12 @@ class DemoDataRepository {
         Type returnType = new TypeToken<ArrayList<Shoot>>() {
         }.getType();
 
-        listOfShoot = (ArrayList<Shoot>) SharedPreferenceManager.getInstance().getObject(SAVED_SHOOTS_LOCATION, returnType);
+        listOfShoots = (ArrayList<Shoot>) SharedPreferenceManager.getInstance().getObject(SAVED_SHOOTS_LOCATION, returnType);
 
-        if (listOfShoot == null) {
+        if (listOfShoots == null) {
             generateDemoData();
         }
-        return listOfShoot;
+        return listOfShoots;
     }
 
     static void saveListOfWeapons(List<Weapon> listOfWeapons) {
@@ -84,12 +81,12 @@ class DemoDataRepository {
         Type returnType = new TypeToken<ArrayList<Weapon>>() {
         }.getType();
 
-        listOfWeapon = (ArrayList<Weapon>) SharedPreferenceManager.getInstance().getObject(SAVED_WEAPONS_LOCATION, returnType);
+        listOfWeapons = (ArrayList<Weapon>) SharedPreferenceManager.getInstance().getObject(SAVED_WEAPONS_LOCATION, returnType);
 
-        if (listOfWeapon == null) {
+        if (listOfWeapons == null) {
             generateDemoData();
         }
-        return listOfWeapon;
+        return listOfWeapons;
     }
 
     static void saveListOfShootWeapon(List<ShootWeapon> listOfShootWeapon) {
@@ -106,71 +103,71 @@ class DemoDataRepository {
         Type returnType = new TypeToken<ArrayList<ShootWeapon>>() {
         }.getType();
 
-        listOfShootWeapon = (ArrayList<ShootWeapon>) SharedPreferenceManager.getInstance().getObject(SAVED_SHOOTWEAPON_LOCATION, returnType);
+        listOfShootWeapons = (ArrayList<ShootWeapon>) SharedPreferenceManager.getInstance().getObject(SAVED_SHOOTWEAPON_LOCATION, returnType);
 
-        if (listOfShootWeapon == null) {
+        if (listOfShootWeapons == null) {
             generateDemoData();
         }
-        return listOfShootWeapon;
+        return listOfShootWeapons;
     }
 
     private static void generateDemoData() {
 
         // Demo Warnings
         final List<String> warnings = new ArrayList<>();
-        warnings.add("This is a warning");
-        warnings.add("This is a secondary warning!");
+//        warnings.add("This is a warning!");
+//        warnings.add("This is a secondary warning!");
 
         // Demo Weapons
-        listOfWeapon = new ArrayList<>();
-        listOfWeapon.add(new Weapon(1, "Weapon 1", warnings, FireMode.BURST, ConnectionStatus.NO_CONNECTION));
-        listOfWeapon.add(new Weapon(2, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.FULL));
-        listOfWeapon.add(new Weapon(3, "Weapon 3", ConnectionStatus.NO_CONNECTION));
-        listOfWeapon.add(new Weapon(4, "Weapon 4", FireMode.SINGLE, ConnectionStatus.BAR_2));
-        listOfWeapon.add(new Weapon(5, "weapon 5", warnings, FireMode.SINGLE, ConnectionStatus.BAR_3));
-        listOfWeapon.add(new Weapon(6, "weapon 6", warnings, FireMode.BURST, ConnectionStatus.BAR_1));
-        listOfWeapon.add(new Weapon(7, "weapon 7", FireMode.SINGLE, ConnectionStatus.BAR_2));
-        listOfWeapon.add(new Weapon(8, "weapon 8", FireMode.FULL_AUTO, ConnectionStatus.BAR_1));
-        saveListOfWeapons(listOfWeapon);
+        listOfWeapons = new ArrayList<>();
+        listOfWeapons.add(new Weapon(1, "Brian's M16A4", warnings, FireMode.BURST, ConnectionStatus.NO_CONNECTION,"175.216.74.202","44-0E-1E-FA-58-0E", 47));
+        listOfWeapons.add(new Weapon(2, "John's AK47", FireMode.FULL_AUTO, ConnectionStatus.FULL,"128.39.196.59","59-3B-7B-89-29-4E", 12));
+        listOfWeapons.add(new Weapon(3, "Linda's P90", warnings , FireMode.SAFE, ConnectionStatus.NO_CONNECTION,"211.233.131.106","1F-D6-15-92-6B-4B", 100));
+        listOfWeapons.add(new Weapon(4, "Brian's Smith & Wessern 9mm", FireMode.SINGLE, ConnectionStatus.BAR_2,"174.208.237.9","A9-78-15-DA-DF-1D", 84));
+        listOfWeapons.add(new Weapon(5, "Kidnapper's Glock 18", warnings, FireMode.SINGLE, ConnectionStatus.BAR_3,"51.207.19.164","A2-19-02-EF-CA-6D", 33));
+        listOfWeapons.add(new Weapon(6, "Kidnapper's MAC-10", warnings, FireMode.BURST, ConnectionStatus.BAR_1,"3.40.199.232","99-50-FD-6F-67-C4", 68));
+        listOfWeapons.add(new Weapon(7, "Hostage's concealed Ruger LCP", FireMode.SINGLE, ConnectionStatus.BAR_2,"104.84.93.11","9C-28-EC-44-E5-57", 41));
+        listOfWeapons.add(new Weapon(8, "Roof sniper's AS50", FireMode.FULL_AUTO, ConnectionStatus.BAR_1,"135.123.55.219","6F-5E-D6-D1-A3-39", 88));
+        saveListOfWeapons(listOfWeapons);
 
         // Demo shoots
-        listOfShoot = new ArrayList<>();
-        listOfShoot.add(new Shoot(1, "Shoot 1", 1));
-        listOfShoot.add(new Shoot(2, "Shoot 2", 1));
-        listOfShoot.add(new Shoot(3, "Shoot 3", 1));
-        listOfShoot.add(new Shoot(4, "Shoot 4", 2));
-        listOfShoot.add(new Shoot(5, "Shoot 5", 3));
-        listOfShoot.add(new Shoot(6, "Shoot 6", 3));
-        saveListOfShoots(listOfShoot);
+        listOfShoots = new ArrayList<>();
+        listOfShoots.add(new Shoot(1, "Shoot 1", 1));
+        listOfShoots.add(new Shoot(2, "Shoot 2", 1));
+        listOfShoots.add(new Shoot(3, "Shoot 3", 1));
+        listOfShoots.add(new Shoot(4, "Shoot 4", 2));
+        listOfShoots.add(new Shoot(5, "Shoot 5", 3));
+        listOfShoots.add(new Shoot(6, "Shoot 6", 3));
+        saveListOfShoots(listOfShoots);
 
         // Demo scenes
         listOfScenes = new ArrayList<>();
-        listOfScenes.add(new Scene(1, "1 - Ze Zjuting sihn"));
-        listOfScenes.add(new Scene(2, "22 - Robbing the bank"));
-        listOfScenes.add(new Scene(3, "54 - The escape"));
+        listOfScenes.add(new Scene(1, "The kidnapping"));
+        listOfScenes.add(new Scene(2, "Robbing the bank"));
+        listOfScenes.add(new Scene(3, "The escape"));
         saveListOfScenes(listOfScenes);
 
         // Demo Shootweapon
-        listOfShootWeapon = new ArrayList<>();
-        listOfShootWeapon.add(new ShootWeapon(1,1, 1));
-        listOfShootWeapon.add(new ShootWeapon(2,1, 2));
-        listOfShootWeapon.add(new ShootWeapon(3,1, 3));
-        listOfShootWeapon.add(new ShootWeapon(4,1, 4));
-        listOfShootWeapon.add(new ShootWeapon(5,1, 5));
-        listOfShootWeapon.add(new ShootWeapon(6,2, 2));
-        listOfShootWeapon.add(new ShootWeapon(7,2, 7));
-        listOfShootWeapon.add(new ShootWeapon(8,3, 1));
-        listOfShootWeapon.add(new ShootWeapon(9,3, 2));
-        listOfShootWeapon.add(new ShootWeapon(10,3, 4));
-        listOfShootWeapon.add(new ShootWeapon(11,4, 6));
-        listOfShootWeapon.add(new ShootWeapon(12,4, 7));
-        listOfShootWeapon.add(new ShootWeapon(13,4, 1));
-        listOfShootWeapon.add(new ShootWeapon(14,5, 2));
-        listOfShootWeapon.add(new ShootWeapon(15,6, 1));
-        listOfShootWeapon.add(new ShootWeapon(16,6, 2));
-        listOfShootWeapon.add(new ShootWeapon(17,6, 5));
-        listOfShootWeapon.add(new ShootWeapon(18,6, 6));
-        listOfShootWeapon.add(new ShootWeapon(19,6, 8));
-        saveListOfShootWeapon(listOfShootWeapon);
+        listOfShootWeapons = new ArrayList<>();
+        listOfShootWeapons.add(new ShootWeapon(1,1, 1));
+        listOfShootWeapons.add(new ShootWeapon(2,1, 2));
+        listOfShootWeapons.add(new ShootWeapon(3,1, 3));
+        listOfShootWeapons.add(new ShootWeapon(4,1, 4));
+        listOfShootWeapons.add(new ShootWeapon(5,1, 5));
+        listOfShootWeapons.add(new ShootWeapon(6,2, 2));
+        listOfShootWeapons.add(new ShootWeapon(7,2, 7));
+        listOfShootWeapons.add(new ShootWeapon(8,3, 1));
+        listOfShootWeapons.add(new ShootWeapon(9,3, 2));
+        listOfShootWeapons.add(new ShootWeapon(10,3, 4));
+        listOfShootWeapons.add(new ShootWeapon(11,4, 6));
+        listOfShootWeapons.add(new ShootWeapon(12,4, 7));
+        listOfShootWeapons.add(new ShootWeapon(13,4, 1));
+        listOfShootWeapons.add(new ShootWeapon(14,5, 2));
+        listOfShootWeapons.add(new ShootWeapon(15,6, 3));
+        listOfShootWeapons.add(new ShootWeapon(16,6, 2));
+        listOfShootWeapons.add(new ShootWeapon(17,6, 5));
+        listOfShootWeapons.add(new ShootWeapon(18,6, 6));
+        listOfShootWeapons.add(new ShootWeapon(19,6, 8));
+        saveListOfShootWeapon(listOfShootWeapons);
     }
 }

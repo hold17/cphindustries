@@ -14,7 +14,7 @@ public class WeaponTest {
 
     @Before
     public void setUp() throws Exception {
-        w = new Weapon(0, null);
+        w = new Weapon();
     }
 
     @Test

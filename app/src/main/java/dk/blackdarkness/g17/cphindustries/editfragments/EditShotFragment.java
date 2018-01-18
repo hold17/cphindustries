@@ -1,5 +1,6 @@
 package dk.blackdarkness.g17.cphindustries.editfragments;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -15,12 +16,15 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
+import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateShotFragment;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
+import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
-
+import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
+import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
 import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
@@ -31,7 +35,12 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
     private static final String TAG = "EditShotFragment";
     private FloatingActionButton lock, add;
     private ItemTouchHelper mItemTouchHelper;
-    private int sceneId; // TODO: HARDCODED for now...
+    private RecyclerView recyclerView;
+    private EditRecListAdapter adapter;
+    private int sceneId;
+    private ShootDao shootDao;
+    private List<Item> shoots;
+    private int selectedShootId;
 
     @Nullable
     @Override
@@ -41,8 +50,13 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
         this.lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
 
-        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
-        System.out.println("SCENE ID: " + this.sceneId);
+        this.recyclerView = this.view.findViewById(R.id.fr_editShot_recyclerView);
+
+        SharedPreferenceManager.init(getContext());
+
+        this.sceneId = getArguments().getInt(MainActivity.SCENE_ID_KEY);
+
+        this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
 
         return view;
     }
@@ -50,30 +64,65 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewSceneActivity)getActivity()).setActionBarTitle("Edit Shoots");
+        ((MainActivity)getActivity()).setActionBarTitle("Edit Shoots");
         this.add.setVisibility(View.VISIBLE);
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
+        this.lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
+        this.lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
 
-        RecyclerView recyclerView = this.view.findViewById(R.id.fr_editShot_recyclerView);
+        this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(this.sceneId));
 
-        final RecyclerViewClickListener listener = (v, position) -> System.out.println("STUFF");
+        final RecyclerViewClickListener listener = new RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int itemId) {
+                selectedShootId = itemId;
+                if (adapter.isEditingText) {
+                    lock.setImageResource(R.drawable.ic_check_white_24dp);
+                    lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPositive)));
+                } else {
+                    lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
+                    lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
+                }
+            }
 
-        final List<Item> shoots = ItemConverter.shootToItem(ApplicationConfig.getDaoFactory().getShootDao().getShoots(sceneId));
+            @Override
+            public boolean onLongClick(View view, int itemId) {
+                // do nothing
+                return false;
+            }
+        };
 
-        EditRecListAdapter adapter = new EditRecListAdapter(getActivity(), this, shoots, listener);
+        this.adapter = new EditRecListAdapter(getActivity(), this, this.shoots, listener);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
-        SITHCallback.setDragEnabled(true);
+        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(getContext(), adapter);
+        SITHCallback.setLongPressDragEnabled(false);
         SITHCallback.setSwipeEnabled(true);
 
         mItemTouchHelper = new ItemTouchHelper(SITHCallback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Check if cache is cleared TODO: Work around empty lists!!!
+        boolean cacheIsCleared = SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED);
+        boolean appIsReset = SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.APP_RESET);
+
+        if(cacheIsCleared || appIsReset) {
+            SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
+            SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.APP_RESET);
+            this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(sceneId));
+            adapter.updateItems(this.shoots);
+            adapter.notifyDataSetChanged();
+        }
+        Log.d(TAG, "Items onResume: " + adapter.getItemCount());
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -87,15 +136,29 @@ public class EditShotFragment extends Fragment implements View.OnClickListener, 
     }
 
     public void checkLock() {
+        // users believe pressing the lock a second time is what saves changes, the user is always right
+        if (this.adapter.isEditingText) {
             Log.d(TAG, "checkLock: Should save input data.");
+            this.lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
+            this.lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
+            String name = this.adapter.setNewItemTextAndReturnText();
+            Shoot selectedShoot = this.shootDao.getShoot(this.selectedShootId);
+            Log.d(TAG, "onClick: dao current name: " + selectedShoot.getName());
+            selectedShoot.setName(name);
+            this.shootDao.update(selectedShoot);
+            Log.d(TAG, "onClick: dao new name: " + this.shootDao.getShoot(this.selectedShootId).getName());
+            this.selectedShootId = -1;
+        } else {
             getActivity().onBackPressed();
+        }
     }
+
     public void goToCreateShotFragment() {
         Log.d(TAG, "goToCreateShotFragment: Returning.");
         Fragment createShotFragment = new CreateShotFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt("sceneId", this.sceneId);
+        bundle.putInt(MainActivity.SCENE_ID_KEY, this.sceneId);
         createShotFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

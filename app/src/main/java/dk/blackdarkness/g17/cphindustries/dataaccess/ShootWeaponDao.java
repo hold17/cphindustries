@@ -5,9 +5,9 @@ import java.util.List;
 import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 
 public interface ShootWeaponDao {
-    List<ShootWeapon> get();
-    ShootWeapon get(int shootWeaponId);
+    List<ShootWeapon> getList();
+    ShootWeapon getShootWeapon(int shootId, int weaponId);
     void create(ShootWeapon shootWeapon);
-    void update(int shootWeaponId, ShootWeapon newWeapon);
-    void delete(int shootWeaponId);
+    void update(int oldShootId, int oldWeaponId, ShootWeapon updatedWeapon);
+    void delete(int shootId, int weaponId);
 }

@@ -2,9 +2,12 @@ package dk.blackdarkness.g17.cphindustries.recyclerview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +17,11 @@ import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.dto.Shoot;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
-
-import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.ItemTouchHelperAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 
-public class StdRecListAdapter extends RecyclerView.Adapter<ItemViewHolderCommon> implements ItemTouchHelperAdapter {
-    private final List<Item> mItems = new ArrayList<>();
+public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.ItemViewHolder> {
+    private static final String TAG = "StdRecListAdapter";
+    private List<Item> mItems = new ArrayList<>();
     private final RecyclerViewClickListener listener;
     private final Context context;
 
@@ -30,13 +32,13 @@ public class StdRecListAdapter extends RecyclerView.Adapter<ItemViewHolderCommon
     }
 
     @Override
-    public ItemViewHolderCommon onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.simple_list_item, parent, false);
-        return new ItemViewHolderCommon(view, this.listener);
+    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.std_recycleview_list_item, parent, false);
+        return new ItemViewHolder(view, this.listener);
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolderCommon holder, int position) {
+    public void onBindViewHolder(final ItemViewHolder holder, int position) {
         final Item curItem = mItems.get(position);
 
         holder.tvHeading.setText(curItem.getName());
@@ -55,28 +57,59 @@ public class StdRecListAdapter extends RecyclerView.Adapter<ItemViewHolderCommon
             if (((Weapon) curItem).getWarnings().size() == 0) {
                 holder.imageFront.setVisibility(View.INVISIBLE);
             }
-
             // Set go button image to the connection status
             holder.imageBack.setImageResource(((Weapon) curItem).getConnectionStatus().getDrawableId());
         }
     }
 
-    @Override
-    public void onItemDismiss(int position) {
-        mItems.remove(position);
-        notifyItemRemoved(position);
+    public void updateItems(List<Item> items) {
+        Log.d(TAG, "updateItems: Items before: " + getItemCount());
+        this.mItems = items;
+        notifyDataSetChanged();
+        Log.d(TAG, "updateItems: Items after: " + getItemCount());
     }
 
-    @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
-        Item movedItem = mItems.remove(fromPosition);
-        mItems.add(toPosition, movedItem);
-        notifyItemMoved(fromPosition, toPosition);
-        return true;
+    private Item getItemByPosition(int position) {
+        Item item = this.mItems.get(position);
+        Log.d(TAG, "getIdFromPosition: position: " + position + " | type: " + item.getClass().toString() + " | ID: " + item.getId());
+        return item;
     }
 
     @Override
     public int getItemCount() {
         return mItems.size();
+    }
+
+    class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        final TextView tvHeading;
+        final ImageView imageFront;
+        final ImageView imageBack;
+        final RecyclerViewClickListener listener;
+
+        ItemViewHolder(View itemView, RecyclerViewClickListener listener) {
+            super(itemView);
+            tvHeading = itemView.findViewById(R.id.stdRecyclerViewListItem_tvHeading);
+            imageFront = itemView.findViewById(R.id.stdRecyclerViewListItem_imageFront);
+            imageBack = itemView.findViewById(R.id.stdRecyclerViewListItem_imageBack);
+
+            this.listener = listener;
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            int position = getAdapterPosition();
+            Log.d(TAG, "onLongClick: item clicked at position: " + position);
+            listener.onLongClick(view, getItemByPosition(getAdapterPosition()).getId());
+            return false;
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            Log.d(TAG, "onClick: item clicked at position: " + position);
+            listener.onClick(view, getItemByPosition(getAdapterPosition()).getId());
+        }
     }
 }

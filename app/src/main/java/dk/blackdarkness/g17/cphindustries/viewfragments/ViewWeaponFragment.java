@@ -10,48 +10,51 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
+import dk.blackdarkness.g17.cphindustries.R;
+import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
+import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
-import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
-import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditWeaponFragment;
-import dk.blackdarkness.g17.cphindustries.entityfragments.DetailWeaponFragment;
-
 import dk.blackdarkness.g17.cphindustries.helper.BreadcrumbHelper;
+import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
+import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
-import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
 
 public class ViewWeaponFragment extends Fragment implements View.OnClickListener {
     private View view;
     private static final String TAG = "ViewWeaponFragment";
     private FloatingActionButton lock;
+    private int sceneId;
+    private int shootId;
+    private RecyclerView recyclerView;
+    private StdRecListAdapter adapter;
     private WeaponDao weaponDao;
     private ShootDao shootDao;
     private SceneDao sceneDao;
-    private int sceneId;
-    private int shootId;
-    private StdRecListAdapter adapter;
-
     private List<Item> weapons;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_weapon_view_layout, container, false);
-        lock = view.findViewById(R.id.lockFab);
+        this.lock = view.findViewById(R.id.lockFab);
         Log.d(TAG, "onCreateView: Returning.");
 
-        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
-        this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
+        this.recyclerView = this.view.findViewById(R.id.fr_weapon_recyclerView);
+
+        SharedPreferenceManager.init(getContext());
+
+        this.sceneId = getArguments().getInt(MainActivity.SCENE_ID_KEY);
+        this.shootId = getArguments().getInt(MainActivity.SHOOT_ID_KEY);
 
         this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
         this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
@@ -63,52 +66,42 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewSceneActivity)getActivity()).setActionBarTitle("Weapons");
-        ((ViewSceneActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.get(sceneId), shootDao.get(shootId)));
-        lock.setOnClickListener(this);
+        ((MainActivity)getActivity()).setActionBarTitle("Weapons");
+        ((MainActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.getScene(sceneId), shootDao.getShoot(shootId)));
+        this.lock.setOnClickListener(this);
 
-        RecyclerView recyclerView = this.view.findViewById(R.id.fr_weapon_recyclerView);
+        this.weapons = ItemConverter.weaponToItem(this.weaponDao.getListByShoot(shootId));
 
-//        Toast.makeText(getContext(), "Shoot ID = " + getArguments().getInt("SHOOT_ID"), Toast.LENGTH_LONG).show();
-//        int sceneId = getArguments().getInt("SCENE_ID", -1);
-//        System.out.println("SCENE ID = " + sceneId);
-//        int shootId = getArguments().getInt("SHOOT_ID", -1);
-//        System.out.println("SHOOT ID = " + shootId);
+        final RecyclerViewClickListener listener = new RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int itemId) {
+                goToDetailWeaponFragment(itemId);
+            }
 
-//        List<NavListItem> weapons = new ArrayList<>();
-//        weapons.add(new NavListItem(new Weapon(0, "Weapon 1", FireMode.BURST, ConnectionStatus.NO_CONNECTION), false));
-//        weapons.add(new NavListItem(new Weapon(1, "Weapon 2", FireMode.FULL_AUTO, ConnectionStatus.BAR_0), false));
-//        weapons.add(new NavListItem(new Weapon(2, "Weapon 3", FireMode.SINGLE, ConnectionStatus.BAR_3), false));
-//        weapons.add(new NavListItem(new Weapon(3, "Weapon 4", ConnectionStatus.FULL), false)); // Default to SAFE mode
-//        weapons.add(new NavListItem(new Weapon(4, "Weapon 5", FireMode.BURST, ConnectionStatus.BAR_1), false));
+            @Override
+            public boolean onLongClick(View view, int itemId) {
+                goToEditWeaponFragment();
+                return false;
+            }
+        };
 
-        this.weapons = getListOfWeapons(sceneId, shootId);
 
-        final RecyclerViewClickListener listener = (v, position) -> goToDetailWeaponFragment(position);
+        this.adapter = new StdRecListAdapter(getActivity(), this.weapons, listener);
 
-        adapter = new StdRecListAdapter(getActivity(), this.weapons, listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(adapter);
-        SITHCallback.setDragEnabled(false);
-        SITHCallback.setSwipeEnabled(false);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged();
-    }
-
-    private static List<Item> getListOfWeapons(int sceneId, int shootId) {
-        final List<Item> itemWeapons = new ArrayList<>();
-        final List<Weapon> weapons = ApplicationConfig.getDaoFactory().getWeaponDao().getWeapons(shootId);
-
-        itemWeapons.addAll(weapons);
-
-        return itemWeapons;
+        if(SharedPreferenceManager.getInstance().getBoolean(SettingsFragment.CACHE_CLEARED)) {
+            Toast.makeText(getContext(), "Cache has been cleared", Toast.LENGTH_SHORT).show();
+            SharedPreferenceManager.getInstance().saveBoolean(false, SettingsFragment.CACHE_CLEARED);
+            this.weapons = ItemConverter.weaponToItem(this.weaponDao.getListByShoot(shootId));
+            adapter.updateItems(this.weapons);
+        }
     }
 
     @Override
@@ -117,35 +110,33 @@ public class ViewWeaponFragment extends Fragment implements View.OnClickListener
         goToEditWeaponFragment();
     }
 
-    public void goToDetailWeaponFragment(int position) {
-        Log.d(TAG, "goToDetailWeaponFragment: Returning");
-        Fragment detailWeaponFragment = new DetailWeaponFragment();
-
-        final Weapon chosenWeapon = (Weapon) this.weapons.get(position);
-
-        Bundle bundle = new Bundle();
-        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
-        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.shootId);
-        bundle.putInt(ViewSceneActivity.WEAPON_ID_KEY, chosenWeapon.getId());
-        detailWeaponFragment.setArguments(bundle);
-
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, detailWeaponFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
     public void goToEditWeaponFragment() {
-        Log.d(TAG, "goToEditWeaponFragment: Returning");
+        Log.d(TAG, "goToEditWeaponDetailsFragment: Returning");
         Fragment editWeaponFragment = new EditWeaponFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
-        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.shootId);
+        bundle.putInt(MainActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(MainActivity.SHOOT_ID_KEY, this.shootId);
         editWeaponFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, editWeaponFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void goToDetailWeaponFragment(int weaponId) {
+        Log.d(TAG, "goToDetailWeaponFragment: Returning");
+        Fragment detailWeaponFragment = new ViewWeaponDetailsFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(MainActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(MainActivity.SHOOT_ID_KEY, this.shootId);
+        bundle.putInt(MainActivity.WEAPON_ID_KEY, weaponId);
+        detailWeaponFragment.setArguments(bundle);
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, detailWeaponFragment)
                 .addToBackStack(null)
                 .commit();
     }
