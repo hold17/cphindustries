@@ -16,20 +16,19 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
+import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateSceneFragment;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
-
 import dk.blackdarkness.g17.cphindustries.dto.Scene;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
+import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
 import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
-import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
 
 public class EditSceneFragment extends Fragment implements View.OnClickListener, OnStartDragListener {
     private View view;
@@ -62,7 +61,7 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewSceneActivity)getActivity()).setActionBarTitle("Edit Scenes");
+        ((MainActivity)getActivity()).setActionBarTitle("Edit Scenes");
         this.add.setVisibility(View.VISIBLE);
         this.add.setOnClickListener(this);
         this.lock.setOnClickListener(this);
@@ -125,7 +124,7 @@ public class EditSceneFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ((ViewSceneActivity)getActivity()).enableActionBar(false);
+        ((MainActivity)getActivity()).enableActionBar(false);
     }
 
     @Override

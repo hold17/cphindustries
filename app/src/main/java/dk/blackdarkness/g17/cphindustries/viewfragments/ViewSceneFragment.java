@@ -15,17 +15,16 @@ import android.widget.Toast;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
+import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditSceneFragment;
-
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
+import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
-import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
 
 public class ViewSceneFragment extends Fragment implements View.OnClickListener {
     private View view;
@@ -56,8 +55,8 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewSceneActivity)getActivity()).setActionBarTitle("Scenes");
-        ((ViewSceneActivity)getActivity()).setActionBarSubtitle("");
+        ((MainActivity)getActivity()).setActionBarTitle("Scenes");
+        ((MainActivity)getActivity()).setActionBarSubtitle("");
         this.lock.setOnClickListener(this);
 
         //final RecyclerViewClickListener listener = (v, sceneId) -> goToViewShotFragment(sceneId);
@@ -103,7 +102,7 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
 
     public void goToEditSceneFragment() {
         Log.d(TAG, "goToEditSceneFragment: Returning");
-        ((ViewSceneActivity)getActivity()).enableActionBar(true);
+        ((MainActivity)getActivity()).enableActionBar(true);
         Fragment editSceneFragment = new EditSceneFragment();
 
         getActivity().getSupportFragmentManager().beginTransaction()
@@ -114,11 +113,11 @@ public class ViewSceneFragment extends Fragment implements View.OnClickListener 
 
     public void goToViewShotFragment(int sceneId) {
         Log.d(TAG, "goToShotViewFragment: Returning");
-        ((ViewSceneActivity)getActivity()).enableActionBar(true);
+        ((MainActivity)getActivity()).enableActionBar(true);
         Fragment shotViewFragment = new ViewShotFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, sceneId);
+        bundle.putInt(MainActivity.SCENE_ID_KEY, sceneId);
         shotViewFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

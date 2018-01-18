@@ -8,7 +8,7 @@
     android:layout_centerHorizontal="false"
     android:layout_centerInParent="false"
     android:layout_centerVertical="false"
-    tools:context="dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity">
+    tools:context="dk.blackdarkness.g17.cphindustries.activities.MainActivity">
 
     <ImageView
         android:id="@+id/weaponImage"
@@ -170,11 +170,11 @@
             android:id="@+id/fr_weapon_details_tvShoot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="textStart"
-            android:textStyle="bold"
-            android:textColor="@color/textColorPrimary"
             android:layout_weight="1"
-            android:text="@string/weapon_shoots_title"/>
+            android:text="@string/weapon_shoots_title"
+            android:textAlignment="textStart"
+            android:textColor="@color/textColorPrimary"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/fr_weapon_details_tvIp"

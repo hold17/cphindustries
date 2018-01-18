@@ -8,11 +8,9 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 
 import dk.blackdarkness.g17.cphindustries.R;
-
 import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
 
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {

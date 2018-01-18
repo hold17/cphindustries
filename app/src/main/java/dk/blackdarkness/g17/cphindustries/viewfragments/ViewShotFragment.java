@@ -15,19 +15,18 @@ import android.widget.Toast;
 import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
+import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.editfragments.EditShotFragment;
-
 import dk.blackdarkness.g17.cphindustries.helper.BreadcrumbHelper;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
+import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
 import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
-import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
 
 public class ViewShotFragment extends Fragment implements View.OnClickListener {
     private View view;
@@ -51,7 +50,7 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
 
         SharedPreferenceManager.init(getContext());
 
-        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
+        this.sceneId = getArguments().getInt(MainActivity.SCENE_ID_KEY);
 
         this.shootDao = ApplicationConfig.getDaoFactory().getShootDao();
         this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
@@ -62,8 +61,8 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewSceneActivity)getActivity()).setActionBarTitle("Shoots");
-        ((ViewSceneActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.getScene(sceneId)));
+        ((MainActivity)getActivity()).setActionBarTitle("Shoots");
+        ((MainActivity)getActivity()).setActionBarSubtitle(BreadcrumbHelper.getSubtitle(sceneDao.getScene(sceneId)));
         this.lock.setOnClickListener(this);
 
         this.shoots = ItemConverter.shootToItem(this.shootDao.getListByScene(sceneId));
@@ -110,7 +109,7 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
         Fragment editShotFragment = new EditShotFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(MainActivity.SCENE_ID_KEY, this.sceneId);
         editShotFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()
@@ -124,8 +123,8 @@ public class ViewShotFragment extends Fragment implements View.OnClickListener {
         Fragment weaponViewFragment = new ViewWeaponFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
-        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, shootId);
+        bundle.putInt(MainActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(MainActivity.SHOOT_ID_KEY, shootId);
         weaponViewFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

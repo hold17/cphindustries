@@ -1,4 +1,4 @@
-package dk.blackdarkness.g17.cphindustries.entityfragments;
+package dk.blackdarkness.g17.cphindustries.viewfragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import dk.blackdarkness.g17.cphindustries.R;
-import dk.blackdarkness.g17.cphindustries.activities.ViewSceneActivity;
+import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.FireMode;
@@ -29,9 +29,9 @@ import static dk.blackdarkness.g17.cphindustries.dto.FireMode.FULL_AUTO;
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SAFE;
 import static dk.blackdarkness.g17.cphindustries.dto.FireMode.SINGLE;
 
-public class DetailWeaponFragment extends Fragment implements View.OnClickListener {
+public class ViewWeaponDetailsFragment extends Fragment implements View.OnClickListener {
     private View view;
-    private static final String TAG = "DetailWeaponFragment";
+    private static final String TAG = "ViewWeaponDetailsFrag";
     private TextView weaponIpText, weaponMacText, weaponImageDescription,
             weaponNameText, weaponIdText, weaponFiremodeText, weaponShootsText, statusText;
     private FloatingActionButton lock;
@@ -48,7 +48,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.fragment_weapon_details_layout, container, false);
+        this.view = inflater.inflate(R.layout.fragment_weapon_view_details_layout, container, false);
         Log.d(TAG, "onCreateView: Returning.");
         this.lock = view.findViewById(R.id.lockFab);
         this.weaponImageDescription = view.findViewById(R.id.imageDescription);
@@ -68,9 +68,9 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         this.batteryIcon = view.findViewById(R.id.fr_weapon_details_ivBattery_icon);
         this.batteryLevel = view.findViewById(R.id.fr_weapon_details_tvBattery_level);
 
-        this.sceneId = getArguments().getInt(ViewSceneActivity.SCENE_ID_KEY);
-        this.shootId = getArguments().getInt(ViewSceneActivity.SHOOT_ID_KEY);
-        this.weaponId = getArguments().getInt(ViewSceneActivity.WEAPON_ID_KEY);
+        this.sceneId = getArguments().getInt(MainActivity.SCENE_ID_KEY);
+        this.shootId = getArguments().getInt(MainActivity.SHOOT_ID_KEY);
+        this.weaponId = getArguments().getInt(MainActivity.WEAPON_ID_KEY);
 
         this.weaponDao = ApplicationConfig.getDaoFactory().getWeaponDao();
         this.weapon = this.weaponDao.getWeapon(weaponId);
@@ -84,7 +84,7 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ViewSceneActivity) getActivity()).setActionBarTitle(weapon.getName());
+        ((MainActivity) getActivity()).setActionBarTitle(weapon.getName());
         this.lock.setOnClickListener(this);
 
         this.weaponNameText.setText(this.weapon.getName());
@@ -99,10 +99,16 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         StringBuilder sb = new StringBuilder();
         int counter = 0;
         for (Shoot s : this.weaponDao.getShootsByWeapon(this.weapon.getId())) {
+            if(counter == 3) {
+                sb.append("...");
+                break;
+            }
             sb.append(s.getName());
             counter++;
-            if(counter != this.weaponDao.getShootsByWeapon(this.weapon.getId()).size())
-            sb.append(", ")/*.append("\n")*/;
+            if(counter != this.weaponDao.getShootsByWeapon(this.weapon.getId()).size()) {
+                sb.append(", ")/*.append("\n")*/;
+            }
+
         }
         this.weaponShootsText.setText(sb);
 
@@ -152,9 +158,9 @@ public class DetailWeaponFragment extends Fragment implements View.OnClickListen
         Fragment editWeaponDetailsFragment = new EditWeaponDetailsFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(ViewSceneActivity.SCENE_ID_KEY, this.sceneId);
-        bundle.putInt(ViewSceneActivity.SHOOT_ID_KEY, this.shootId);
-        bundle.putInt(ViewSceneActivity.WEAPON_ID_KEY, this.weaponId);
+        bundle.putInt(MainActivity.SCENE_ID_KEY, this.sceneId);
+        bundle.putInt(MainActivity.SHOOT_ID_KEY, this.shootId);
+        bundle.putInt(MainActivity.WEAPON_ID_KEY, this.weaponId);
         editWeaponDetailsFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()
