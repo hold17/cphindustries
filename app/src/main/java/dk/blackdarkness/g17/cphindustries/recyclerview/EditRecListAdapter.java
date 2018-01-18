@@ -90,7 +90,7 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
 
     public String setNewItemTextAndReturnText() {
         if (this.isEditingText) {
-            Log.d(TAG, "getEditTextString: input string maybe good: " + ((ItemViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(itemUnderEdit))).etHeading.getText().toString());
+            Log.d(TAG, "getEditTextString: input string: " + ((ItemViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(itemUnderEdit))).etHeading.getText().toString());
             String newName = ((ItemViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(itemUnderEdit))).etHeading.getText().toString();
             mItems.get(itemUnderEdit).setName(newName);
             notifyItemChanged(itemUnderEdit);

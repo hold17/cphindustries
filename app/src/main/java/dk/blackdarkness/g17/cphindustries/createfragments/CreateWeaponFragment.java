@@ -73,11 +73,6 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
         super.onViewCreated(view, savedInstanceState);
         ((MainActivity)getActivity()).setActionBarTitle("Create Weapon");
 
-        // handle softInput and focus
-        weaponNameText.setFocusableInTouchMode(true);
-        weaponNameText.requestFocus();
-        SoftInputHelper.showSoftInput(getContext(), weaponNameText);
-        // click on view dismisses softInput
         view.setOnClickListener(this);
 
         radioButtons.setVisibility(View.GONE);
@@ -100,18 +95,20 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fr_create_weapon_tvSave:
-                //TODO: Figure out a good way to check if a name has been written and enable/disable submit accordingly
                 Log.d(TAG, "onClick: submit clicked - weaponNameText: " + weaponNameText.getText().toString());
+                //TODO: Figure out a good way to check if a name has been written and enable/disable submit accordingly
                 if (weaponNameText.getText().toString().equals(""))
                     break;
                 saveClicked();
+                SoftInputHelper.hideSoftInput(getContext(), view);
                 getActivity().onBackPressed();
                 break;
             case R.id.fr_create_weapon_tvCancel:
+                SoftInputHelper.hideSoftInput(getContext(), view);
                 getActivity().onBackPressed();
                 break;
-            // handle click on view (layout)
             case R.id.fr_create_weapon_layout:
+                Log.d(TAG, "onClick: requesting focus!");
                 SoftInputHelper.hideSoftInput(getContext(), view);
                 break;
         }
@@ -120,19 +117,20 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
     private void setSelectedWeapon() {
         if (rgLeft.getCheckedRadioButtonId() != -1) {
             this.selectedWeapon =  rgLeft.getCheckedRadioButtonId();
-            Log.d(TAG, "saveClicked: weapon selected: " + this.weaponDao.getWeapon(selectedWeapon).getMac());
-            submitSave.setEnabled(true);
-            submitSave.setTextColor(buttonTextEnabled);
         }
         else if (rgRight.getCheckedRadioButtonId() != -1) {
             this.selectedWeapon =  rgRight.getCheckedRadioButtonId();
-            Log.d(TAG, "saveClicked: weapon selected: " + this.weaponDao.getWeapon(selectedWeapon).getMac());
-            submitSave.setEnabled(true);
-            submitSave.setTextColor(buttonTextEnabled);
-        }}
+        }
+        else {
+            // no radiobutton checked, keep submit disabled
+            return;
+        }
+        Log.d(TAG, "saveClicked: weapon selected: " + this.weaponDao.getWeapon(selectedWeapon).getMac());
+        submitSave.setEnabled(true);
+        submitSave.setTextColor(buttonTextEnabled);
+    }
 
     private void saveClicked() {
-        SoftInputHelper.hideSoftInput(getContext(), view);
         Weapon selectedWep = this.weaponDao.getWeapon(this.selectedWeapon);
 
         final Weapon newWeapon = new Weapon(-1, this.weaponNameText.getText().toString(), selectedWep.getIp(), selectedWep.getMac());
@@ -148,6 +146,7 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
     private OnCheckedChangeListener lis1 = new OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
+            SoftInputHelper.hideSoftInput(getContext(), view);
             Log.d(TAG, "rgLeft 1: child checked: " + rgLeft.getCheckedRadioButtonId());
             Log.d(TAG, "rgRight 1: child checked: " + rgRight.getCheckedRadioButtonId());
             if (checkedId != -1) {
@@ -159,10 +158,13 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
         }
     };
 
+
+
     // see comment above
     private OnCheckedChangeListener lis2 = new OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
+            SoftInputHelper.hideSoftInput(getContext(), view);
             Log.d(TAG, "rgLeft 2: child checked: " + rgLeft.getCheckedRadioButtonId());
             Log.d(TAG, "rgRight 2: child checked: " + rgRight.getCheckedRadioButtonId());
             if (checkedId != -1) {
