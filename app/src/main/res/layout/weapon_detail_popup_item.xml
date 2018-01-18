@@ -5,7 +5,7 @@
     android:id="@+id/weapon_details_popup_recycler_item"
     android:layout_width="match_parent"
     android:layout_height="64dp"
-    android:background="#ffffff">
+    android:background="@color/textColorInverse">
 
     <TextView
         android:id="@+id/recListText"
