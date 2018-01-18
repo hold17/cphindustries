@@ -33,6 +33,7 @@ import dk.blackdarkness.g17.cphindustries.dto.Item;
 import dk.blackdarkness.g17.cphindustries.dto.ShootWeapon;
 import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
+import dk.blackdarkness.g17.cphindustries.helper.SoftInputHelper;
 import dk.blackdarkness.g17.cphindustries.recyclerview.PopupRecListAdapter;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.PopupCallback;
 
@@ -113,6 +114,7 @@ public class EditWeaponDetailsFragment extends Fragment implements View.OnClickL
                 Log.d(TAG, "onClick: Going to weapon details fragment.");
                 weapon.setName(weaponEdit.getText().toString());
                 this.weaponDao.update(weapon);
+                SoftInputHelper.hideSoftInput(getContext(), view);
                 getActivity().onBackPressed();
                 break;
         }

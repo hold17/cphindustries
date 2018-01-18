@@ -13,24 +13,21 @@ public class SoftInputHelper {
         if (imm == null) {
             throw new NullPointerException("InputMethodManager is null");
         }
+        Log.d("SoftInputHelper", "showSoftInput: showing input");
         imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
     }
 
     public static void hideSoftInput(Context context, View v) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        // no idea why this would be null, better make sure...
-        if (imm == null) {
-            throw new NullPointerException("InputMethodManager is null");
+        if (v != null) {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            // no idea why this would be null, better make sure...
+            if (imm == null) {
+                throw new NullPointerException("InputMethodManager is null");
+            }
+            Log.d("SoftInputHelper", "hideSoftInput: hiding input");
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        } else {
+            Log.d("SoftInputHelper", "hideSoftInput: getCurrentFocus returned null!");
         }
-        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-    }
-
-    public static void tryNewThing(Context context) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        // no idea why this would be null, better make sure...
-        if (imm == null) {
-            throw new NullPointerException("InputMethodManager is null");
-        }
-        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 }

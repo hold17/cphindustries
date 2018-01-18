@@ -47,12 +47,11 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
         ((MainActivity)getActivity()).setActionBarTitle("Create Shoot");
 
-        // handle softInput and focus
+        view.setOnClickListener(this);
+
         shootNameText.setFocusableInTouchMode(true);
         shootNameText.requestFocus();
         SoftInputHelper.showSoftInput(getContext(), shootNameText);
-        // click on view dismisses softInput
-        view.setOnClickListener(this);
 
         submitSave.setOnClickListener(this);
         submitCancel.setOnClickListener(this);
@@ -63,20 +62,21 @@ public class CreateShotFragment extends Fragment implements View.OnClickListener
         switch(view.getId()) {
             case R.id.fr_create_shot_tvSave:
                 saveClicked();
+                SoftInputHelper.hideSoftInput(getContext(), view);
                 getActivity().onBackPressed();
                 break;
             case R.id.fr_create_shot_tvCancel:
+                SoftInputHelper.hideSoftInput(getContext(), view);
                 getActivity().onBackPressed();
                 break;
-            // handle click on view (layout)
             case R.id.fr_create_shot_layout:
+                Log.d(TAG, "onClick: requesting focus!");
                 SoftInputHelper.hideSoftInput(getContext(), view);
                 break;
         }
     }
 
     private void saveClicked() {
-        SoftInputHelper.hideSoftInput(getContext(), view);
         final Shoot newShoot = new Shoot(-1, this.shootNameText.getText().toString(), this.sceneId);
         Log.d(TAG, "saveClicked: creating shoot: " + newShoot.toString());
         this.shootDao.create(newShoot);

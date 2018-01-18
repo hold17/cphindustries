@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/fr_editWeapon_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <!--<ListView-->
-        <!--android:id="@+id/fr_editWeapon_listView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">s-->
+    <!--android:id="@+id/fr_editWeapon_listView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">s-->
     <!--</ListView>-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fr_editWeapon_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <include layout="@layout/fab_buttons_layout"></include>
 
