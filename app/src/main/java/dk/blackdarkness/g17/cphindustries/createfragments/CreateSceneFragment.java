@@ -29,9 +29,9 @@ public class CreateSceneFragment extends android.support.v4.app.Fragment impleme
         this.view = inflater.inflate(R.layout.fragment_create_scene_layout, container, false);
         Log.d(TAG, "onCreateView: Returning.");
 
-        submitSave = view.findViewById(R.id.fr_create_shot_tvSave);
-        submitCancel = view.findViewById(R.id.fr_create_shot_tvCancel);
-        sceneNameText = view.findViewById(R.id.fr_create_scene_editText_Scene);
+        submitSave = view.findViewById(R.id.fr_create_scene_tvSave);
+        submitCancel = view.findViewById(R.id.fr_create_scene_tvCancel);
+        sceneNameText = view.findViewById(R.id.fr_create_scene_editText);
 
         this.sceneDao = ApplicationConfig.getDaoFactory().getSceneDao();
 
@@ -43,37 +43,36 @@ public class CreateSceneFragment extends android.support.v4.app.Fragment impleme
         super.onViewCreated(view, savedInstanceState);
         ((MainActivity)getActivity()).setActionBarTitle("Create Scene");
 
-        // handle softInput and focus
+        view.setOnClickListener(this);
+
         sceneNameText.setFocusableInTouchMode(true);
         sceneNameText.requestFocus();
         SoftInputHelper.showSoftInput(getContext(), sceneNameText);
-        // click on view dismisses softInput
-        view.setOnClickListener(this);
 
         submitSave.setOnClickListener(this);
         submitCancel.setOnClickListener(this);
     }
 
-
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
-            case R.id.fr_create_shot_tvSave:
+            case R.id.fr_create_scene_tvSave:
                 saveClicked();
+                SoftInputHelper.hideSoftInput(getContext(), view);
                 getActivity().onBackPressed();
                 break;
-            case R.id.fr_create_shot_tvCancel:
+            case R.id.fr_create_scene_tvCancel:
+                SoftInputHelper.hideSoftInput(getContext(), view);
                 getActivity().onBackPressed();
                 break;
-                // handle click on view (layout)
             case R.id.fr_create_scene_layout:
+                Log.d(TAG, "onClick: requesting focus!");
                 SoftInputHelper.hideSoftInput(getContext(), view);
                 break;
         }
     }
 
     private void saveClicked() {
-        SoftInputHelper.hideSoftInput(getContext(), view);
         final Scene newScene = new Scene(-1, this.sceneNameText.getText().toString());
         Log.d(TAG, "saveClicked: creating scene: " + newScene.toString());
         this.sceneDao.create(newScene);
