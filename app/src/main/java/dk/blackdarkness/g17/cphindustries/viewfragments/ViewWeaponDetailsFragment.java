@@ -48,7 +48,7 @@ public class ViewWeaponDetailsFragment extends Fragment implements View.OnClickL
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.fragment_weapon_view_details_layout, container, false);
+        this.view = inflater.inflate(R.layout.fragment_view_weapon_details, container, false);
         Log.d(TAG, "onCreateView: Returning.");
         this.lock = view.findViewById(R.id.lockFab);
         this.weaponImageDescription = view.findViewById(R.id.imageDescription);

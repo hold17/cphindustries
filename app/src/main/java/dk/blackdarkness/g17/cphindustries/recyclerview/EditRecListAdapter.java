@@ -54,7 +54,7 @@ public class EditRecListAdapter extends RecyclerView.Adapter<EditRecListAdapter.
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.edit_recyclerview_list_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.recyclerview_edit_list_item, parent, false);
         return new ItemViewHolder(view, this.listener);
     }
 

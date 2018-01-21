@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_view_layout);
+        setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Creating ShotViewActivity");
 
         //Create custom toolbar, set title and set toolbar as activity actionbar

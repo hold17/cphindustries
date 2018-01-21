@@ -33,7 +33,7 @@ public class StdRecListAdapter extends RecyclerView.Adapter<StdRecListAdapter.It
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.std_recycleview_list_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.recyclerview_std_list_item, parent, false);
         return new ItemViewHolder(view, this.listener);
     }
 
