@@ -82,7 +82,7 @@ public class ViewFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((MainActivity)getActivity()).setActionBarTitle(FRAGMENT_TYPE.getTitle());
+        ((MainActivity)getActivity()).setActionBarTitle(FRAGMENT_TYPE.getTypeAsString(getContext(), 2));
         // SCENES is the top level, so no subtitle
         if (FRAGMENT_TYPE != FragmentType.SCENES)
             ((MainActivity)getActivity()).setActionBarSubtitle(getArguments().getString(MainActivity.SUBTITLE_KEY));

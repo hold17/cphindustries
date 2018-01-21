@@ -17,6 +17,7 @@ import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
+import dk.blackdarkness.g17.cphindustries.createfragments.CreateFragment;
 import dk.blackdarkness.g17.cphindustries.createfragments.CreateWeaponFragment;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
@@ -92,7 +93,7 @@ public class EditFragment  extends Fragment implements View.OnClickListener, OnS
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((MainActivity)getActivity()).setActionBarTitle("Edit " + FRAGMENT_TYPE.getTitle());
+        ((MainActivity)getActivity()).setActionBarTitle("Edit " + FRAGMENT_TYPE.getTypeAsString(getContext(), 2));
         // SCENES is the top level, so no subtitle
         if (FRAGMENT_TYPE != FragmentType.SCENES)
             ((MainActivity)getActivity()).setActionBarSubtitle(getArguments().getString(MainActivity.SUBTITLE_KEY));
@@ -239,7 +240,7 @@ public class EditFragment  extends Fragment implements View.OnClickListener, OnS
                 bundle.putSerializable(MainActivity.FRAGMENT_TYPE_KEY, FragmentType.SHOOTS);
             }
             // use consolidated create fragment here
-            createFragment = new CreateWeaponFragment();
+            createFragment = new CreateFragment();
         } else {
             bundle.putInt(MainActivity.SCENE_ID_KEY, sceneId);
             bundle.putInt(MainActivity.SHOOT_ID_KEY, shootId);
