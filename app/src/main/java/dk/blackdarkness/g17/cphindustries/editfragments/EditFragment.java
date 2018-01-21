@@ -1,11 +1,13 @@
-package dk.blackdarkness.g17.cphindustries.viewfragments;
+package dk.blackdarkness.g17.cphindustries.editfragments;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,39 +17,47 @@ import java.util.List;
 
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.activities.MainActivity;
+import dk.blackdarkness.g17.cphindustries.createfragments.CreateWeaponFragment;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ApplicationConfig;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SceneDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.dataaccess.ShootDao;
 import dk.blackdarkness.g17.cphindustries.dataaccess.WeaponDao;
 import dk.blackdarkness.g17.cphindustries.dto.Item;
-import dk.blackdarkness.g17.cphindustries.editfragments.EditFragment;
+import dk.blackdarkness.g17.cphindustries.dto.Scene;
+import dk.blackdarkness.g17.cphindustries.dto.Shoot;
+import dk.blackdarkness.g17.cphindustries.dto.Weapon;
 import dk.blackdarkness.g17.cphindustries.helper.FragmentType;
 import dk.blackdarkness.g17.cphindustries.helper.ItemConverter;
+import dk.blackdarkness.g17.cphindustries.helper.SoftInputHelper;
 import dk.blackdarkness.g17.cphindustries.menuitems.SettingsFragment;
-import dk.blackdarkness.g17.cphindustries.recyclerview.StdRecListAdapter;
+import dk.blackdarkness.g17.cphindustries.recyclerview.EditRecListAdapter;
+import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.OnStartDragListener;
 import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.RecyclerViewClickListener;
+import dk.blackdarkness.g17.cphindustries.recyclerview.helpers.SimpleItemTouchHelperCallback;
 
-public class ViewFragment extends Fragment implements View.OnClickListener {
+public class EditFragment  extends Fragment implements View.OnClickListener, OnStartDragListener {
     private FragmentType FRAGMENT_TYPE;
-    private static final String TAG = "ViewFragment";
+    private static final String TAG = "EditFragment";
     private View view;
-    private FloatingActionButton lock;
+    private FloatingActionButton lock, add;
+    private ItemTouchHelper mItemTouchHelper;
     private RecyclerView recyclerView;
-    private StdRecListAdapter adapter;
+    private EditRecListAdapter adapter;
     private SceneDao sceneDao;
     private ShootDao shootDao;
     private WeaponDao weaponDao;
     private List<Item> items;
     private int sceneId;
     private int shootId;
-    private int weaponId;
+    private int selectedItemId;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_view, container, false);
+        view = inflater.inflate(R.layout.fragment_edit, container, false);
         lock = view.findViewById(R.id.lockFab);
+        add = view.findViewById(R.id.createFab);
         FRAGMENT_TYPE = (FragmentType) getArguments().getSerializable(MainActivity.FRAGMENT_TYPE_KEY);
 
         if (savedInstanceState != null)
@@ -56,7 +66,7 @@ public class ViewFragment extends Fragment implements View.OnClickListener {
 
         Log.d(TAG, FRAGMENT_TYPE + " onCreateView: Returning.");
 
-        recyclerView = view.findViewById(R.id.fr_view_recyclerView);
+        recyclerView = view.findViewById(R.id.fr_edit_recyclerView);
 
         SharedPreferenceManager.init(getContext());
 
@@ -82,12 +92,19 @@ public class ViewFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((MainActivity)getActivity()).setActionBarTitle(FRAGMENT_TYPE.getTitle());
+        ((MainActivity)getActivity()).setActionBarTitle("Edit " + FRAGMENT_TYPE.getTitle());
         // SCENES is the top level, so no subtitle
         if (FRAGMENT_TYPE != FragmentType.SCENES)
             ((MainActivity)getActivity()).setActionBarSubtitle(getArguments().getString(MainActivity.SUBTITLE_KEY));
         else ((MainActivity)getActivity()).setActionBarSubtitle("");
+
+        view.setOnClickListener(this);
+
+        add.setVisibility(View.VISIBLE);
+        add.setOnClickListener(this);
         lock.setOnClickListener(this);
+        lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
+        lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
 
         // ideally there should not be an item converter for each item type and instead the dao should just always return items
         switch (FRAGMENT_TYPE) {
@@ -99,26 +116,37 @@ public class ViewFragment extends Fragment implements View.OnClickListener {
         final RecyclerViewClickListener listener = new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int itemId) {
-                switch (FRAGMENT_TYPE) {
-                    case SCENES: sceneId = itemId; break;
-                    case SHOOTS: shootId = itemId; break;
-                    case WEAPONS: weaponId = itemId; break;
+                selectedItemId = itemId;
+                if (adapter.isEditingText) {
+                    add.setVisibility(View.GONE);
+                    lock.setImageResource(R.drawable.ic_check_white_24dp);
+                    lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPositive)));
+                } else {
+                    add.setVisibility(View.VISIBLE);
+                    lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
+                    lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
                 }
-                goToViewFragment();
             }
 
             @Override
             public boolean onLongClick(View view, int itemId) {
-                goToEditFragment();
+                // do nothing
                 return false;
             }
         };
 
-        adapter = new StdRecListAdapter(getActivity(), items, listener);
+        adapter = new EditRecListAdapter(getActivity(), this, items, listener);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        SimpleItemTouchHelperCallback SITHCallback = new SimpleItemTouchHelperCallback(getContext(), adapter);
+        SITHCallback.setLongPressDragEnabled(false);
+        SITHCallback.setSwipeEnabled(true);
+
+        mItemTouchHelper = new ItemTouchHelper(SITHCallback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -144,72 +172,90 @@ public class ViewFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        Log.d(TAG, "onClick: lockFab. Returning EditFragment.");
-        goToEditFragment();
-    }
-
-    public void goToEditFragment() {
-        Log.d(TAG, "goToEditFragment: Returning");
-        // awaiting consolidated editFragment
-        EditFragment editFragment = new EditFragment();
-
-        // Make bundle for edit fragment
-        Bundle bundle = new Bundle();
-        if (FRAGMENT_TYPE != FragmentType.SCENES) {
-            if (FRAGMENT_TYPE == FragmentType.SHOOTS) {
-                bundle.putInt(MainActivity.SCENE_ID_KEY, sceneId);
-                bundle.putSerializable(MainActivity.FRAGMENT_TYPE_KEY, FragmentType.SHOOTS);
-            }
-            else if (FRAGMENT_TYPE == FragmentType.WEAPONS) {
-                bundle.putInt(MainActivity.SHOOT_ID_KEY, shootId);
-                bundle.putSerializable(MainActivity.FRAGMENT_TYPE_KEY, FragmentType.WEAPONS);
-            }
-            bundle.putString(MainActivity.SUBTITLE_KEY, getArguments().getString(MainActivity.SUBTITLE_KEY));
-        } else {
-            bundle.putSerializable(MainActivity.FRAGMENT_TYPE_KEY, FragmentType.SCENES);
+        switch (view.getId()) {
+            case R.id.lockFab:
+                checkLock();
+                break;
+            case R.id.createFab:
+                goToCreateFragment();
+                break;
+            case R.id.fr_edit_layout:
+                SoftInputHelper.hideSoftInput(getContext(), view);
+                break;
         }
-        editFragment.setArguments(bundle);
-        Log.d(TAG, "goToEditFragment: bundle contents: " + bundle.toString());
-
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, editFragment)
-                .addToBackStack(null)
-                .commit();
     }
 
-    public void goToViewFragment() {
-        Log.d(TAG, "goToViewFragment: Returning");
-        ((MainActivity)getActivity()).enableActionBar(true);
-        Fragment viewFragment;
+    public void checkLock() {
+        // users believe pressing the lock a second time is what saves changes, the user is always right
+        if (adapter.isEditingText) {
+            Log.d(TAG, "checkLock: Should save input data.");
+            String name = adapter.setNewItemTextAndReturnText();
+            // This will be simplified a lot once the daos are refactored to only deal with items
+            switch (FRAGMENT_TYPE) {
+                case SCENES:
+                    Scene selectedScene = sceneDao.getScene(selectedItemId);
+                    Log.d(TAG, "onClick: dao current name: " + selectedScene.getName());
+                    selectedScene.setName(name);
+                    sceneDao.update(selectedScene);
+                    Log.d(TAG, "onClick: dao new name: " + sceneDao.getScene(selectedItemId).getName());
+                    break;
+                case SHOOTS:
+                    Shoot selectedShoot = shootDao.getShoot(selectedItemId);
+                    Log.d(TAG, "onClick: dao current name: " + selectedShoot.getName());
+                    selectedShoot.setName(name);
+                    shootDao.update(selectedShoot);
+                    Log.d(TAG, "onClick: dao new name: " + shootDao.getShoot(selectedItemId).getName());
+                    break;
+                case WEAPONS:
+                    Weapon selectedWeapon = weaponDao.getWeapon(selectedItemId);
+                    Log.d(TAG, "onClick: dao current name: " + selectedWeapon.getName());
+                    selectedWeapon.setName(name);
+                    weaponDao.update(selectedWeapon);
+                    Log.d(TAG, "onClick: dao new name: " + weaponDao.getWeapon(selectedItemId).getName());
+                    break;
+            }
+            add.setVisibility(View.VISIBLE);
+            lock.setImageResource(R.drawable.ic_lock_open_white_24dp);
+            lock.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.openLockFabColor)));
+            selectedItemId = -1;
+        } else {
+            getActivity().onBackPressed();
+        }
+    }
 
-        // Make subtitle and bundle for next view
+    public void goToCreateFragment() {
+        Log.d(TAG, "goToCreateFragment: Returning");
+        ((MainActivity)getActivity()).enableActionBar(true);
+        Fragment createFragment;
+
+        // Make subtitle and bundle for next view fragment
         Bundle bundle = new Bundle();
         if (FRAGMENT_TYPE != FragmentType.WEAPONS) {
-            StringBuilder sb = new StringBuilder();
-            if (getArguments().getString(MainActivity.SUBTITLE_KEY) != null)
-                sb.append(getArguments().getString(MainActivity.SUBTITLE_KEY));
             if (FRAGMENT_TYPE == FragmentType.SCENES) {
-                sb.append(sceneDao.getScene(sceneId).getName());
+                bundle.putSerializable(MainActivity.FRAGMENT_TYPE_KEY, FragmentType.SCENES);
+            }
+            else if (FRAGMENT_TYPE == FragmentType.SHOOTS) {
                 bundle.putInt(MainActivity.SCENE_ID_KEY, sceneId);
                 bundle.putSerializable(MainActivity.FRAGMENT_TYPE_KEY, FragmentType.SHOOTS);
             }
-            else if (FRAGMENT_TYPE == FragmentType.SHOOTS) {
-                sb.append(", ").append(shootDao.getShoot(shootId).getName());
-                bundle.putInt(MainActivity.SHOOT_ID_KEY, shootId);
-                bundle.putSerializable(MainActivity.FRAGMENT_TYPE_KEY, FragmentType.WEAPONS);
-            }
-            bundle.putString(MainActivity.SUBTITLE_KEY, sb.toString());
-            viewFragment = new ViewFragment();
+            // use consolidated create fragment here
+            createFragment = new CreateWeaponFragment();
         } else {
-            bundle.putInt(MainActivity.WEAPON_ID_KEY, weaponId);
-            viewFragment = new ViewWeaponDetailsFragment();
+            bundle.putInt(MainActivity.SCENE_ID_KEY, sceneId);
+            bundle.putInt(MainActivity.SHOOT_ID_KEY, shootId);
+            createFragment = new CreateWeaponFragment();
         }
-        viewFragment.setArguments(bundle);
+        createFragment.setArguments(bundle);
         Log.d(TAG, "goToViewFragment: bundle contents: " + bundle.toString());
 
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, viewFragment)
+                .replace(R.id.fragment_container, createFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
     }
 }
