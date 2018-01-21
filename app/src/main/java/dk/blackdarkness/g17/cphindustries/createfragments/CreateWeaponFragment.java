@@ -45,7 +45,7 @@ public class CreateWeaponFragment extends Fragment implements View.OnClickListen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.fragment_create_weapon_layout, container, false);
+        this.view = inflater.inflate(R.layout.fragment_create_weapon, container, false);
         Log.d(TAG, "onCreateView: Returning");
 
         weaponNameText = view.findViewById(R.id.fr_create_weapon_editText);
