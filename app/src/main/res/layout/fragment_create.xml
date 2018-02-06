@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fr_create_scene_layout"
+    android:id="@+id/fr_create_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:layout_editor_absoluteY="81dp">
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/fr_create_scene_title"
+        android:id="@+id/fr_create_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:text="Create new Scene"
+        android:text=""
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
@@ -21,21 +19,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/fr_create_scene_editText"
+        android:id="@+id/fr_create_editText"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Scene Name"
+        android:hint=""
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fr_create_scene_title" />
+        app:layout_constraintTop_toBottomOf="@+id/fr_create_title" />
 
     <TextView
-        android:id="@+id/fr_create_scene_tvCancel"
+        android:id="@+id/fr_create_tvCancel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
@@ -43,10 +41,10 @@
         android:text="Cancel"
         android:textColor="@color/colorEdit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fr_create_scene_editText" />
+        app:layout_constraintTop_toBottomOf="@+id/fr_create_editText" />
 
     <TextView
-        android:id="@+id/fr_create_scene_tvSave"
+        android:id="@+id/fr_create_tvSave"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="35dp"
@@ -54,6 +52,6 @@
         android:text="Save"
         android:textColor="@color/colorEdit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fr_create_scene_editText" />
+        app:layout_constraintTop_toBottomOf="@+id/fr_create_editText" />
 
 </android.support.constraint.ConstraintLayout>

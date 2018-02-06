@@ -78,10 +78,27 @@
     <string name="course_name">62550 Brugerinteraktion og udvikling på mobile enheder</string>
     <string name="dtu">at Danmarks Tekniske Universitet (DTU).</string>
     <string name="group">Developed by group 17</string>
-    <string name="members">Thomas Lien Christensen\nAnders Wiberg Olsen\nChristoffer Birk Puls\nJonas Larsen\nSebastian Tibor Bakony\n</string>
+    <string name="members">Thomas Lien Christensen\nAnders Wiberg Olsen\nChristoffer Birk Puls\nJonas Larsen\nSebastian Tibor Bakonyvari\n</string>
     <string name="link_source_repo">https://github.com/hold17/cphindustries</string>
     <string name="link_api_repo">https://github.com/hold17/cphapi</string>
     <string name="creation_date">January 2018</string>
     <string name="status_text_no_warnings">All systems nominal!</string>
+    <string name="create_new">Create new %1$s</string>
+
+
+    <plurals name="scene">
+        <item quantity="one">Scene</item>
+        <item quantity="other">Scenes</item>
+    </plurals>
+
+    <plurals name="shoot">
+        <item quantity="one">Shoot</item>
+        <item quantity="other">Shoots</item>
+    </plurals>
+
+    <plurals name="weapon">
+        <item quantity="one">Weapon</item>
+        <item quantity="other">Weapons</item>
+    </plurals>
 
 </resources>

@@ -18,38 +18,40 @@ import android.view.MenuItem;
 //crashlytics
 import com.crashlytics.android.Crashlytics;
 
+import dk.blackdarkness.g17.cphindustries.helper.FragmentType;
 import dk.blackdarkness.g17.cphindustries.helper.SoftInputHelper;
+import dk.blackdarkness.g17.cphindustries.viewfragments.ViewFragment;
 import io.fabric.sdk.android.Fabric;
 
 import dk.blackdarkness.g17.cphindustries.R;
 import dk.blackdarkness.g17.cphindustries.dataaccess.SharedPreferenceManager;
 import dk.blackdarkness.g17.cphindustries.menuitems.AboutActivity;
 import dk.blackdarkness.g17.cphindustries.menuitems.SettingsActivity;
-import dk.blackdarkness.g17.cphindustries.viewfragments.ViewSceneFragment;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    public static final String FRAGMENT_TYPE_KEY = "FRAGMENT_TYPE";
     public static final String SCENE_ID_KEY = "SCENE_ID";
     public static final String SHOOT_ID_KEY = "SHOOT_ID";
     public static final String WEAPON_ID_KEY = "WEAPON_ID";
+    public static final String SUBTITLE_KEY = "SUBTITLE";
     private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_view_layout);
+        setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Creating ShotViewActivity");
 
         //Create custom toolbar, set title and set toolbar as activity actionbar
         Toolbar customToolbar = findViewById(R.id.customToolbar);
         setSupportActionBar(customToolbar);
-        setActionBarTitle("Scenes");
         enableActionBar(false);
 
         //TODO: Check if this causes issues when returning to app after android has killed off it's process.
         // only ADD the fragment if starting after app has been completely killed off
         if (savedInstanceState == null) {
-            goToSceneViewFragment();
+            goToViewFragment();
         }
         //crashlytics
         Fabric.with(this, new Crashlytics());
@@ -136,10 +138,15 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setSubtitle(title);
     }
 
-    public void goToSceneViewFragment() {
-        Fragment sceneViewFragment = new ViewSceneFragment();
+    public void goToViewFragment() {
+        Fragment viewFragment = new ViewFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(FRAGMENT_TYPE_KEY, FragmentType.SCENES);
+        viewFragment.setArguments(bundle);
+
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, sceneViewFragment)
+                .add(R.id.fragment_container, viewFragment)
                 .commit();
     }
 

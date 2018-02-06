@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fr_edit_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/fr_scene_recyclerView"
+        android:id="@+id/fr_edit_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!--<Button
-        android:id="@+id/openScene"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />-->
-
-    <include layout="@layout/fab_buttons_layout"></include>
+    <include layout="@layout/fab_buttons_layout" />
 
 </RelativeLayout>
